@@ -31,12 +31,15 @@ jobs:
     - name: Build project
       run: npm run build --if-present
 
+    - name: Run tests
+      run: npm test
+
     - name: Sync to S3
       uses: jakejarvis/s3-sync-action@v0.5.1
       with:
         args: --acl public-read --follow-symlinks --delete
       env:
-        SOURCE_DIR: './public'
+        SOURCE_DIR: './dist'  # 빌드 결과물 경로를 확인하여 수정
         AWS_REGION: 'ap-northeast-2'
         AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
