@@ -59,5 +59,6 @@
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "ignorePatterns": [".eslintrc.json", "vite.config.ts"]
 }
