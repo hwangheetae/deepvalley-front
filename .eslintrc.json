@@ -1,0 +1,63 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier",
+    "react-hooks",
+    "jsx-a11y"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
+    "jsx-a11y/accessible-emoji": "warn",
+    "jsx-a11y/alt-text": "warn",
+    "jsx-a11y/anchor-has-content": "warn",
+    "indent": ["error", 2], // Indent with 2 spaces
+    "quotes": ["error", "single"], // Use single quotes
+    "semi": ["error", "always"],
+    "comma-dangle": ["error", "always-multiline"],
+    "object-curly-spacing": ["error", "always"], // Spacing inside curly braces
+    "array-bracket-spacing": ["error", "never"], // No spacing inside array brackets
+    "arrow-parens": ["error", "always"], // Always use parentheses for arrow functions
+    "no-console": "warn", // Warn when console statements are used
+    "no-debugger": "warn", // Warn when debugger statements are used
+    "no-trailing-spaces": "error", // Disallow trailing whitespace
+    "eol-last": ["error", "always"], // Enforce newline at the end of file
+    "newline-per-chained-call": ["error", { "ignoreChainWithDepth": 2 }], // Enforce newlines in chained calls
+    "jsx-quotes": ["error", "prefer-double"], // Use double quotes in JSX attributes
+    "react/jsx-indent": ["error", 2], // Indent JSX with 2 spaces
+    "react/jsx-indent-props": ["error", 2], // Indent JSX props with 2 spaces
+    "react/jsx-props-no-spreading": "off" // Allow prop spreading in JSX
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
