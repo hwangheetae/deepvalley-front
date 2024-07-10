@@ -1,12 +1,11 @@
 import { Button } from '@chakra-ui/react';
 import { CSSProperties, FC } from 'react';
-import { useState } from 'react';
 interface CommonButtonProps {
   onClick: () => void;
   value: string;
   onSubmit?: () => void;
+  isLoading?: boolean;
 }
-const [isLoading, setIsLoading] = useState(false);
 
 const gradientStyle: CSSProperties = {
   background: 'linear-gradient(90deg, #39643B 0%, #59B86E 100%)',
@@ -15,7 +14,12 @@ const gradientStyle: CSSProperties = {
   color: 'white',
 };
 
-const CommonButton: FC<CommonButtonProps> = ({ onClick, value, onSubmit }) => {
+const CommonButton: FC<CommonButtonProps> = ({
+  onClick,
+  value,
+  onSubmit,
+  isLoading,
+}) => {
   return (
     <Button
       style={gradientStyle}

@@ -6,7 +6,11 @@ import Layout from './components/Common/Layout';
 const TestPage = () => {
   return (
     <Layout>
-      <Header title={'testpage'} />
+      <Header
+        title={'testpage'}
+        showBorderBottom={true}
+        showMenuButton={true}
+      />
       <Box as="main" mt={4}>
         <CommonButton onClick={() => {}} value="버튼테스트" />
       </Box>
