@@ -3,6 +3,8 @@ import { CSSProperties, FC } from 'react';
 interface CommonButtonProps {
   onClick: () => void;
   value: string;
+  size: string;
+
   onSubmit?: () => void;
   isLoading?: boolean;
 }
@@ -10,13 +12,13 @@ interface CommonButtonProps {
 const gradientStyle: CSSProperties = {
   background: 'linear-gradient(90deg, #39643B 0%, #59B86E 100%)',
   width: '63%',
-  height: '48px',
   color: 'white',
 };
 
 const CommonButton: FC<CommonButtonProps> = ({
   onClick,
   value,
+  size,
   onSubmit,
   isLoading,
 }) => {
@@ -27,6 +29,7 @@ const CommonButton: FC<CommonButtonProps> = ({
       type={onSubmit ? 'submit' : 'button'}
       borderRadius="full"
       isLoading={isLoading}
+      size={size}
     >
       {value}
     </Button>
