@@ -23,10 +23,14 @@ const Header: FC<HeaderProps> = ({
   return (
     <Box
       as="header"
+      maxW="430px"
       w="full"
       bg="white"
       p={4}
       borderBottom={showBorderBottom ? '1px solid #e0e0e0' : 'none'}
+      position="fixed"
+      top="0"
+      zIndex="2"
     >
       <Flex justify="space-between" align="center">
         <IconButton
