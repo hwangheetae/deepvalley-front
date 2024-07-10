@@ -23,7 +23,7 @@ const Header: FC<HeaderProps> = ({
   return (
     <Box
       as="header"
-      maxW="430px"
+      maxW="428px"
       w="full"
       bg="white"
       p={4}

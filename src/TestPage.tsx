@@ -1,71 +1,29 @@
 import CommonButton from './components/Common/Button/CommonButton';
 import { Box } from '@chakra-ui/react';
-import Header from './components/Common/Header';
 import Layout from './components/Common/Layout';
-import TapBar from './components/Common/TapBar';
+import Input from './components/Common/Input';
+
 const TestPage = () => {
   return (
     <Layout>
-      <Header
-        title={'testpage'}
-        showBorderBottom={true}
-        showMenuButton={true}
-      />
       <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
+        <Input size="lg" />
       </Box>{' '}
       <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
+        <Input size="lg" />
       </Box>{' '}
       <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
+        <Input size="lg" />
       </Box>{' '}
       <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
+        <Input size="lg" />
       </Box>{' '}
       <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
+        <Input size="lg" />
       </Box>{' '}
       <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
+        <CommonButton onClick={() => {}} size="lg" value="버튼테스트" />
       </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <Box as="main" mt={4}>
-        <CommonButton onClick={() => {}} value="버튼테스트" />
-      </Box>{' '}
-      <TapBar />
     </Layout>
   );
 };

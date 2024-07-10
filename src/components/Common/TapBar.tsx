@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, Icon } from '@chakra-ui/react';
+import { Box, Flex, IconButton } from '@chakra-ui/react';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
