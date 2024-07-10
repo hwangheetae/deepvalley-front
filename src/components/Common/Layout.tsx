@@ -11,6 +11,8 @@ const Layout = ({ children }: LayoutProps) => {
       maxW="428px" // iPhone 14 Pro Max 기준 너비
       mx="auto" // 중앙 정렬
       p={4} // 패딩 설정
+      border="1px"
+      borderColor="gray.200"
     >
       {children}
     </Box>
