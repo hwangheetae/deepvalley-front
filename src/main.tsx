@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage';
 import TestPage from './TestPage.tsx';
 import ImagePage from './pages/ImagePage';
+import MapPage from './pages/MapPage.tsx';
 
 const breakpoints = {
   sm: '320px',
@@ -29,11 +30,8 @@ const router = createBrowserRouter([
         path: '/',
         element: <HomePage />,
       },
-      {
-        path: '/test',
-        element: <TestPage />,
-      },
       { path: 'imagepage', element: <ImagePage /> },
+      { path: 'mappage', element: <MapPage /> },
     ],
     //EX: loader, errorElement 예시
     // 데이터 패칭 및 로더 가능
