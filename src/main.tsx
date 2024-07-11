@@ -32,9 +32,8 @@ const router = createBrowserRouter([
       {
         path: '/test',
         element: <TestPage />,
-        path: 'imagepage',
-        element: <ImagePage />,
       },
+      { path: 'imagepage', element: <ImagePage /> },
     ],
     //EX: loader, errorElement 예시
     // 데이터 패칭 및 로더 가능
