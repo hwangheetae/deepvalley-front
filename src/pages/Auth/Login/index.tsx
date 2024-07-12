@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { redirect } from 'react-router-dom';
+
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
@@ -13,7 +16,19 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
+import { login } from '../../../api/Auth/AuthService';
+
 const Login = () => {
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (values: { email: string; password: string }) => {
+    try {
+      await login(values.email, values.password);
+      redirect('/');
+    } catch (err) {
+      setError('잘못된 이메일 또는 비밀번호 입니다.');
+    }
+  };
   return (
     <Layout>
       <Flex
@@ -46,14 +61,12 @@ const Login = () => {
             password: '',
             // rememberMe: false,
           }}
-          onSubmit={(values) => {
-            alert(JSON.stringify(values, null, 2));
-          }}
+          onSubmit={handleSubmit}
         >
           {({ handleSubmit, errors, touched }) => (
             <form
               onSubmit={handleSubmit}
-              style={{ width: '80%', maxWidth: '400px' }}
+              style={{ width: '70%', maxWidth: '400px' }}
             >
               <VStack spacing={4} w="full">
                 <FormControl isInvalid={!!errors.email && touched.email}>
@@ -65,13 +78,13 @@ const Login = () => {
                     variant="outline"
                     placeholder="이메일"
                     borderRadius="full"
-                    // validate={(value: string) => {
-                    //   let error;
-                    //   if (value.length < 6) {
-                    //     error = '올바른 이메일 형식을 입력해주세요';
-                    //   }
-                    //   return error;
-                    // }}
+                    validate={(value: string) => {
+                      let error;
+                      if (!value) {
+                        error = '이메일을 입력해주세요';
+                      }
+                      return error;
+                    }}
                   />
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
@@ -85,14 +98,13 @@ const Login = () => {
                     variant="outline"
                     placeholder="비밀번호"
                     borderRadius="full"
-                    // validate={(value: string) => {
-                    //   let error;
-                    //   if (value.length < 6) {
-                    //     error =
-                    //       '비밀번호는 영문/숫자/특수 문자를 포함한 8글자 이상입니다. (최대 20글자)';
-                    //   }
-                    //   return error;
-                    // }}
+                    validate={(value: string) => {
+                      let error;
+                      if (!value) {
+                        error = '비밀번호를 입력해주세요';
+                      }
+                      return error;
+                    }}
                   />
                   <FormErrorMessage>{errors.password}</FormErrorMessage>
                   <Flex justify="flex-end" w="full">
