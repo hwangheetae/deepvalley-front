@@ -17,13 +17,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
+import useAuthStore from '../../../stores/authStore';
 
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
+  const { login: loginUser } = useAuthStore();
 
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
-      await login(values.email, values.password);
+      const userData = await login(values.email, values.password);
+      loginUser(userData);
       redirect('/');
     } catch (err) {
       setError('잘못된 이메일 또는 비밀번호 입니다.');
