@@ -10,8 +10,8 @@ declare global {
 const commonMarkerImage: MapMarkerProps['image'] = {
   src: 'valleyicon.png',
   size: {
-    width: 64,
-    height: 69,
+    width: 34,
+    height: 39,
   },
   options: {
     offset: {
