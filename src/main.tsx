@@ -34,7 +34,9 @@ const router = createBrowserRouter([
       },
       {
         path: '/test',
-        element: <TestPage />,
+        element: <TestPage />
+      },
+      {
         path: 'imagepage',
         element: <ImagePage />,
       },
@@ -44,6 +46,8 @@ const router = createBrowserRouter([
         loader: async({ params }) => {
           const reviewId = params.reviewId as string;
           queryClient.setQueryData(['reviewType', 1], mockReview); //테스트용
+          const data = mockReview;
+          return data;
           // const data = await fetchReview(reviewId);
           // queryClient.setQueryData(['reviewType', reviewId],data);
           // return data;
