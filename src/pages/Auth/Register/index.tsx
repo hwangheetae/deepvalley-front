@@ -17,17 +17,46 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
-
-import { login } from '../../../api/Auth/AuthService';
+import { useToast } from '@chakra-ui/react';
+import { register } from '../../../api/Auth/AuthService';
 const Register = () => {
   const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = async (values: { email: string; password: string }) => {
+  const toast = useToast();
+  const handleSubmit = async (values: {
+    email: string;
+    nickname: string;
+    password: string;
+  }) => {
     try {
-      await login(values.email, values.password);
-      redirect('/');
-    } catch (err) {
-      setError('잘못된 이메일 또는 비밀번호 입니다.');
+      const userData = await register(
+        values.email,
+        values.nickname,
+        values.password,
+      );
+      if (userData.status === 201) {
+        toast({
+          title: '회원가입 성공!',
+          description: '로그인 하고 서비스를 계속 사용하세요.',
+          status: 'success',
+          position: 'top-right',
+          isClosable: true,
+          duration: 5000,
+        });
+        redirect('/login');
+      }
+    } catch (err: any) {
+      if (err.response.status === 400) {
+        setError('잘못된 이메일 또는 비밀번호 입니다.');
+      } else if (err.response.status === 409) {
+        if (err.response.error === 'Email already exists') {
+          setError('이미 존재하는 이메일입니다.');
+        }
+        if (err.response.error === 'nickname already exists') {
+          setError('이미 존재하는 닉네임입니다.');
+        }
+      } else if (err.response.status === 500) {
+        setError('서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+      }
     }
   };
   return (
@@ -59,13 +88,13 @@ const Register = () => {
         <Formik
           initialValues={{
             email: '',
-            nickName: '',
+            nickname: '',
             password: '',
             checkPassword: '',
           }}
           onSubmit={handleSubmit}
         >
-          {({ handleSubmit, errors, touched }) => (
+          {({ values, handleSubmit, errors, touched }) => (
             <form
               onSubmit={handleSubmit}
               style={{ width: '70%', maxWidth: '400px' }}
@@ -92,12 +121,12 @@ const Register = () => {
                   />
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
-                <FormControl isInvalid={!!errors.nickName && touched.nickName}>
+                <FormControl isInvalid={!!errors.nickname && touched.nickname}>
                   <Field
                     as={Input}
-                    id="nickName"
-                    name="nickName"
-                    type="nickName"
+                    id="nickname"
+                    name="nickname"
+                    type="nickname"
                     variant="outline"
                     placeholder="닉네임"
                     borderRadius="full"
@@ -109,7 +138,7 @@ const Register = () => {
                       return error;
                     }}
                   />
-                  <FormErrorMessage>{errors.nickName}</FormErrorMessage>
+                  <FormErrorMessage>{errors.nickname}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.password && touched.password}>
                   <Field
@@ -148,8 +177,8 @@ const Register = () => {
                       let error;
                       if (!value) {
                         error = '비밀번호를 다시 입력해주세요';
-                      }
-                      return error;
+                      } else if (value !== values.password)
+                        return (error = '비밀번호가 같은지 확인하세요');
                     }}
                   />
                   <FormErrorMessage>{errors.checkPassword}</FormErrorMessage>

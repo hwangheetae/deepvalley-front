@@ -17,3 +17,16 @@ export const logout = () => {
 export const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem('user')!);
 };
+
+export const register = async (
+  login_email: string,
+  nickname: string,
+  password: string,
+) => {
+  const response = await basicClient.post('/api/member/register', {
+    login_email,
+    nickname,
+    password,
+  });
+  return response.data;
+};
