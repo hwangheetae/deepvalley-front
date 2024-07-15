@@ -14,7 +14,7 @@ import { mockReview } from './api/ReviewApi/MockData.ts'; //테스트용
 import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
-
+import Register from './pages/Auth/Register';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -45,10 +45,11 @@ const router = createBrowserRouter([
     //에러처리 페이지 ex)404
     // errorElement: <ErrorPage />
   },
+  { path: '/register', element: <Register /> },
   {
     path: 'review/:reviewId',
     element: <Review />,
-    loader: async({ params }) => {
+    loader: async ({ params }) => {
       const reviewId = params.reviewId as string;
       queryClient.setQueryData(['reviewType', 1], mockReview); //테스트용
       const data = mockReview;
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
       // const data = await fetchReview(reviewId);
       // queryClient.setQueryData(['reviewType', reviewId],data);
       // return data;
-    }
+    },
   },
 ]);
 

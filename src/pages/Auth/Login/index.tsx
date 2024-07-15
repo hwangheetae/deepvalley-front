@@ -149,7 +149,7 @@ const Login = () => {
 
                 <Flex w="full" justify="center">
                   <Text fontSize="sm">계정이 없으신가요?</Text>
-                  <Link href="#" color="teal.500" ml={1} fontSize="sm">
+                  <Link href="/register" color="teal.500" ml={1} fontSize="sm">
                     회원가입
                   </Link>
                 </Flex>
