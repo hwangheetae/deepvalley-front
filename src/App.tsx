@@ -1,13 +1,34 @@
-import { Outlet } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ChakraProvider } from '@chakra-ui/react';
+import Review from './components/Common/Review/Review';
+import { fetchReview } from './api/ReviewApi/ReviewApi';
+import { mockReview } from './api/ReviewApi/MockData'; //테스트용
 
-function App() {
+const queryClient = new QueryClient();
+
+const router = createBrowserRouter([
+  {
+    path: 'review/:reviewId',
+    element: <Review />,
+    loader: async ({ params }) => {
+      const reviewId = params.reviewId as string;
+      const data = await fetchReview(reviewId);
+      queryClient.setQueryData(['reviewType', reviewId], data);
+      return data;
+    }
+  }
+]);
+
+const App: React.FC = () => {
+  queryClient.setQueryData(['reviewType', 1], mockReview); //테스트용
   return (
-    <div>
-      <div className="text-3xl font-bold underline">Welcome to Deep Valley</div>
-      김치찌개를 좋아해
-      <Outlet />
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider>
+        <RouterProvider router={router} />
+      </ChakraProvider>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
