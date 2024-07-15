@@ -47,14 +47,16 @@ const Register = () => {
     } catch (err: any) {
       if (err.response.status === 400) {
         setError('잘못된 이메일 또는 비밀번호 입니다.');
-      } else if (err.response.status === 409) {
+      }
+      if (err.response.status === 409) {
         if (err.response.error === 'Email already exists') {
           setError('이미 존재하는 이메일입니다.');
         }
         if (err.response.error === 'nickname already exists') {
           setError('이미 존재하는 닉네임입니다.');
         }
-      } else if (err.response.status === 500) {
+      }
+      if (err.response.status === 500) {
         setError('서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
       }
       toast({

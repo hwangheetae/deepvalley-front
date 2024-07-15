@@ -26,11 +26,29 @@ const Login = () => {
   const toast = useToast();
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
-      const userData = await login(values.email, values.password);
-      loginUser(userData);
-      redirect('/');
-    } catch (err) {
-      setError('잘못된 이메일 또는 비밀번호 입니다.');
+      const response = await login(values.email, values.password);
+      if (response.data.status === 200) {
+        const access_token = response.data.access_token;
+        if (access_token !== null) {
+          loginUser(access_token);
+          redirect('/');
+        }
+      }
+    } catch (err: any) {
+      if (err.response.status === 400) {
+        if (err.error === 'Invalid request body') {
+          setError('잘못된 요청입니다.');
+        }
+        if (err.error === 'Invalid email or password') {
+          setError('잘못된 이메일 또는 비밀번호 입니다.');
+        }
+      }
+      if (err.response.status === 404) {
+        setError('유저 정보를 찾을 수 없습니다.');
+      }
+      if (err.response.status === 500) {
+        setError('서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+      }
       toast({
         title: '에러!',
         description: error,
