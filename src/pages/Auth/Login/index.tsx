@@ -18,21 +18,17 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
-import useAuthStore from '../../../stores/authStore';
 
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
-  const { login: loginUser } = useAuthStore();
   const toast = useToast();
+
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
       const response = await login(values.email, values.password);
-      if (response.data.status === 200) {
-        const access_token = response.data.access_token;
-        if (access_token !== null) {
-          loginUser(access_token);
-          redirect('/');
-        }
+      console.log(response);
+      if (response.status === 200 && response.access_token !== null) {
+        redirect('/');
       }
     } catch (err: any) {
       if (err.response.status === 400) {
@@ -51,7 +47,7 @@ const Login = () => {
       }
       toast({
         title: '에러!',
-        description: error,
+        description: `${error}`,
         status: 'error',
         position: 'top-right',
         isClosable: true,

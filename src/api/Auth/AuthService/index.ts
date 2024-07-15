@@ -5,27 +5,29 @@ export const login = async (email: string, password: string) => {
     email,
     password,
   });
+
   if (response.data.access_token) {
-    localStorage.setItem('user', JSON.stringify(response.data));
+    localStorage.setItem('token', JSON.stringify(response.data));
   }
   return response.data;
 };
 
 export const logout = () => {
-  localStorage.removeItem('user');
+  localStorage.removeItem('token');
 };
 export const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('user')!);
+  return JSON.parse(localStorage.getItem('token')!);
 };
 
+//db 명칭상 이유로 nickname => name
 export const register = async (
   login_email: string,
-  nickname: string,
+  name: string,
   password: string,
 ) => {
   const response = await basicClient.post('/api/member/register', {
     login_email,
-    nickname,
+    name,
     password,
   });
   return response.data;
