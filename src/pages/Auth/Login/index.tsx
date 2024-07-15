@@ -18,7 +18,14 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
-
+import {
+  INVALID_REUEST_BODY_SERVER_MESSAGE,
+  INVALID_REUEST_BODY_MESSAGE,
+  INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE,
+  INVALID_REQUEST_EMAIL_OR_PASSWORD,
+  ERROR_MESSAGE_404,
+  INTERNAL_SERVER_ERROR_MESSAGE,
+} from '../../../constant/constant';
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
@@ -31,19 +38,20 @@ const Login = () => {
         redirect('/');
       }
     } catch (err: any) {
+      console.log(err);
       if (err.response.status === 400) {
-        if (err.error === 'Invalid request body') {
-          setError('잘못된 요청입니다.');
+        if (err.error === INVALID_REUEST_BODY_SERVER_MESSAGE) {
+          setError(INVALID_REUEST_BODY_MESSAGE);
         }
-        if (err.error === 'Invalid email or password') {
-          setError('잘못된 이메일 또는 비밀번호 입니다.');
+        if (err.error === INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE) {
+          setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
         }
       }
       if (err.response.status === 404) {
-        setError('유저 정보를 찾을 수 없습니다.');
+        setError(ERROR_MESSAGE_404);
       }
       if (err.response.status === 500) {
-        setError('서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+        setError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
       toast({
         title: '에러!',
