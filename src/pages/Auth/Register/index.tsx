@@ -24,13 +24,13 @@ const Register = () => {
   const toast = useToast();
   const handleSubmit = async (values: {
     email: string;
-    nickname: string;
+    name: string;
     password: string;
   }) => {
     try {
       const userData = await register(
         values.email,
-        values.nickname,
+        values.name,
         values.password,
       );
       if (userData.status === 201) {
@@ -57,6 +57,14 @@ const Register = () => {
       } else if (err.response.status === 500) {
         setError('서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
       }
+      toast({
+        title: '에러!',
+        description: error,
+        status: 'error',
+        position: 'top-right',
+        isClosable: true,
+        duration: 5000,
+      });
     }
   };
   return (
@@ -88,7 +96,7 @@ const Register = () => {
         <Formik
           initialValues={{
             email: '',
-            nickname: '',
+            name: '',
             password: '',
             checkPassword: '',
           }}
@@ -121,7 +129,7 @@ const Register = () => {
                   />
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
-                <FormControl isInvalid={!!errors.nickname && touched.nickname}>
+                <FormControl isInvalid={!!errors.name && touched.name}>
                   <Field
                     as={Input}
                     id="nickname"
@@ -138,7 +146,7 @@ const Register = () => {
                       return error;
                     }}
                   />
-                  <FormErrorMessage>{errors.nickname}</FormErrorMessage>
+                  <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.password && touched.password}>
                   <Field

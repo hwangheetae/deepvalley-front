@@ -15,6 +15,7 @@ import {
   Image,
   Link,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
 import useAuthStore from '../../../stores/authStore';
@@ -22,7 +23,7 @@ import useAuthStore from '../../../stores/authStore';
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const { login: loginUser } = useAuthStore();
-
+  const toast = useToast();
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
       const userData = await login(values.email, values.password);
@@ -30,6 +31,14 @@ const Login = () => {
       redirect('/');
     } catch (err) {
       setError('잘못된 이메일 또는 비밀번호 입니다.');
+      toast({
+        title: '에러!',
+        description: error,
+        status: 'error',
+        position: 'top-right',
+        isClosable: true,
+        duration: 5000,
+      });
     }
   };
   return (
