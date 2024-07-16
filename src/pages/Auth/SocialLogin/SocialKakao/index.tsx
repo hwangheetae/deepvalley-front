@@ -1,4 +1,4 @@
-import kakao_login_medium_narrow from '../../../../assets/images/kakao_login_medium_narrow.png';
+import kakao_login_medium_narrow from '../../../../assets/images/kakao_login_medium_narrow.webp';
 import config from '../../../../config';
 
 const SocialKakao = () => {
@@ -11,7 +11,11 @@ const SocialKakao = () => {
   return (
     <>
       <button onClick={handleLogin}>
-        <img src={kakao_login_medium_narrow} alt="카카오 로그인"></img>
+        <img
+          src={kakao_login_medium_narrow}
+          alt="카카오 로그인"
+          style={{ width: '46px' }}
+        ></img>
       </button>
     </>
   );
