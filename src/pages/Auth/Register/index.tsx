@@ -19,20 +19,33 @@ import {
 import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
 import { useToast } from '@chakra-ui/react';
 import { register } from '../../../api/Auth/AuthService';
+import {
+  INVALID_REQUEST_EMAIL_OR_PASSWORD,
+  ERROR_MESSAGE_404,
+  INTERNAL_SERVER_ERROR_MESSAGE,
+  EMAIL_CONFLICT_SERVER_MESSAGE,
+  EMAIL_CONFLICT_MESSAGE,
+  NICKNAME_CONFLICT_SERVER_MESSAGE,
+  NICKNAME_CONFLICT_MESSAGE,
+} from '../../../constant/constant';
 const Register = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
+
+  //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
     email: string;
-    nickname: string;
+    name: string;
     password: string;
   }) => {
     try {
       const userData = await register(
         values.email,
-        values.nickname,
+        values.name,
         values.password,
       );
+      console.log(userData);
+
       if (userData.status === 201) {
         toast({
           title: '회원가입 성공!',
@@ -46,17 +59,33 @@ const Register = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        setError('잘못된 이메일 또는 비밀번호 입니다.');
-      } else if (err.response.status === 409) {
-        if (err.response.error === 'Email already exists') {
-          setError('이미 존재하는 이메일입니다.');
-        }
-        if (err.response.error === 'nickname already exists') {
-          setError('이미 존재하는 닉네임입니다.');
-        }
-      } else if (err.response.status === 500) {
-        setError('서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+        setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }
+      if (err.response.status === 404) {
+        setError(ERROR_MESSAGE_404);
+      }
+
+      if (err.response.status === 409) {
+        if (err.response.error === EMAIL_CONFLICT_SERVER_MESSAGE) {
+          setError(EMAIL_CONFLICT_MESSAGE);
+        }
+        if (err.response.error === NICKNAME_CONFLICT_SERVER_MESSAGE) {
+          setError(NICKNAME_CONFLICT_MESSAGE);
+        }
+      }
+
+      if (err.response.status === 500) {
+        setError(INTERNAL_SERVER_ERROR_MESSAGE);
+      }
+
+      toast({
+        title: '에러!',
+        description: `${error}`,
+        status: 'error',
+        position: 'top-right',
+        isClosable: true,
+        duration: 5000,
+      });
     }
   };
   return (
@@ -88,7 +117,7 @@ const Register = () => {
         <Formik
           initialValues={{
             email: '',
-            nickname: '',
+            name: '',
             password: '',
             checkPassword: '',
           }}
@@ -121,7 +150,7 @@ const Register = () => {
                   />
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
-                <FormControl isInvalid={!!errors.nickname && touched.nickname}>
+                <FormControl isInvalid={!!errors.name && touched.name}>
                   <Field
                     as={Input}
                     id="nickname"
@@ -138,7 +167,7 @@ const Register = () => {
                       return error;
                     }}
                   />
-                  <FormErrorMessage>{errors.nickname}</FormErrorMessage>
+                  <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.password && touched.password}>
                   <Field

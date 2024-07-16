@@ -15,21 +15,52 @@ import {
   Image,
   Link,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
-import useAuthStore from '../../../stores/authStore';
-
+import {
+  INVALID_REUEST_BODY_SERVER_MESSAGE,
+  INVALID_REUEST_BODY_MESSAGE,
+  INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE,
+  INVALID_REQUEST_EMAIL_OR_PASSWORD,
+  ERROR_MESSAGE_404,
+  INTERNAL_SERVER_ERROR_MESSAGE,
+} from '../../../constant/constant';
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
-  const { login: loginUser } = useAuthStore();
+  const toast = useToast();
 
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
-      const userData = await login(values.email, values.password);
-      loginUser(userData);
-      redirect('/');
-    } catch (err) {
-      setError('잘못된 이메일 또는 비밀번호 입니다.');
+      const response = await login(values.email, values.password);
+      console.log(response);
+      if (response.status === 200 && response.access_token !== null) {
+        redirect('/');
+      }
+    } catch (err: any) {
+      console.log(err);
+      if (err.response.status === 400) {
+        if (err.error === INVALID_REUEST_BODY_SERVER_MESSAGE) {
+          setError(INVALID_REUEST_BODY_MESSAGE);
+        }
+        if (err.error === INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE) {
+          setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
+        }
+      }
+      if (err.response.status === 404) {
+        setError(ERROR_MESSAGE_404);
+      }
+      if (err.response.status === 500) {
+        setError(INTERNAL_SERVER_ERROR_MESSAGE);
+      }
+      toast({
+        title: '에러!',
+        description: `${error}`,
+        status: 'error',
+        position: 'top-right',
+        isClosable: true,
+        duration: 5000,
+      });
     }
   };
   return (
