@@ -9,7 +9,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage';
 import ImagePage from './pages/ImagePage';
 
-
 import Review from './components/Common/Review/Review.tsx';
 import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
 import { mockReview } from './api/ReviewApi/MockData.ts'; //테스트용
@@ -17,7 +16,7 @@ import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
-import MapPage from './pages/MapPage.tsx';
+import MapPage from './pages/MapPage/index.tsx';
 
 const breakpoints = {
   sm: '320px',
@@ -26,8 +25,6 @@ const breakpoints = {
   xl: '1200px',
   '2xl': '1536px',
 };
-
-
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -49,7 +46,7 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-         { path: '/mappage', element: <MapPage /> },
+  { path: '/mappage', element: <MapPage /> },
   {
     path: '/login',
     element: <Login />,
