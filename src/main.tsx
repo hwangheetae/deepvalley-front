@@ -8,23 +8,16 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage';
 import ImagePage from './pages/ImagePage';
+//로그인/ 회원가입 용 빌드 에러 방지로 주석처리 해놓았습니다.
 
-import Review from './components/Common/Review/Review.tsx';
-import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
-import { mockReview } from './api/ReviewApi/MockData.ts'; //테스트용
+// import Review from './components/Common/Review/Review.tsx';
+// import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
+// import { mockReview } from './api/ReviewApi/MockData.ts'; //테스트용
 import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import MapPage from './pages/MapPage.tsx';
-
-const breakpoints = {
-  sm: '320px',
-  md: '768px',
-  lg: '960px',
-  xl: '1200px',
-  '2xl': '1536px',
-};
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -59,19 +52,20 @@ const router = createBrowserRouter([
     // errorElement: <ErrorPage />
   },
   { path: '/register', element: <Register /> },
-  {
-    path: 'review/:reviewId',
-    element: <Review />,
-    loader: async ({ params }) => {
-      const reviewId = params.reviewId as string;
-      queryClient.setQueryData(['reviewType', 1], mockReview); //테스트용
-      const data = mockReview;
-      return data;
-      // const data = await fetchReview(reviewId);
-      // queryClient.setQueryData(['reviewType', reviewId],data);
-      // return data;
-    },
-  },
+  //로그인/ 회원가입 용 빌드 에러 방지로 주석처리 해놓았습니다.
+  // {
+  //   path: 'review/:reviewId',
+  //   element: <Review />,
+  //   loader: async ({ params }) => {
+  //     const reviewId = params.reviewId as string;
+  //     queryClient.setQueryData(['reviewType', 1], mockReview); //테스트용
+  //     const data = mockReview;
+  //     return data;
+  //     // const data = await fetchReview(reviewId);
+  //     // queryClient.setQueryData(['reviewType', reviewId],data);
+  //     // return data;
+  //   },
+  // },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
