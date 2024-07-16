@@ -153,9 +153,9 @@ const Register = () => {
                 <FormControl isInvalid={!!errors.name && touched.name}>
                   <Field
                     as={Input}
-                    id="nickname"
-                    name="nickname"
-                    type="nickname"
+                    id="name"
+                    name="name"
+                    type="name"
                     variant="outline"
                     placeholder="닉네임"
                     borderRadius="full"
