@@ -1,8 +1,8 @@
 import basicClient from '../basicClient';
 
-export const login = async (email: string, password: string) => {
-  const response = await basicClient.post('/api/member/login"', {
-    email,
+export const login = async (login_email: string, password: string) => {
+  const response = await basicClient.post('/api/member/login', {
+    login_email,
     password,
   });
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { redirect } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
@@ -31,7 +31,7 @@ import {
 const Register = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
-
+  const navigate = useNavigate();
   //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
     email: string;
@@ -46,7 +46,7 @@ const Register = () => {
       );
       console.log(userData);
 
-      if (userData.status === 201) {
+      if (userData) {
         toast({
           title: '회원가입 성공!',
           description: '로그인 하고 서비스를 계속 사용하세요.',
@@ -55,9 +55,10 @@ const Register = () => {
           isClosable: true,
           duration: 5000,
         });
-        redirect('/login');
+        navigate('/login');
       }
     } catch (err: any) {
+      console.log(err.response.data);
       if (err.response.status === 400) {
         setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }
@@ -66,10 +67,10 @@ const Register = () => {
       }
 
       if (err.response.status === 409) {
-        if (err.response.error === EMAIL_CONFLICT_SERVER_MESSAGE) {
+        if (err.response.data === EMAIL_CONFLICT_SERVER_MESSAGE) {
           setError(EMAIL_CONFLICT_MESSAGE);
         }
-        if (err.response.error === NICKNAME_CONFLICT_SERVER_MESSAGE) {
+        if (err.response.data === NICKNAME_CONFLICT_SERVER_MESSAGE) {
           setError(NICKNAME_CONFLICT_MESSAGE);
         }
       }
@@ -77,7 +78,10 @@ const Register = () => {
       if (err.response.status === 500) {
         setError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
-
+    }
+  };
+  useEffect(() => {
+    if (error !== null)
       toast({
         title: '에러!',
         description: `${error}`,
@@ -86,8 +90,8 @@ const Register = () => {
         isClosable: true,
         duration: 5000,
       });
-    }
-  };
+  }, [error]);
+
   return (
     <Layout>
       <Flex

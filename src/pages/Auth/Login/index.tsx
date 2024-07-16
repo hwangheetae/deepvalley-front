@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
@@ -29,21 +29,23 @@ import {
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
-
+  const navigate = useNavigate();
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
       const response = await login(values.email, values.password);
       console.log(response);
-      if (response.status === 200 && response.access_token !== null) {
-        redirect('/');
+      if (response.access_token) {
+        navigate('/');
       }
     } catch (err: any) {
       console.log(err);
       if (err.response.status === 400) {
-        if (err.error === INVALID_REUEST_BODY_SERVER_MESSAGE) {
+        if (err.response.data === INVALID_REUEST_BODY_SERVER_MESSAGE) {
           setError(INVALID_REUEST_BODY_MESSAGE);
         }
-        if (err.error === INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE) {
+        if (
+          err.response.data === INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
+        ) {
           setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
         }
       }
