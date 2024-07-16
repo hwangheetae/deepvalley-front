@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
 import useAuthStore from '../../../stores/authStore';
+import SocialKakao from '../SocialLogin/SocialKakao';
 
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
@@ -126,26 +127,7 @@ const Login = () => {
                   로그인
                 </CustomButton>
 
-                <CustomButton
-                  type="button"
-                  width="full"
-                  borderRadius="full"
-                  ButtonStyle={{
-                    ...buttonStyle,
-                    backgroundColor: '#fee500',
-                    color: 'black',
-                  }}
-                >
-                  <Flex align="center">
-                    <Image
-                      src="/path/to/kakao_icon.png"
-                      alt="KakaoTalk Icon"
-                      boxSize="20px"
-                      mr={2}
-                    />
-                    카카오로 로그인
-                  </Flex>
-                </CustomButton>
+                <SocialKakao />
 
                 <Flex w="full" justify="center">
                   <Text fontSize="sm">계정이 없으신가요?</Text>
