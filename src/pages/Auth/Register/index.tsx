@@ -139,7 +139,7 @@ const Register = () => {
                     placeholder="이메일"
                     borderRadius="full"
                     validate={(value: string) => {
-                      let error;
+                      let error = '';
                       if (!value) {
                         error = '이메일을 입력해주세요';
                       } else if (value.match(emailRegEx) === null) {
@@ -160,7 +160,7 @@ const Register = () => {
                     placeholder="닉네임"
                     borderRadius="full"
                     validate={(value: string) => {
-                      let error;
+                      let error = '';
                       if (!value) {
                         error = '닉네임을 입력해주세요';
                       }
@@ -179,7 +179,7 @@ const Register = () => {
                     placeholder="비밀번호"
                     borderRadius="full"
                     validate={(value: string) => {
-                      let error;
+                      let error = '';
                       if (!value) {
                         error = '비밀번호를 입력해주세요';
                       } else if (value.match(passwordRegEx) === null) {
@@ -203,7 +203,7 @@ const Register = () => {
                     placeholder="비밀번호 확인"
                     borderRadius="full"
                     validate={(value: string) => {
-                      let error;
+                      let error = '';
                       if (!value) {
                         error = '비밀번호를 다시 입력해주세요';
                       } else if (value !== values.password)
