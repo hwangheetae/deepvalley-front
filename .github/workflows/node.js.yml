@@ -27,7 +27,7 @@ jobs:
 
       - name: Build project
         run: |
-          echo "REACT_APP_API_URL=${{ secrets.VITE_API_URL }}" >> .env
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
           npm run build --if-present
 
       - name: Sync to S3
