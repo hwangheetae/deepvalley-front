@@ -18,6 +18,7 @@ import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import MapPage from './pages/MapPage.tsx';
+import SocialKakaoRedirectPage from './pages/Auth/SocialKakaoRedirectPage/SocialKakaoRedirectPage.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
     //에러처리 페이지 ex)404
     // errorElement: <ErrorPage />
   },
+  { path: '/auth', element: <SocialKakaoRedirectPage /> },
   { path: '/register', element: <Register /> },
   //로그인/ 회원가입 용 빌드 에러 방지로 주석처리 해놓았습니다.
   // {
