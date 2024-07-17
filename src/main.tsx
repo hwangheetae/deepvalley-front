@@ -15,11 +15,14 @@ import MyPage from './pages/MyPage.tsx';
 import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
+import Register from './pages/Auth/Register';
+import MapPage from './pages/MapPage.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: '/',
+
     element: (
       <PrivateRoute>
         <HomePage />
@@ -35,9 +38,11 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  { path: '/mappage', element: <MapPage /> },
   {
     path: '/login',
     element: <Login />,
+
     //EX: loader, errorElement 예시
     // 데이터 패칭 및 로더 가능
     // loader: rootLoader,
@@ -65,6 +70,7 @@ const router = createBrowserRouter([
       return reviews;
     },
   },
+  { path: '/register', element: <Register /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
