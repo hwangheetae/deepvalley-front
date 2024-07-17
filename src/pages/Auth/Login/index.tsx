@@ -38,6 +38,14 @@ const Login = () => {
       console.log(response);
       if (response.access_token) {
         navigate('/');
+        toast({
+          title: '로그인 성공!',
+          description: `로그인에 성공하였습니다.`,
+          status: 'success',
+          position: 'top-right',
+          isClosable: true,
+          duration: 5000,
+        });
       }
     } catch (err: any) {
       console.log(err);
