@@ -3,11 +3,17 @@ import { ReactNode } from 'react';
 
 interface LayoutProps {
   children: ReactNode;
+  hasHeader?: boolean;
+  hasTapBar?: boolean;
 }
 
-const Layout = ({ children }: LayoutProps) => {
-  // const headerHeight = 73; // 헤더의 높이
-  // const tapBarHeight = 73; // TapBar의 높이
+const Layout = ({
+  children,
+  hasHeader = false,
+  hasTapBar = false,
+}: LayoutProps) => {
+  const headerHeight = 73; // 헤더의 높이
+  const tapBarHeight = 73; // TapBar의 높이
   return (
     <Box
       maxW="430px" // iPhone 14 Pro Max 기준 너비
@@ -16,8 +22,8 @@ const Layout = ({ children }: LayoutProps) => {
       p={0} // 패딩 설정
       h="100vh"
       borderColor="gray.200"
-      // pt={`${headerHeight}px`} // 헤더 높이만큼 패딩
-      // pb={`${tapBarHeight}px`} // TapBar 높이만큼 패딩
+      pt={hasHeader ? `${headerHeight}px` : 0} // 헤더 높이만큼 패딩
+      pb={hasTapBar ? `${tapBarHeight}px` : 0} // TapBar 높이만큼 패딩
     >
       {children}
     </Box>
