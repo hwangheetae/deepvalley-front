@@ -2,14 +2,14 @@ import { MapMarker, MapMarkerProps } from 'react-kakao-maps-sdk';
 import { useState, ReactNode } from 'react';
 
 const fixedMarkerSize = {
-  width: 34,
+  width: 30,
   height: 39,
 };
 
 const fixedMarkerOptions = {
   offset: {
-    x: 27,
-    y: 69,
+    x: 1,
+    y: 1,
   },
 };
 

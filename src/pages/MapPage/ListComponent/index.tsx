@@ -1,32 +1,24 @@
-import React, { useState } from 'react';
-import { Box, Text, Center, VStack, Image } from '@chakra-ui/react';
+import { useState } from 'react';
+import {
+  Box,
+  Text,
+  Center,
+  VStack,
+  Image,
+  HStack,
+  Icon,
+} from '@chakra-ui/react';
+import { LocationOn, People, Star, Water } from '@mui/icons-material';
+import { Valley } from '../../../api/ValleyApi/ValleyMockData';
 
-const ListComponent = () => {
+const ListComponent = ({ valleys }: { valleys: Valley[] }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [height, setHeight] = useState('13%'); // 초기 높이 설정
+  const [height, setHeight] = useState('13%');
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
     setHeight(isOpen ? '13%' : '80%');
   };
-
-  const locations = [
-    {
-      name: '구름계곡',
-      latitude: 37.495,
-      longitude: 127.037,
-      address: '경기도 성남시 판교면 11-1',
-      imageUrl: '받아올 이미지 1',
-    },
-    {
-      name: '굿굿계곡',
-      latitude: 37.496,
-      longitude: 127.038,
-      address: '경기도 성남시 판교면 11-2',
-      imageUrl: '받아올 이미지 2',
-    },
-    // 추가 데이터...
-  ];
 
   return (
     <Box
@@ -43,29 +35,58 @@ const ListComponent = () => {
       zIndex="20"
     >
       <Center>
-        <Text fontSize="lg" mt={2}>
-          {isOpen ? '리스트 닫기' : '리스트 보기'}
-        </Text>
+        <Box
+          width="60px"
+          height="5px"
+          bg="gray.400"
+          borderRadius="full"
+          mt={2}
+        />
       </Center>
       {isOpen && (
         <VStack p={4} spacing={2}>
-          {locations.map((location, index) => (
+          {valleys.map((valley, index) => (
             <Box
               key={index}
               p={2}
               borderWidth="1px"
               borderRadius="lg"
-              w="90%"
+              w="100%"
               boxShadow="md"
             >
-              <Image
-                src={location.imageUrl}
-                alt={location.name}
-                borderRadius="lg"
-                mb={2}
-              />
-              <Text fontWeight="bold">{location.name}</Text>
-              <Text>{location.address}</Text>
+              <HStack spacing={4}>
+                <Image
+                  src={valley.thumbnail}
+                  alt={valley.name}
+                  borderRadius="lg"
+                  boxSize="140px"
+                  objectFit="cover"
+                />
+                <VStack align="start" spacing={1}>
+                  <Text fontWeight="bold" fontSize="lg">
+                    {valley.name}
+                  </Text>
+                  <Text color="gray.600" fontSize="sm">
+                    {valley.address}
+                  </Text>
+                  <HStack spacing={2}>
+                    <Icon as={Water} color="blue.500" />
+                    <Text fontSize="sm">{valley.max_depth}m</Text>
+                    <Icon
+                      as={People}
+                      color={valley.busy ? 'red.500' : 'green.500'}
+                    />
+                    <Text fontSize="sm">{valley.busy ? '혼잡' : '여유'}</Text>
+                  </HStack>
+                  <HStack spacing={2}>
+                    <Icon as={Star} color="yellow.500" />
+                    <Text fontSize="sm">{valley.rating}</Text>
+                    <Text fontSize="sm" color="gray.500">
+                      리뷰 {valley.post_count}개
+                    </Text>
+                  </HStack>
+                </VStack>
+              </HStack>
             </Box>
           ))}
         </VStack>

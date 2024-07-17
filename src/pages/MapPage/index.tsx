@@ -11,6 +11,8 @@ import {
   VStack,
   InputGroup,
   InputLeftElement,
+  HStack,
+  Button,
 } from '@chakra-ui/react';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -19,6 +21,7 @@ import { useTheme } from '@chakra-ui/react';
 import TapBar from '../../components/Common/TapBar';
 import { WbSunny } from '@mui/icons-material';
 import ListComponent from './ListComponent';
+import ValleyMockData, { Valley } from '../../api/ValleyApi/ValleyMockData';
 
 export const MapPage = () => {
   const location = Locations();
@@ -29,13 +32,25 @@ export const MapPage = () => {
     setKey((prevKey) => prevKey + 1);
   };
 
+  const xxLocation = useMemo(() => {
+    if (location) {
+      const xlatitudeOffset = 0.008;
+      const xlongitudeOffset = 0.008;
+      return {
+        latitude: location.latitude + xlatitudeOffset,
+        longitude: location.longitude + xlongitudeOffset,
+      };
+    }
+    return null;
+  }, [location]);
+
   const yyLocation = useMemo(() => {
     if (location) {
-      const latitudeOffset = 0.009;
-      const longitudeOffset = 0.009;
+      const ylatitudeOffset = 0.009;
+      const ylongitudeOffset = 0.009;
       return {
-        latitude: location.latitude + latitudeOffset,
-        longitude: location.longitude + longitudeOffset,
+        latitude: location.latitude + ylatitudeOffset,
+        longitude: location.longitude + ylongitudeOffset,
       };
     }
     return null;
@@ -44,6 +59,24 @@ export const MapPage = () => {
   if (!location) {
     return <Center h="100vh">Loading...</Center>;
   }
+
+  const valleys: Valley[] = ValleyMockData.map((valley) => {
+    if (valley.name === '구름계곡' && xxLocation) {
+      return {
+        ...valley,
+        latitude: xxLocation.latitude,
+        longitude: xxLocation.longitude,
+      };
+    }
+    if (valley.name === '굿굿계곡' && yyLocation) {
+      return {
+        ...valley,
+        latitude: yyLocation.latitude,
+        longitude: yyLocation.longitude,
+      };
+    }
+    return valley;
+  });
 
   return (
     <Flex
@@ -93,6 +126,17 @@ export const MapPage = () => {
                 zIndex="20"
               />
             </InputGroup>
+            <HStack spacing={2} justify="center" w="100%">
+              <Button size="sm" colorScheme="green">
+                계곡
+              </Button>
+              <Button size="sm" colorScheme="gray">
+                편의시설
+              </Button>
+              <Button size="sm" colorScheme="teal">
+                안전시설
+              </Button>
+            </HStack>
           </VStack>
           <CustomMapMarker
             icon={
@@ -106,11 +150,18 @@ export const MapPage = () => {
             position={{ lat: location.latitude, lng: location.longitude }}
             label="현재위치"
           />
+          {xxLocation && (
+            <CustomMapMarker
+              src="ValleyIcon.png"
+              position={{ lat: xxLocation.latitude, lng: xxLocation.longitude }}
+              label="굿굿계곡"
+            />
+          )}
           {yyLocation && (
             <CustomMapMarker
               src="ValleyIcon.png"
               position={{ lat: yyLocation.latitude, lng: yyLocation.longitude }}
-              label="yy계곡"
+              label="구름계곡"
             />
           )}
           <IconButton
@@ -128,7 +179,7 @@ export const MapPage = () => {
             zIndex="20"
           />
         </Map>
-        <ListComponent />
+        <ListComponent valleys={valleys} />
       </Box>
       <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
         <TapBar />

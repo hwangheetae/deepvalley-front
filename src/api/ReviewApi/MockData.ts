@@ -13,7 +13,7 @@ export const mockReview: ReviewType = {
   tag_names: ['nature', 'hiking'],
   image_urls: [
     'https://example.com/image1.jpg',
-    'https://example.com/image2.jpg'
+    'https://example.com/image2.jpg',
   ],
   valley_name: 'Green Valley',
   valley_id: 'gv123',
