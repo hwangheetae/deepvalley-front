@@ -50,7 +50,6 @@ const ValleyMockData: Valley[] = [
     busy: true,
     opened: false,
   },
-  // Add more valley data here...
 ];
 
 export default ValleyMockData;

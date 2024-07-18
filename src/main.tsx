@@ -7,7 +7,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage';
-import ImagePage from './pages/ImagePage';
 import ReviewPage from './pages/ReviewPage.tsx';
 import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
 import { fetchReviews } from './api/ReviewsApi/ReviewsApi.ts';
@@ -30,15 +29,6 @@ const router = createBrowserRouter([
     ),
   },
 
-  {
-    path: '/imagepage',
-    element: (
-      <PrivateRoute>
-        <ImagePage />
-      </PrivateRoute>
-    ),
-  },
-  { path: '/mappage', element: <MapPage /> },
   { path: '/mappage', element: <MapPage /> },
   {
     path: '/login',

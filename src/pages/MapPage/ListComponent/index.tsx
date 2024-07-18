@@ -8,7 +8,7 @@ import {
   HStack,
   Icon,
 } from '@chakra-ui/react';
-import { LocationOn, People, Star, Water } from '@mui/icons-material';
+import { People, Star, Water } from '@mui/icons-material';
 import { Valley } from '../../../api/ValleyApi/ValleyMockData';
 
 const ListComponent = ({ valleys }: { valleys: Valley[] }) => {
