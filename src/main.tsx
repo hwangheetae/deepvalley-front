@@ -17,6 +17,7 @@ import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import MapPage from './pages/MapPage.tsx';
+import ReviewWritingPage from './pages/ReviewWritingPage.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -71,6 +72,14 @@ const router = createBrowserRouter([
     },
   },
   { path: '/register', element: <Register /> },
+  {
+    path: 'reviewWriting',
+    element: (
+      <PrivateRoute>
+        <ReviewWritingPage />
+      </PrivateRoute>
+    ),
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
