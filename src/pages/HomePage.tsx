@@ -31,8 +31,7 @@ const HomePage = () => {
           />
         </InputGroup>
         <Category />
-        <Carousel title="캐러셀" id="NO" fetchUrl="movie/now_playing" />
-        <Carousel title="추천계곡" id="RECOMEND" fetchUrl="movie/now_playing" />
+        <Carousel />
         <TapBar />
       </Layout>
     </div>
