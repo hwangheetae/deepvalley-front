@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { redirect } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
@@ -19,21 +19,34 @@ import {
 import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
 import { useToast } from '@chakra-ui/react';
 import { register } from '../../../api/Auth/AuthService';
+import {
+  INVALID_REQUEST_EMAIL_OR_PASSWORD,
+  ERROR_MESSAGE_404,
+  INTERNAL_SERVER_ERROR_MESSAGE,
+  EMAIL_CONFLICT_SERVER_MESSAGE,
+  EMAIL_CONFLICT_MESSAGE,
+  NICKNAME_CONFLICT_SERVER_MESSAGE,
+  NICKNAME_CONFLICT_MESSAGE,
+} from '../../../constant/constant';
 const Register = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
+  const navigate = useNavigate();
+  //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
     email: string;
-    nickname: string;
+    name: string;
     password: string;
   }) => {
     try {
       const userData = await register(
         values.email,
-        values.nickname,
+        values.name,
         values.password,
       );
-      if (userData.status === 201) {
+      console.log(userData);
+
+      if (userData) {
         toast({
           title: '회원가입 성공!',
           description: '로그인 하고 서비스를 계속 사용하세요.',
@@ -42,23 +55,43 @@ const Register = () => {
           isClosable: true,
           duration: 5000,
         });
-        redirect('/login');
+        navigate('/login');
       }
     } catch (err: any) {
+      console.log(err.response.data);
       if (err.response.status === 400) {
-        setError('잘못된 이메일 또는 비밀번호 입니다.');
-      } else if (err.response.status === 409) {
-        if (err.response.error === 'Email already exists') {
-          setError('이미 존재하는 이메일입니다.');
+        setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
+      }
+      if (err.response.status === 404) {
+        setError(ERROR_MESSAGE_404);
+      }
+
+      if (err.response.status === 409) {
+        if (err.response.data === EMAIL_CONFLICT_SERVER_MESSAGE) {
+          setError(EMAIL_CONFLICT_MESSAGE);
         }
-        if (err.response.error === 'nickname already exists') {
-          setError('이미 존재하는 닉네임입니다.');
+        if (err.response.data === NICKNAME_CONFLICT_SERVER_MESSAGE) {
+          setError(NICKNAME_CONFLICT_MESSAGE);
         }
-      } else if (err.response.status === 500) {
-        setError('서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.');
+      }
+
+      if (err.response.status === 500) {
+        setError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };
+  useEffect(() => {
+    if (error !== null)
+      toast({
+        title: '에러!',
+        description: `${error}`,
+        status: 'error',
+        position: 'top-right',
+        isClosable: true,
+        duration: 5000,
+      });
+  }, [error]);
+
   return (
     <Layout>
       <Flex
@@ -88,7 +121,7 @@ const Register = () => {
         <Formik
           initialValues={{
             email: '',
-            nickname: '',
+            name: '',
             password: '',
             checkPassword: '',
           }}
@@ -110,7 +143,7 @@ const Register = () => {
                     placeholder="이메일"
                     borderRadius="full"
                     validate={(value: string) => {
-                      let error;
+                      let error = '';
                       if (!value) {
                         error = '이메일을 입력해주세요';
                       } else if (value.match(emailRegEx) === null) {
@@ -121,24 +154,24 @@ const Register = () => {
                   />
                   <FormErrorMessage>{errors.email}</FormErrorMessage>
                 </FormControl>
-                <FormControl isInvalid={!!errors.nickname && touched.nickname}>
+                <FormControl isInvalid={!!errors.name && touched.name}>
                   <Field
                     as={Input}
-                    id="nickname"
-                    name="nickname"
-                    type="nickname"
+                    id="name"
+                    name="name"
+                    type="name"
                     variant="outline"
                     placeholder="닉네임"
                     borderRadius="full"
                     validate={(value: string) => {
-                      let error;
+                      let error = '';
                       if (!value) {
                         error = '닉네임을 입력해주세요';
                       }
                       return error;
                     }}
                   />
-                  <FormErrorMessage>{errors.nickname}</FormErrorMessage>
+                  <FormErrorMessage>{errors.name}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.password && touched.password}>
                   <Field
@@ -150,7 +183,7 @@ const Register = () => {
                     placeholder="비밀번호"
                     borderRadius="full"
                     validate={(value: string) => {
-                      let error;
+                      let error = '';
                       if (!value) {
                         error = '비밀번호를 입력해주세요';
                       } else if (value.match(passwordRegEx) === null) {
@@ -174,7 +207,8 @@ const Register = () => {
                     placeholder="비밀번호 확인"
                     borderRadius="full"
                     validate={(value: string) => {
-                      let error;
+                      let error = '';
+                      error;
                       if (!value) {
                         error = '비밀번호를 다시 입력해주세요';
                       } else if (value !== values.password)
