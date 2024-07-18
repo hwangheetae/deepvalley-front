@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { kakaoLoginSendToken } from '../../../api/Auth/AuthService';
 import { useToast } from '@chakra-ui/react';
-import { INVALID_REUEST_BODY_MESSAGE } from '../../../constant/constant';
+import { KAKAO_AUTH_ERROR_MESSAGE } from '../../../constant/constant';
 
 const SocialKakaoRedirectPage = () => {
   const navigate = useNavigate();
@@ -30,10 +30,10 @@ const SocialKakaoRedirectPage = () => {
         }
       } catch (err: any) {
         console.log(err);
-        if (err.response.status === 400) {
+        if (err.response.status === 500) {
           toast({
             title: '에러!',
-            description: `${INVALID_REUEST_BODY_MESSAGE}`,
+            description: `${KAKAO_AUTH_ERROR_MESSAGE}`,
             status: 'error',
             position: 'top-right',
             isClosable: true,

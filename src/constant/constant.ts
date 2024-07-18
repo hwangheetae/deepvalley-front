@@ -31,3 +31,6 @@ export const INTERNAL_SERVER_ERROR_MESSAGE =
   '서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.';
 
 export const KAKAO_GET_TOKEN_SERVER_ERROR_MESSAGE = 'Invalid code';
+
+//kakao 500 error
+export const KAKAO_AUTH_ERROR_MESSAGE = '카카오 인증에 에러가 있습니다.';
