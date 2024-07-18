@@ -1,41 +1,45 @@
-import { Map, MapMarker, MapMarkerProps } from 'react-kakao-maps-sdk';
-import { useState } from 'react';
+import { MapMarker, MapMarkerProps } from 'react-kakao-maps-sdk';
+import { useState, ReactNode } from 'react';
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
+const fixedMarkerSize = {
+  width: 30,
+  height: 39,
+};
 
-const commonMarkerImage: MapMarkerProps['image'] = {
-  src: 'valleyicon.png',
-  size: {
-    width: 34,
-    height: 39,
-  },
-  options: {
-    offset: {
-      x: 27,
-      y: 69,
-    },
+const fixedMarkerOptions = {
+  offset: {
+    x: 1,
+    y: 1,
   },
 };
 
 interface CustomMapMarkerProps {
   position: { lat: number; lng: number };
   label: string;
+  icon?: ReactNode;
+  src?: string;
 }
 
 const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
   position,
   label,
+  icon,
+  src,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const markerImage: MapMarkerProps['image'] | undefined = src
+    ? {
+        src,
+        size: fixedMarkerSize,
+        options: fixedMarkerOptions,
+      }
+    : undefined;
 
   return (
     <MapMarker
       position={position}
-      image={commonMarkerImage}
+      image={markerImage}
       clickable={true}
       onClick={() => setIsOpen(!isOpen)}
     >
@@ -56,22 +60,4 @@ const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
   );
 };
 
-export const MapPage = () => {
-  return (
-    <Map
-      center={{ lat: 37.558090961074825, lng: 126.99847210567884 }}
-      style={{ width: '500px', height: '500px' }}
-    >
-      <CustomMapMarker
-        position={{ lat: 37.558090961074825, lng: 126.99847210567884 }}
-        label="xx계곡"
-      />
-      <CustomMapMarker
-        position={{ lat: 37.568090961074825, lng: 126.99847210567884 }}
-        label="yy계곡"
-      />
-    </Map>
-  );
-};
-
-export default MapPage;
+export default CustomMapMarker;
