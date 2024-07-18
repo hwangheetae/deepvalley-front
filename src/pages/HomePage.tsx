@@ -1,7 +1,7 @@
 import Layout from '../components/Common/Layout';
 import MainPageHeader from '../components/Common/MainPageHeader';
 import TapBar from '../components/Common/TapBar';
-// import Banner from '../components/Common/Carousel';
+import Carousel from '../components/Common/Carousel';
 import Category from '../components/Common/Category';
 import { InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
@@ -16,12 +16,6 @@ const HomePage = () => {
           fontFamily="Cafe24Ssurround"
           showMenuButton={true}
         />
-        {/* <Banner
-          title="NETFLIX ORIGINALS"
-          id="NO"
-          fetchUrl="movie/now_playing"
-          isLarge
-        /> */}
 
         <InputGroup>
           <InputLeftElement
@@ -37,6 +31,8 @@ const HomePage = () => {
           />
         </InputGroup>
         <Category />
+        <Carousel title="캐러셀" id="NO" fetchUrl="movie/now_playing" />
+        <Carousel title="추천계곡" id="RECOMEND" fetchUrl="movie/now_playing" />
         <TapBar />
       </Layout>
     </div>

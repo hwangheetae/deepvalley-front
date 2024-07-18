@@ -1,45 +1,53 @@
 import { FC, useEffect, useState } from 'react';
-import axios from 'axios';
 import Logo from '../../assets/images/Logo.png';
-import { Text, Flex, Image } from '@chakra-ui/react';
-interface BannerProps {
-  isLarge: boolean;
+import './Carousel.css'; // CSS 파일을 임포트
+interface CarouselProps {
+  isLarge?: boolean;
   title: string;
   fetchUrl: string;
   id: string;
 }
-const Banner: FC<BannerProps> = ({ isLarge, title, id, fetchUrl }) => {
-  const [items, setItems] = useState([]);
-  const instance = axios.create({
-    baseURL: 'https://api.themoviedb.org/3',
-    params: {
-      api_key: '886dba6c33e264d34c0abd935132f119',
-      language: 'ko-KR',
-    },
-  });
+const Carousel: FC<CarouselProps> = ({ isLarge, title, id, fetchUrl }) => {
+  const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    const request = await instance.get(fetchUrl);
-    console.log('request', request);
-    setItems(request.data.results);
-  };
   return (
-    <section>
-      {/* <span
-        onClick={() => {
-          document.getElementById(item.id).scrollLeft -=
-            window.innerWidth - 430;
-        }}
-      >
-        {'<'}
-      </span> */}
-      <div></div>
+    <section className="banner">
+      <h2 className="banner__title">{title}</h2>
+      <div className="banner__container">
+        <div className="banner__arrow-left">
+          <span
+            onClick={() =>
+              (document.getElementById(id)!.scrollLeft -=
+                window.innerWidth - 80)
+            }
+            className="arrow"
+          >
+            {'<'}
+          </span>
+        </div>
+
+        <div id={id} className="banner__slider">
+          <img className="banner__image" src={Logo} alt="1" />
+          <img className="banner__image" src={Logo} alt="2" />
+          <img className="banner__image" src={Logo} alt="3" />
+          <img className="banner__image" src={Logo} alt="4" />
+          <img className="banner__image" src={Logo} alt="5" />
+        </div>
+
+        <div className="banner__arrow-right">
+          <span
+            onClick={() =>
+              (document.getElementById(id)!.scrollLeft +=
+                window.innerWidth - 80)
+            }
+            className="arrow"
+          >
+            {'>'}
+          </span>
+        </div>
+      </div>
     </section>
   );
 };
 
-export default Banner;
+export default Carousel;
