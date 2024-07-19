@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { kakaoLoginSendToken } from '../../../api/Auth/AuthService';
+import { kakaoLoginSendToken } from '../../../../../api/Auth/AuthService';
 import { useToast } from '@chakra-ui/react';
-import { KAKAO_AUTH_ERROR_MESSAGE } from '../../../constant/constant';
+import { KAKAO_AUTH_ERROR_MESSAGE } from '../../../../../constant/constant';
 
 const SocialKakaoRedirectPage = () => {
   const navigate = useNavigate();

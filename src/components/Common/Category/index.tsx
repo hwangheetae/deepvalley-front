@@ -1,14 +1,15 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import { FC } from 'react';
-import CategoryButton from './CategoryButton';
-import waterfall from '../../assets/icons/waterfall.png';
-import family from '../../assets/icons/family.png';
-import happy from '../../assets/icons/happy.png';
-import mountain from '../../assets/icons/mountain.png';
-import parkinglot from '../../assets/icons/parkinglot.png';
-import sea from '../../assets/icons/sea.png';
-import swimmer from '../../assets/icons/swimmer.png';
-import tent from '../../assets/icons/tent.png';
+import CategoryButton from '../CategoryButton';
+import waterfall from '../../../assets/icons/Category/waterfall.png';
+import family from '../../../assets/icons/Category/family.png';
+import happy from '../../../assets/icons/Category/happy.png';
+import mountain from '../../../assets/icons/Category/mountain.png';
+import parkinglot from '../../../assets/icons/Category/parkinglot.png';
+import sea from '../../../assets/icons/Category/sea.png';
+import swimmer from '../../../assets/icons/Category/swimmer.png';
+import tent from '../../../assets/icons/Category/tent.png';
+
 const Category: FC = () => {
   return (
     <Box

@@ -1,10 +1,8 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
-import Layout from '../components/Common/Layout';
-import Header from '../components/Common/Header';
-import Review from '../components/Common/Review/Review';
-import { ReviewType } from '../types/ReviewType/ReviewType';
+import { Layout, Header, Review } from '../../components/Common';
+import { ReviewType } from '../../types';
 
 interface LoaderData {
   reviewId: string;

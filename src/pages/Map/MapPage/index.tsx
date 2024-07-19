@@ -1,7 +1,7 @@
 import { Map } from 'react-kakao-maps-sdk';
 import { useState, useMemo } from 'react';
-import CustomMapMarker from './CustomMapMarker';
-import Locations from './Locations';
+import CustomMapMarker from '../CustomMapMarker';
+import Locations from '../Locations';
 import {
   IconButton,
   Box,
@@ -18,10 +18,10 @@ import MyLocationIcon from '@mui/icons-material/MyLocation';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTheme } from '@chakra-ui/react';
-import TapBar from '../../components/Common/TapBar';
+import TapBar from '../../../components/Common/TapBar';
 import { WbSunny } from '@mui/icons-material';
-import ListComponent from './ListComponent';
-import ValleyMockData, { Valley } from '../../api/ValleyApi/ValleyMockData';
+import ListComponent from '../ListComponent';
+import ValleyMockData, { Valley } from '../../../api/ValleyApi/ValleyMockData';
 
 export const MapPage = () => {
   const location = Locations();

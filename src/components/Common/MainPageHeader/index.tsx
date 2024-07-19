@@ -1,8 +1,7 @@
 import { Box, Flex, IconButton, Text, Image } from '@chakra-ui/react';
 import { FC } from 'react';
 import { HamburgerIcon } from '@chakra-ui/icons';
-import Logo2 from '../../assets/images/Logo2.png'; // 로고 이미지 경로를 설정하세요
-
+import Logo2 from '../../../assets/images/Logo2.png';
 interface MainPageHeaderProps {
   title: string;
   showMenuButton?: boolean;

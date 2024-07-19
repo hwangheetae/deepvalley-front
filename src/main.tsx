@@ -6,17 +6,17 @@ import './styles/global.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import HomePage from './pages/HomePage';
-import ReviewPage from './pages/ReviewPage.tsx';
+import HomePage from './pages/HomePage/index.tsx';
+import { ReviewPage } from './pages/index.tsx';
 import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
 import { fetchReviews } from './api/ReviewsApi/ReviewsApi.ts';
-import MyPage from './pages/MyPage.tsx';
+import MyPage from './pages/MyPage/index.tsx';
 import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
-import SocialKakaoRedirectPage from './pages/Auth/SocialKakaoRedirectPage/SocialKakaoRedirectPage.tsx';
-import MapPage from './pages/MapPage';
+import SocialKakaoRedirectPage from './pages/Auth/SocialLogin/KaKao/SocialKakaoRedirectPage/index.tsx';
+import MapPage from './pages/Map/MapPage/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([

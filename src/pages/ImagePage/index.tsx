@@ -4,7 +4,7 @@ import {
   InstaImage,
   ProfileImage,
   ReviewImage,
-} from '../components/Common/Image';
+} from '../../components/Common/Image';
 
 const ImagePage: React.FC = () => {
   const imageSrcs = [

@@ -18,7 +18,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
-import SocialKakao from '../SocialLogin/SocialKakaoButton/SocialKakaoButton';
+import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
 import {
   INVALID_REUEST_BODY_SERVER_MESSAGE,
   INVALID_REUEST_BODY_MESSAGE,
