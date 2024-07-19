@@ -1,11 +1,16 @@
 // routes/PrivateRoute/index.tsx
 import { Navigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { FC, useEffect, ReactNode } from 'react';
 
-const PrivateRoute = ({ children }: { children: JSX.Element }) => {
+interface PrivateRouteProps {
+  children: ReactNode;
+}
+
+const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   const toast = useToast();
   const accessToken = localStorage.getItem('token');
+
   useEffect(() => {
     if (!accessToken) {
       toast({
@@ -23,7 +28,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default PrivateRoute;
