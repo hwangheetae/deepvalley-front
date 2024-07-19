@@ -15,6 +15,7 @@ import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
+import SocialKakaoRedirectPage from './pages/Auth/SocialKakaoRedirectPage/SocialKakaoRedirectPage.tsx';
 import MapPage from './pages/MapPage';
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
     //에러처리 페이지 ex)404
     // errorElement: <ErrorPage />
   },
+  { path: '/auth', element: <SocialKakaoRedirectPage /> },
   {
     path: 'review/:reviewId',
     element: <ReviewPage />,

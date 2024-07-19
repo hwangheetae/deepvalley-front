@@ -18,6 +18,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
+import SocialKakao from '../SocialLogin/SocialKakaoButton/SocialKakaoButton';
 import {
   INVALID_REUEST_BODY_SERVER_MESSAGE,
   INVALID_REUEST_BODY_MESSAGE,
@@ -26,6 +27,7 @@ import {
   ERROR_MESSAGE_404,
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
+
 const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
@@ -36,6 +38,14 @@ const Login = () => {
       console.log(response);
       if (response.access_token) {
         navigate('/');
+        toast({
+          title: '로그인 성공!',
+          description: `로그인에 성공하였습니다.`,
+          status: 'success',
+          position: 'top-right',
+          isClosable: true,
+          duration: 5000,
+        });
       }
     } catch (err: any) {
       console.log(err);
@@ -159,26 +169,7 @@ const Login = () => {
                   로그인
                 </CustomButton>
 
-                <CustomButton
-                  type="button"
-                  width="full"
-                  borderRadius="full"
-                  ButtonStyle={{
-                    ...buttonStyle,
-                    backgroundColor: '#fee500',
-                    color: 'black',
-                  }}
-                >
-                  <Flex align="center">
-                    <Image
-                      src="/path/to/kakao_icon.png"
-                      alt="KakaoTalk Icon"
-                      boxSize="20px"
-                      mr={2}
-                    />
-                    카카오로 로그인
-                  </Flex>
-                </CustomButton>
+                <SocialKakao />
 
                 <Flex w="full" justify="center">
                   <Text fontSize="sm">계정이 없으신가요?</Text>
