@@ -1,9 +1,10 @@
 import { Box, Flex, IconButton } from '@chakra-ui/react';
+import { FC } from 'react';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import LandscapeOutlinedIcon from '@mui/icons-material/LandscapeOutlined';
-const TapBar = () => {
+const TapBar: FC = () => {
   return (
     <Box
       as="footer"

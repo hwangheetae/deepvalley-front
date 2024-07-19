@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
@@ -28,7 +27,7 @@ import {
   NICKNAME_CONFLICT_SERVER_MESSAGE,
   NICKNAME_CONFLICT_MESSAGE,
 } from '../../../constant/constant';
-const Register = () => {
+const Register: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();

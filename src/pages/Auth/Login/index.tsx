@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Formik, Field } from 'formik';
@@ -28,7 +28,7 @@ import {
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
 
-const Login = () => {
+const Login: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();

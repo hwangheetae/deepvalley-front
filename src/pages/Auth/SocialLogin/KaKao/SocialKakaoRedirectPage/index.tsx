@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { kakaoLoginSendToken } from '../../../../../api/Auth/AuthService';
 import { useToast } from '@chakra-ui/react';
 import { KAKAO_AUTH_ERROR_MESSAGE } from '../../../../../constant/constant';
 
-const SocialKakaoRedirectPage = () => {
+const SocialKakaoRedirectPage: FC = () => {
   const navigate = useNavigate();
   const toast = useToast();
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import {
   Box,
   Text,
@@ -11,7 +11,11 @@ import {
 import { People, Star, Water } from '@mui/icons-material';
 import { Valley } from '../../../api/ValleyApi/ValleyMockData';
 
-const ListComponent = ({ valleys }: { valleys: Valley[] }) => {
+interface ListComponentProps {
+  valleys: Valley[];
+}
+
+const ListComponent: FC<ListComponentProps> = ({ valleys }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState('13%');
 

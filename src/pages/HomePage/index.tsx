@@ -5,8 +5,9 @@ import Carousel from '../../components/Common/Carousel';
 import Category from '../../components/Common/Category';
 import { InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
+import { FC } from 'react';
 
-const HomePage = () => {
+const HomePage: FC = () => {
   //tailwind test
   return (
     <div>

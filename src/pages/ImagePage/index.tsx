@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import {
   InstaImage,
@@ -6,7 +6,7 @@ import {
   ReviewImage,
 } from '../../components/Common/Image';
 
-const ImagePage: React.FC = () => {
+const ImagePage: FC = () => {
   const imageSrcs = [
     'valley1.png',
     'valley1.png',

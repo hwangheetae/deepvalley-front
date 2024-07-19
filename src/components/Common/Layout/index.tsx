@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -7,7 +7,7 @@ interface LayoutProps {
   hasTapBar?: boolean;
 }
 
-const Layout = ({
+const Layout: FC<LayoutProps> = ({
   children,
   hasHeader = false,
   hasTapBar = false,
