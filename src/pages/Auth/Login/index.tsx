@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Formik, Field } from 'formik';
@@ -18,7 +18,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
-import SocialKakao from '../SocialLogin/SocialKakaoButton/SocialKakaoButton';
+import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
 import {
   INVALID_REUEST_BODY_SERVER_MESSAGE,
   INVALID_REUEST_BODY_MESSAGE,
@@ -28,7 +28,7 @@ import {
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
 
-const Login = () => {
+const Login: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();
