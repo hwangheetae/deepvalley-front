@@ -1,14 +1,15 @@
 import { ReviewType } from '../../types/ReviewType/ReviewType';
-import { mockReview } from './MockData';
+import config from '../../config/index';
 
 export const fetchReview = async (reviewId: string): Promise<ReviewType> => {
-  // const response = await fetch(`/api/review/${reviewId}/detail`);
-  // if (!response.ok) {
-  //     throw new Error('Fetch Error');
-  // }
-  // return response.json();
-  reviewId;
-  await new Promise((resolve) => setTimeout(resolve, 500)); //테스트용
-  console.log('Mock Review Data:', mockReview);
-  return mockReview;
+  const response = await fetch(
+    `${config.API_URL}/api/review/${reviewId}/detail`,
+    {
+      method: 'GET',
+    },
+  );
+  if (!response.ok) {
+    throw new Error('Fetch Error');
+  }
+  return response.json();
 };

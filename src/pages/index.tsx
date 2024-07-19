@@ -1,2 +1,4 @@
-export { default as Login } from './Auth/Login';
-export { default as Register } from './Auth/Register';
+export { default as HomePage } from './HomePage';
+export { default as ImagePage } from './ImagePage';
+export { default as MyPage } from './MyPage';
+export { default as ReviewPage } from './ReviewPage';

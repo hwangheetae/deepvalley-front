@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
+import { red } from '@mui/material/colors';
 
 const breakpoints = {
   sm: '320px',
@@ -13,6 +14,12 @@ const theme = extendTheme({
   fonts: {
     heading: `'Cafe24Ssurround', sans-serif`,
     body: `'GmarketSansMedium', sans-serif`,
+  },
+  colors: {
+    primary: {},
+    secondary: {
+      500: red[500],
+    },
   },
 });
 
