@@ -27,6 +27,7 @@ import {
   NICKNAME_CONFLICT_SERVER_MESSAGE,
   NICKNAME_CONFLICT_MESSAGE,
 } from '../../../constant/constant';
+
 const Register: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();

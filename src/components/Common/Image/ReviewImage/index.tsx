@@ -1,9 +1,6 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-
-interface ReviewImageProps {
-  src: string;
-}
+import { ReviewImageProps } from '../../../../types/ComponentType';
 
 const ReviewImage: React.FC<ReviewImageProps> = ({ src }) => (
   <Box

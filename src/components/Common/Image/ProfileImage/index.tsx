@@ -1,9 +1,7 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
+import { ProfileImageProps } from '../../../../types/ComponentType';
 
-interface ProfileImageProps {
-  src?: string;
-}
 const ProfileImage: React.FC<ProfileImageProps> = ({ src }) => (
   <Box
     width="150px"

@@ -1,9 +1,6 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
-
-interface InstaImageProps {
-  src: string;
-}
+import { InstaImageProps } from '../../../../types/ComponentType';
 
 const InstaImage: React.FC<InstaImageProps> = ({ src }) => (
   <Box

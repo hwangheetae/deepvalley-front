@@ -1,11 +1,6 @@
+import { FC } from 'react';
+import { LayoutProps } from '../../../types/ComponentType';
 import { Box } from '@chakra-ui/react';
-import { FC, ReactNode } from 'react';
-
-interface LayoutProps {
-  children: ReactNode;
-  hasHeader?: boolean;
-  hasTapBar?: boolean;
-}
 
 const Layout: FC<LayoutProps> = ({
   children,

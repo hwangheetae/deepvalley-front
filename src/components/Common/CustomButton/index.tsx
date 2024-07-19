@@ -1,12 +1,6 @@
-import {
-  Button as ChakraButton,
-  ButtonProps as ChakraButtonProps,
-} from '@chakra-ui/react';
-import { FC, CSSProperties } from 'react';
-
-interface CustomButtonProps extends ChakraButtonProps {
-  ButtonStyle?: CSSProperties;
-}
+import { Button as ChakraButton } from '@chakra-ui/react';
+import { FC } from 'react';
+import { CustomButtonProps } from '../../../types/ComponentType';
 
 const CustomButton: FC<CustomButtonProps> = ({ ButtonStyle, ...props }) => {
   return <ChakraButton {...props} sx={ButtonStyle} />;

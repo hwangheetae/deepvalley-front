@@ -2,12 +2,7 @@ import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HamburgerIcon, ChevronLeftIcon } from '@chakra-ui/icons';
-
-interface HeaderProps {
-  title: string;
-  showMenuButton?: boolean;
-  showBorderBottom?: boolean;
-}
+import { HeaderProps } from '../../../types/ComponentType';
 
 const Header: FC<HeaderProps> = ({
   title,
@@ -15,7 +10,6 @@ const Header: FC<HeaderProps> = ({
   showBorderBottom = false,
 }) => {
   const navigate = useNavigate();
-
   const handleBackClick = () => {
     navigate(-1);
   };

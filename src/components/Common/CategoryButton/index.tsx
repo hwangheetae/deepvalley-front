@@ -1,11 +1,6 @@
 import { Text, Flex, Image } from '@chakra-ui/react';
 import { FC } from 'react';
-
-interface CategoryButtonProps {
-  iconSrc: string;
-  label: string;
-  alt: string;
-}
+import { CategoryButtonProps } from '../../../types/ComponentType';
 
 const CategoryButton: FC<CategoryButtonProps> = ({ iconSrc, label, alt }) => {
   return (

@@ -1,28 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ItemsCarousel from 'react-items-carousel';
 import range from 'lodash/range';
+import { wrapperStyle, slideItemStyle } from '../../../styles/carouselStyle';
 // import axios from 'axios';
 const noOfItems = 5;
 const noOfCards = 1;
 const autoPlayDelay = 5000;
-
-const wrapperStyle = {
-  padding: '0px',
-  maxWidth: 400,
-  margin: '0 auto',
-};
-
-const slideItemStyle = {
-  height: '13vh',
-  width: 'full',
-  background: '#eee',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontSize: '20px',
-  fontWeight: 'bold',
-  transition: 'transform 0.5s ease-in-out',
-};
 
 const carouselItems = range(noOfItems).map((index) => (
   <div key={index} style={slideItemStyle}>
