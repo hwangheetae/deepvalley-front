@@ -7,18 +7,16 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage';
-import ImagePage from './pages/ImagePage';
-//로그인/ 회원가입 용 빌드 에러 방지로 주석처리 해놓았습니다.
-
-// import Review from './components/Common/Review/Review.tsx';
-// import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
-// import { mockReview } from './api/ReviewApi/MockData.ts'; //테스트용
+import ReviewPage from './pages/ReviewPage.tsx';
+import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
+import { fetchReviews } from './api/ReviewsApi/ReviewsApi.ts';
+import MyPage from './pages/MyPage.tsx';
 import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
-import MapPage from './pages/MapPage.tsx';
 import SocialKakaoRedirectPage from './pages/Auth/SocialKakaoRedirectPage/SocialKakaoRedirectPage.tsx';
+import MapPage from './pages/MapPage';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -32,14 +30,6 @@ const router = createBrowserRouter([
     ),
   },
 
-  {
-    path: '/imagepage',
-    element: (
-      <PrivateRoute>
-        <ImagePage />
-      </PrivateRoute>
-    ),
-  },
   { path: '/mappage', element: <MapPage /> },
   {
     path: '/login',
@@ -53,21 +43,27 @@ const router = createBrowserRouter([
     // errorElement: <ErrorPage />
   },
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
+  {
+    path: 'review/:reviewId',
+    element: <ReviewPage />,
+    loader: async ({ params }) => {
+      const reviewId = params.reviewId as string;
+      const data = await fetchReview(reviewId);
+      queryClient.setQueryData(['reviewDetail', reviewId], data);
+      return { reviewId, initialData: data };
+    },
+  },
+  {
+    path: 'myPage',
+    element: <MyPage />,
+    loader: async () => {
+      const memberId = '실제 memberId 기입';
+      const reviews = await fetchReviews(memberId);
+      queryClient.setQueryData(['reviews', memberId], reviews);
+      return reviews;
+    },
+  },
   { path: '/register', element: <Register /> },
-  //로그인/ 회원가입 용 빌드 에러 방지로 주석처리 해놓았습니다.
-  // {
-  //   path: 'review/:reviewId',
-  //   element: <Review />,
-  //   loader: async ({ params }) => {
-  //     const reviewId = params.reviewId as string;
-  //     queryClient.setQueryData(['reviewType', 1], mockReview); //테스트용
-  //     const data = mockReview;
-  //     return data;
-  //     // const data = await fetchReview(reviewId);
-  //     // queryClient.setQueryData(['reviewType', reviewId],data);
-  //     // return data;
-  //   },
-  // },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
