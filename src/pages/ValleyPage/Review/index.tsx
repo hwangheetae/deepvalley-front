@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Box,
+  Flex,
   Image,
   Text,
   Button,
@@ -11,7 +12,7 @@ import {
 
 const Review: React.FC = () => {
   return (
-    <Box p={4}>
+    <Box p={4} mt="60px">
       <HStack spacing={4} mb={4}>
         <Avatar size="md" src="profile_image_url" />
         <Text fontSize="lg" fontWeight="bold">
@@ -22,12 +23,13 @@ const Review: React.FC = () => {
         </Button>
       </HStack>
 
-      <HStack spacing={2} mb={4}>
+      <Flex mb={4}>
         <Image
           boxSize="150px"
           src="image1_url"
           alt="image1"
           borderRadius="md"
+          mr={2}
         />
         <Image
           boxSize="150px"
@@ -35,7 +37,7 @@ const Review: React.FC = () => {
           alt="image2"
           borderRadius="md"
         />
-      </HStack>
+      </Flex>
 
       <VStack align="start" mb={4}>
         <Text fontSize="md" fontWeight="bold">
