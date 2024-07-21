@@ -1,8 +1,22 @@
-import { Box, Flex, IconButton, Text, Image } from '@chakra-ui/react';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import Logo2 from '../../../assets/images/Logo2.png';
 import { MainPageHeaderProps } from '../../../types/ComponentType';
+import {
+  Box,
+  Flex,
+  IconButton,
+  Text,
+  Image,
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  useDisclosure,
+} from '@chakra-ui/react';
 
 const MainPageHeader: FC<MainPageHeaderProps> = ({
   title,
@@ -10,6 +24,9 @@ const MainPageHeader: FC<MainPageHeaderProps> = ({
   showBorderBottom = false,
   fontFamily,
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef<HTMLButtonElement | null>(null);
+
   return (
     <Box
       as="header"
@@ -39,11 +56,47 @@ const MainPageHeader: FC<MainPageHeaderProps> = ({
             aria-label="Open menu"
             icon={<HamburgerIcon />}
             variant="ghost"
+            onClick={onOpen}
+            ref={btnRef} // 추가된 부분
           />
         ) : (
           <Box w="40px" />
         )}
       </Flex>
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+        size="xs"
+      >
+        <DrawerOverlay />
+        <DrawerContent
+          sx={{
+            maxWidth: '50vw',
+          }}
+        >
+          <DrawerHeader>
+            <IconButton
+              aria-label="Open menu"
+              icon={<HamburgerIcon />}
+              variant="ghost"
+              onClick={onClose}
+            />
+          </DrawerHeader>
+          <DrawerBody>
+            <Flex direction="column" bg="white" align="start">
+              <Button variant="ghost">프로필 수정하기</Button>
+              <Button variant="ghost">비밀번호 변경하기</Button>
+            </Flex>
+          </DrawerBody>
+          <DrawerFooter justifyContent="flex-start">
+            <Button variant="ghost" mr={3}>
+              로그아웃
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </Box>
   );
 };
