@@ -1,6 +1,6 @@
 import basicClient from '../Auth/basicClient';
 
-export const getUSer = async () => {
+export const getUser = async () => {
   return basicClient.get('/api/member');
 };
 

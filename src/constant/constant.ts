@@ -12,7 +12,7 @@ export const INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE =
 export const INVALID_REQUEST_EMAIL_OR_PASSWORD =
   '잘못된 이메일 또는 비밀번호 입니다.';
 //404
-export const ERROR_MESSAGE_404 = '페이지를 찾을 수 없습니다.';
+export const ERROR_MESSAGE_404 = '페이지 또는 사용자를 찾을 수 없습니다.';
 
 //409 Email Conflict server message
 export const EMAIL_CONFLICT_SERVER_MESSAGE = 'Login email already in use';
