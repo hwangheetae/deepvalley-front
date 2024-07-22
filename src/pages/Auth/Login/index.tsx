@@ -34,9 +34,13 @@ const Login: FC = () => {
   const navigate = useNavigate();
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
-      const response = await login(values.email, values.password);
-      console.log(response);
-      if (response.access_token) {
+      const response = await login(values);
+      if (response.data.access_token) {
+        localStorage.setItem(
+          'token',
+          JSON.stringify(response.data.access_token),
+        );
+
         navigate('/');
         toast({
           title: '로그인 성공!',
@@ -48,7 +52,6 @@ const Login: FC = () => {
         });
       }
     } catch (err: any) {
-      console.log(err);
       if (err.response.status === 400) {
         if (err.response.data === INVALID_REUEST_BODY_SERVER_MESSAGE) {
           setError(INVALID_REUEST_BODY_MESSAGE);
