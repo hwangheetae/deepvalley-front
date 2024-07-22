@@ -32,7 +32,10 @@ const Login: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();
-  const handleSubmit = async (values: { email: string; password: string }) => {
+  const handleSubmit = async (values: {
+    login_email: string;
+    password: string;
+  }) => {
     try {
       const response = await login(values);
       if (response.data.access_token) {
@@ -62,7 +65,7 @@ const Login: FC = () => {
           setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
         }
       }
-      if (err.response.status === 404) {
+      if (err.response.status === 404 || err.response.status === 403) {
         setError(ERROR_MESSAGE_404);
       }
       if (err.response.status === 500) {
@@ -106,7 +109,7 @@ const Login: FC = () => {
 
         <Formik
           initialValues={{
-            email: '',
+            login_email: '',
             password: '',
             // rememberMe: false,
           }}
@@ -118,11 +121,13 @@ const Login: FC = () => {
               style={{ width: '70%', maxWidth: '400px' }}
             >
               <VStack spacing={4} w="full">
-                <FormControl isInvalid={!!errors.email && touched.email}>
+                <FormControl
+                  isInvalid={!!errors.login_email && touched.login_email}
+                >
                   <Field
                     as={Input}
-                    id="email"
-                    name="email"
+                    id="login_email"
+                    name="login_email"
                     type="email"
                     variant="outline"
                     placeholder="이메일"
@@ -135,7 +140,7 @@ const Login: FC = () => {
                       return error;
                     }}
                   />
-                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                  <FormErrorMessage>{errors.login_email}</FormErrorMessage>
                 </FormControl>
 
                 <FormControl isInvalid={!!errors.password && touched.password}>

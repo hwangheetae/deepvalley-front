@@ -54,7 +54,11 @@ export const logout = () => {
 //   );
 //   return response.data;
 // };
-export const register = async (body: {}) => {
+export const register = async (body: {
+  login_email: string;
+  name: string;
+  password: string;
+}) => {
   return basicClient.post('/api/member/register', body, {
     headers: {
       'Content-Type': 'application/json',
@@ -63,13 +67,10 @@ export const register = async (body: {}) => {
 };
 
 export const kakaoLoginSendToken = async (code: string) => {
-  return await basicClient.post(
-    '/api/auth/kakao/token',
-    { code },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    },
-  );
+  return await basicClient.get('/api/oauth/kakao', {
+    params: { code },
+    // headers: {
+    //   'Content-Type': 'application/json',
+    // },
+  });
 };

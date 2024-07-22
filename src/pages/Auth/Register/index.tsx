@@ -34,7 +34,7 @@ const Register: FC = () => {
   const navigate = useNavigate();
   //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
-    email: string;
+    login_email: string;
     name: string;
     password: string;
   }) => {
@@ -55,7 +55,7 @@ const Register: FC = () => {
       if (err.response.status === 400) {
         setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }
-      if (err.response.status === 404) {
+      if (err.response.status === 404 || err.response.status === 403) {
         setError(ERROR_MESSAGE_404);
       }
 
@@ -113,7 +113,7 @@ const Register: FC = () => {
 
         <Formik
           initialValues={{
-            email: '',
+            login_email: '',
             name: '',
             password: '',
             checkPassword: '',
@@ -126,11 +126,13 @@ const Register: FC = () => {
               style={{ width: '70%', maxWidth: '400px' }}
             >
               <VStack spacing={4} w="full">
-                <FormControl isInvalid={!!errors.email && touched.email}>
+                <FormControl
+                  isInvalid={!!errors.login_email && touched.login_email}
+                >
                   <Field
                     as={Input}
-                    id="email"
-                    name="email"
+                    id="login_email"
+                    name="login_email"
                     type="email"
                     variant="outline"
                     placeholder="이메일"
@@ -145,7 +147,7 @@ const Register: FC = () => {
                       return error;
                     }}
                   />
-                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                  <FormErrorMessage>{errors.login_email}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.name && touched.name}>
                   <Field
