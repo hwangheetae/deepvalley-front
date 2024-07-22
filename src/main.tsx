@@ -17,6 +17,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import SocialKakaoRedirectPage from './pages/Auth/SocialLogin/KaKao/SocialKakaoRedirectPage/index.tsx';
 import MapPage from './pages/Map/MapPage/index.tsx';
+import Logout from './pages/Auth/Logout/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -64,6 +65,7 @@ const router = createBrowserRouter([
     },
   },
   { path: '/register', element: <Register /> },
+  { path: '/logout', element: <Logout /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

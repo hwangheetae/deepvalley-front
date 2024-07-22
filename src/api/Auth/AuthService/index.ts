@@ -21,7 +21,7 @@ export const login = async (login_email: string, password: string) => {
 };
 
 export const logout = () => {
-  localStorage.removeItem('token');
+  localStorage.clear();
 };
 
 export const getCurrentUser = () => {

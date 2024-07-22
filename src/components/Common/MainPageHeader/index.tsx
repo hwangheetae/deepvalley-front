@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import Logo2 from '../../../assets/images/Logo2.png';
 import { MainPageHeaderProps } from '../../../types/ComponentType';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -26,6 +27,7 @@ const MainPageHeader: FC<MainPageHeaderProps> = ({
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef<HTMLButtonElement | null>(null);
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -91,7 +93,13 @@ const MainPageHeader: FC<MainPageHeaderProps> = ({
             </Flex>
           </DrawerBody>
           <DrawerFooter justifyContent="flex-start">
-            <Button variant="ghost" mr={3}>
+            <Button
+              variant="ghost"
+              mr={3}
+              onClick={() => {
+                navigate('/logout');
+              }}
+            >
               로그아웃
             </Button>
           </DrawerFooter>
