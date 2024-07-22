@@ -16,7 +16,7 @@ const Review: React.FC = () => {
       <HStack spacing={4} mb={4}>
         <Avatar size="md" src="profile_image_url" />
         <Text fontSize="lg" fontWeight="bold">
-          hannnnni
+          nickname
         </Text>
         <Button colorScheme="green" variant="outline">
           + 팔로우
@@ -26,14 +26,21 @@ const Review: React.FC = () => {
       <Flex mb={4}>
         <Image
           boxSize="150px"
-          src="image1_url"
+          src="valley1.png"
           alt="image1"
           borderRadius="md"
           mr={2}
         />
         <Image
           boxSize="150px"
-          src="image2_url"
+          src="valley1.png"
+          alt="image2"
+          borderRadius="md"
+          mr={2}
+        />
+        <Image
+          boxSize="150px"
+          src="valley1.png"
           alt="image2"
           borderRadius="md"
         />
