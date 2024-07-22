@@ -39,13 +39,7 @@ const Register: FC = () => {
     password: string;
   }) => {
     try {
-      const userData = await register(
-        values.email,
-        values.name,
-        values.password,
-      );
-      console.log(userData);
-
+      const userData = await register(values);
       if (userData) {
         toast({
           title: '회원가입 성공!',
@@ -58,7 +52,6 @@ const Register: FC = () => {
         navigate('/login');
       }
     } catch (err: any) {
-      console.log(err.response.data);
       if (err.response.status === 400) {
         setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }

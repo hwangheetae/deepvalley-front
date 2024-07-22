@@ -16,7 +16,7 @@ const SocialKakaoRedirectPage: FC = () => {
           const response = await kakaoLoginSendToken(code);
           console.log(response);
           if (response.status === 200) {
-            localStorage.setItem('token', response.data);
+            localStorage.setItem('token', response.data.access_token);
             toast({
               title: '로그인 성공!',
               description: `로그인에 성공하였습니다.`,
