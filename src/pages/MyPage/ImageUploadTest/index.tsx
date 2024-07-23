@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 const ImageUploadTest = () => {
-  const [imgFile, setImgFile] = useState<string>(''); // 이미지 배열
+  const [imgFile, setImgFile] = useState<string>('');
   const upload = useRef<HTMLInputElement | null>(null);
 
   const imgUpload = () => {
