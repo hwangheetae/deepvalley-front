@@ -56,7 +56,8 @@ const router = createBrowserRouter([
     path: 'review/:reviewId',
     element: <ReviewPage />,
     loader: async ({ params }) => {
-      const reviewId = params.reviewId as string;
+      // const reviewId = params.reviewId as string;
+      const reviewId = '834f2871-6cce-4c3a-9744-dede59d38be8';
       const data = await fetchReview(reviewId);
       queryClient.setQueryData(['reviewDetail', reviewId], data);
       return { reviewId, initialData: data };

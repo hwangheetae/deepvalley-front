@@ -156,110 +156,181 @@ const ReviewWritingPage: React.FC = () => {
 
   return (
     <Layout>
-      <Header title="" showMenuButton={false} showBorderBottom={false} />
-      <Box p="4" pt="20">
-        <CustomInput
-          placeholder="리뷰 제목을 입력해 주세요"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          inputStyle={{ marginBottom: '16px' }}
-        />
-
-        <Text mb="2">평점을 입력해 주세요</Text>
-        <HStack spacing={1} mb="4">
-          {[1, 2, 3, 4, 5].map((num) => (
-            <Box
-              key={num}
-              onClick={() => handleRatingClick(num.toString())}
-              cursor="pointer"
-              color={
-                rating === 'ONE' && num === 1
-                  ? 'yellow.400'
-                  : rating === 'TWO' && num <= 2
-                    ? 'yellow.400'
-                    : rating === 'THREE' && num <= 3
-                      ? 'yellow.400'
-                      : rating === 'FOUR' && num <= 4
-                        ? 'yellow.400'
-                        : rating === 'FIVE' && num <= 5
-                          ? 'yellow.400'
-                          : 'gray.300'
-              }
-              fontSize="30px"
-            >
-              ★
-            </Box>
-          ))}
-        </HStack>
-
-        <Text mb="2">선택한 사진</Text>
-        <Flex overflowX="scroll" mb="4">
-          {imageUrls.map((url, index) => (
-            <Box key={index} minW="150px" mr="4" position="relative">
-              <InstaImage src={url} />
-              <IconButton
-                aria-label="Remove image"
-                icon={<CloseIcon />}
-                size="xs"
-                position="absolute"
-                top="2"
-                right="2"
-                onClick={() => handleImageRemove(index)}
-              />
-            </Box>
-          ))}
-        </Flex>
-
-        <Button as="label" htmlFor="image-upload" mb="4">
-          사진 추가
-        </Button>
-        <Input
-          type="file"
-          id="image-upload"
-          multiple
-          accept="image/*"
-          onChange={handleImageChange}
-          style={{ display: 'none' }}
-        />
-
-        <Textarea
-          placeholder="리뷰를 작성해 주세요."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          mb="4"
-        />
-
-        <Text mb="2">방문한 날짜</Text>
-        <DatePicker
-          selected={visitedDate}
-          onChange={(date: Date | null) => setVisitedDate(date)}
-          dateFormat="yyyy년 MM월 dd일"
-        />
-
-        <Text mt="4" mb="2">
-          태그 선택
-        </Text>
-        <Flex mb="4" wrap="wrap">
-          {predefinedTags.map((tag) => (
-            <Tag
-              key={tag}
-              size="lg"
-              colorScheme={tags.includes(tag) ? 'green' : 'gray'}
-              onClick={() => handleTagClick(tag)}
-              cursor="pointer"
-              mr="2"
+      <Header
+        title=""
+        showMenuButton={false}
+        showBorderBottom={false}
+        bg="transparent"
+        MenuColor="white"
+      />
+      <Box pt="20">
+        <Box position="relative" mb="4">
+          <Box
+            backgroundImage="url('https://cdn.pixabay.com/photo/2020/07/03/10/28/waterfall-5365926_1280.jpg')"
+            backgroundSize="cover"
+            backgroundPosition="center"
+            filter="brightness(50%)"
+            height="250px"
+            width="100%"
+            position="absolute"
+            top="-20"
+            left="0"
+            right="0"
+            bottom="0"
+            zIndex="-1"
+          />
+          <CustomInput
+            placeholder="리뷰 제목을 입력해 주세요"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            inputStyle={{
+              fontFamily: 'Gmarket Sans TTF',
+              border: 'none',
+              background: 'transparent',
+              fontWeight: 'bold',
+              fontSize: '24px',
+              position: 'relative',
+              zIndex: '1',
+              color: 'white',
+            }}
+            _placeholder={{ color: 'white' }}
+          />
+          <Box p="4">
+            <Text
+              fontFamily="Gmarket Sans TTF"
               mb="2"
+              fontWeight="light"
+              position="relative"
+              zIndex="1"
+              color="white"
             >
-              <TagLabel>{`#${tag}`}</TagLabel>
-            </Tag>
-          ))}
-          {tags
-            .filter((tag) => !predefinedTags.includes(tag))
-            .map((tag) => (
+              평점을 입력해 주세요
+            </Text>
+            <HStack spacing={1} mb="4" position="relative" zIndex="1">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <Box
+                  key={num}
+                  onClick={() => handleRatingClick(num.toString())}
+                  cursor="pointer"
+                  color={
+                    rating === 'ONE' && num === 1
+                      ? 'yellow.400'
+                      : rating === 'TWO' && num <= 2
+                        ? 'yellow.400'
+                        : rating === 'THREE' && num <= 3
+                          ? 'yellow.400'
+                          : rating === 'FOUR' && num <= 4
+                            ? 'yellow.400'
+                            : rating === 'FIVE' && num <= 5
+                              ? 'yellow.400'
+                              : 'gray.300'
+                  }
+                  fontSize="30px"
+                >
+                  ★
+                </Box>
+              ))}
+            </HStack>
+          </Box>
+        </Box>
+        <Box p="4">
+          <Flex alignItems="center" mb="2">
+            <Text
+              fontWeight="bold"
+              fontSize="20px"
+              fontFamily="Gmarket Sans TTF"
+            >
+              선택한 사진
+            </Text>
+            <Button
+              as="label"
+              htmlFor="image-upload"
+              ml="190px"
+              mt="5px"
+              borderRadius="full"
+              fontWeight="light"
+              border="1px solid black"
+              bg="transparent"
+              width="100px"
+              height="20px"
+              top="-5px"
+              fontSize="15px"
+              fontFamily="Gmarket Sans TTF"
+            >
+              사진 추가
+            </Button>
+          </Flex>
+          <Input
+            type="file"
+            id="image-upload"
+            multiple
+            accept="image/*"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+          />
+          <Flex overflowX="scroll" mb="4" ml="2" mr="2">
+            {imageUrls.map((url, index) => (
+              <Box
+                key={index}
+                minW="150px"
+                mr="4"
+                position="relative"
+                boxShadow="md"
+              >
+                <InstaImage src={url} />
+                <IconButton
+                  aria-label="Remove image"
+                  icon={<CloseIcon />}
+                  size="xs"
+                  position="absolute"
+                  top="2"
+                  right="2"
+                  onClick={() => handleImageRemove(index)}
+                  bg="transparent"
+                  border="none"
+                />
+              </Box>
+            ))}
+          </Flex>
+          <Text
+            mb="2"
+            fontWeight="bold"
+            fontSize="20px"
+            fontFamily="Gmarket Sans TTF"
+          >
+            리뷰 작성
+          </Text>
+          <Flex ml="1" mr="1">
+            <Textarea
+              placeholder="리뷰를 작성해 주세요."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              mb="4"
+              bg="#EDECEC"
+              border="none"
+              _placeholder={{ color: 'gray.600' }}
+              borderRadius="0"
+              fontFamily="Gmarket Sans TTF"
+              fontWeight="light"
+            />
+          </Flex>
+
+          <Text mb="2">방문한 날짜</Text>
+          <DatePicker
+            selected={visitedDate}
+            onChange={(date: Date | null) => setVisitedDate(date)}
+            dateFormat="yyyy년 MM월 dd일"
+          />
+
+          <Text mt="4" mb="2">
+            태그 선택
+          </Text>
+          <Flex mb="4" wrap="wrap">
+            {predefinedTags.map((tag) => (
               <Tag
                 key={tag}
                 size="lg"
-                colorScheme="green"
+                colorScheme={tags.includes(tag) ? 'green' : 'gray'}
                 onClick={() => handleTagClick(tag)}
                 cursor="pointer"
                 mr="2"
@@ -268,51 +339,67 @@ const ReviewWritingPage: React.FC = () => {
                 <TagLabel>{`#${tag}`}</TagLabel>
               </Tag>
             ))}
-        </Flex>
-        <Flex>
-          <Input
-            placeholder="새 태그 입력"
-            value={newTag}
-            onChange={(e) => setNewTag(e.target.value)}
-            size="sm"
-            mb="2"
-          />
-          <Button onClick={handleAddNewTag} mb="2">
-            +
-          </Button>
-        </Flex>
-
-        <Text mb="2">공개 범위</Text>
-        <VStack align="start" mb="4">
-          {['공개', '일부 공개', '비공개'].map((option) => (
-            <Button
-              key={option}
-              variant={
-                privacy === 'PUBLIC' && option === '공개'
-                  ? 'solid'
-                  : privacy === 'PRIVATE' && option === '비공개'
-                    ? 'solid'
-                    : privacy === 'FOLLOWERS' && option === '일부 공개'
-                      ? 'solid'
-                      : 'outline'
-              }
-              onClick={() => handlePrivacyClick(option)}
-              width="full"
-            >
-              {option}
+            {tags
+              .filter((tag) => !predefinedTags.includes(tag))
+              .map((tag) => (
+                <Tag
+                  key={tag}
+                  size="lg"
+                  colorScheme="green"
+                  onClick={() => handleTagClick(tag)}
+                  cursor="pointer"
+                  mr="2"
+                  mb="2"
+                >
+                  <TagLabel>{`#${tag}`}</TagLabel>
+                </Tag>
+              ))}
+          </Flex>
+          <Flex>
+            <Input
+              placeholder="새 태그 입력"
+              value={newTag}
+              onChange={(e) => setNewTag(e.target.value)}
+              size="sm"
+              mb="2"
+            />
+            <Button onClick={handleAddNewTag} mb="2">
+              +
             </Button>
-          ))}
-        </VStack>
+          </Flex>
 
-        <CustomButton
-          onClick={handleSubmit}
-          ButtonStyle={{
-            background: 'linear-gradient(to right, #39643B, #59B86E)',
-            color: 'white',
-          }}
-        >
-          리뷰 업로드
-        </CustomButton>
+          <Text mb="2">공개 범위</Text>
+          <VStack align="start" mb="4">
+            {['공개', '일부 공개', '비공개'].map((option) => (
+              <Button
+                key={option}
+                variant={
+                  privacy === 'PUBLIC' && option === '공개'
+                    ? 'solid'
+                    : privacy === 'PRIVATE' && option === '비공개'
+                      ? 'solid'
+                      : privacy === 'FOLLOWERS' && option === '일부 공개'
+                        ? 'solid'
+                        : 'outline'
+                }
+                onClick={() => handlePrivacyClick(option)}
+                width="full"
+              >
+                {option}
+              </Button>
+            ))}
+          </VStack>
+
+          <CustomButton
+            onClick={handleSubmit}
+            ButtonStyle={{
+              background: 'linear-gradient(to right, #39643B, #59B86E)',
+              color: 'white',
+            }}
+          >
+            리뷰 업로드
+          </CustomButton>
+        </Box>
       </Box>
     </Layout>
   );

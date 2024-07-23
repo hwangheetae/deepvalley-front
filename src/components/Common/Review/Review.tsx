@@ -25,7 +25,6 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
     queryKey: ['reviewDetail', reviewId],
     queryFn: () => fetchReview(reviewId),
     initialData,
-    refetchOnWindowFocus: false,
   });
 
   console.log('Data:', data);

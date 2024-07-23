@@ -33,7 +33,6 @@ const MyPage: React.FC = () => {
     queryKey: ['reviews', memberId],
     queryFn: () => fetchReviews(memberId),
     initialData: reviews,
-    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
