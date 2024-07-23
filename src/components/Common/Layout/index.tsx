@@ -14,11 +14,12 @@ const Layout: FC<LayoutProps> = ({
       maxW="430px" // iPhone 14 Pro Max 기준 너비
       maxH="932px"
       mx="auto" // 중앙 정렬
-      p={0} // 패딩 설정
+      p={2} // 패딩 설정
       h="100vh"
       borderColor="gray.200"
       pt={hasHeader ? `${headerHeight}px` : 0} // 헤더 높이만큼 패딩
       pb={hasTapBar ? `${tapBarHeight}px` : 0} // TapBar 높이만큼 패딩
+      position="relative"
     >
       {children}
     </Box>

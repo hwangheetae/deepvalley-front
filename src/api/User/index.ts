@@ -1,6 +1,6 @@
 import basicClient from '../Auth/basicClient';
 
-export const getUSer = async () => {
+export const getUser = async () => {
   return basicClient.get('/api/member');
 };
 
@@ -15,7 +15,10 @@ export const changeProfile = async (body: {}) => {
 };
 
 //  body => "password": "string",                    O
-export const changePassword = async (body: {}) => {
+export const changePassword = async (body: {
+  old_password: string;
+  new_password: string;
+}) => {
   return basicClient.put('/api/member/change-password', body);
 };
 
