@@ -55,7 +55,7 @@ const Register: FC = () => {
       if (err.response.status === 400) {
         setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }
-      if (err.response.status === 404 || err.response.status === 403) {
+      if (err.response.status === 404) {
         setError(ERROR_MESSAGE_404);
       }
 
@@ -67,7 +67,6 @@ const Register: FC = () => {
           setError(NICKNAME_CONFLICT_MESSAGE);
         }
       }
-
       if (err.response.status === 500) {
         setError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
@@ -219,27 +218,6 @@ const Register: FC = () => {
                   ButtonStyle={buttonStyle}
                 >
                   회원가입
-                </CustomButton>
-
-                <CustomButton
-                  type="button"
-                  width="full"
-                  borderRadius="full"
-                  ButtonStyle={{
-                    ...buttonStyle,
-                    backgroundColor: '#fee500',
-                    color: 'black',
-                  }}
-                >
-                  <Flex align="center">
-                    <Image
-                      src="/path/to/kakao_icon.png"
-                      alt="KakaoTalk Icon"
-                      boxSize="20px"
-                      mr={2}
-                    />
-                    카카오로 로그인
-                  </Flex>
                 </CustomButton>
 
                 <Flex w="full" justify="center">

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Formik, Field } from 'formik';
@@ -39,10 +39,7 @@ const Login: FC = () => {
     try {
       const response = await login(values);
       if (response.data.access_token) {
-        localStorage.setItem(
-          'token',
-          JSON.stringify(response.data.access_token),
-        );
+        localStorage.setItem('token', response.data.access_token);
 
         navigate('/');
         toast({
@@ -60,27 +57,34 @@ const Login: FC = () => {
           setError(INVALID_REUEST_BODY_MESSAGE);
         }
         if (
-          err.response.data === INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
+          err.response.status ===
+          INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
         ) {
           setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
         }
       }
-      if (err.response.status === 404 || err.response.status === 403) {
+      if (err.response.status === 404) {
         setError(ERROR_MESSAGE_404);
       }
       if (err.response.status === 500) {
         setError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
+    }
+  };
+
+  useEffect(() => {
+    if (error !== null) {
       toast({
         title: '에러!',
-        description: `${error}`,
+        description: error,
         status: 'error',
         position: 'top-right',
         isClosable: true,
         duration: 5000,
       });
     }
-  };
+  }, [error, toast]);
+
   return (
     <Layout>
       <Flex

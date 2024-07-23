@@ -89,7 +89,12 @@ const MainPageHeader: FC<MainPageHeaderProps> = ({
           <DrawerBody>
             <Flex direction="column" bg="white" align="start">
               <Button variant="ghost">프로필 수정하기</Button>
-              <Button variant="ghost">비밀번호 변경하기</Button>
+              <Button
+                variant="ghost"
+                onClick={() => navigate('./ChangePassword')}
+              >
+                비밀번호 변경하기
+              </Button>
             </Flex>
           </DrawerBody>
           <DrawerFooter justifyContent="flex-start">

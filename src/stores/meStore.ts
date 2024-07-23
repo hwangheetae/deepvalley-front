@@ -1,5 +1,4 @@
-import create from 'zustand';
-
+import { create } from 'zustand';
 interface MeState {
   created_date: string;
   description: string;

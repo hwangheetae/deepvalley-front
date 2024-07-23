@@ -19,17 +19,14 @@ import {
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../constant/constant';
 const HomePage: FC = () => {
-  useEffect(() => {
-    userResponse();
-  }, []);
   const [error, setError] = useState('');
   const toast = useToast();
+  const { updateMe } = useMe();
 
   const userResponse = async () => {
     try {
       const response = await getUser();
       if (response.status === 200) {
-        console.log(response);
         const fetchData = {
           created_date: response.data.created_date,
           description: response.data.description,
@@ -45,24 +42,33 @@ const HomePage: FC = () => {
       if (err.response.status === 400) {
         setError(INVALID_REUEST_BODY_MESSAGE);
       }
-      if (err.response.status === 404 || err.response.status === 403) {
+      if (err.response.status === 404) {
         setError(ERROR_MESSAGE_404);
       }
       if (err.response.status === 500) {
         setError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
+    }
+  };
+  useEffect(() => {
+    const rememberMe = localStorage.getItem('RememberMe');
+    if (rememberMe === null) {
+      userResponse();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (error) {
       toast({
         title: '에러!',
-        description: `${error}`,
+        description: error,
         status: 'error',
         position: 'top-right',
         isClosable: true,
         duration: 5000,
       });
     }
-  };
-
-  const { updateMe } = useMe();
+  }, [error, toast]);
 
   return (
     <div>
