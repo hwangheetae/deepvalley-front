@@ -7,7 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage/index.tsx';
-import { ChangePassword, ReviewPage } from './pages/index.tsx';
+import { ChangePassword, ImageUploadTest, ReviewPage } from './pages/index.tsx';
 import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
 import { fetchReviews } from './api/ReviewsApi/ReviewsApi.ts';
 import MyPage from './pages/MyPage/index.tsx';
@@ -69,6 +69,7 @@ const router = createBrowserRouter([
   { path: '/logout', element: <Logout /> },
   { path: '/ChangePassword', element: <ChangePassword /> },
   { path: '/ChangeProfile', element: <ChangeProfile /> },
+  { path: '/ImageUploadTest', element: <ImageUploadTest /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
