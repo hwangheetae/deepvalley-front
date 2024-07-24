@@ -8,11 +8,11 @@ import {
   HStack,
   Icon,
 } from '@chakra-ui/react';
-import { People, Star, Water } from '@mui/icons-material';
-import { Valley } from '../../../api/ValleyApi/ValleyMockData';
+import { Star, Water } from '@mui/icons-material';
+import { ValleysType } from '../../../types';
 
 interface ListComponentProps {
-  valleys: Valley[];
+  valleys: ValleysType[];
 }
 
 const ListComponent: FC<ListComponentProps> = ({ valleys }) => {
@@ -76,11 +76,6 @@ const ListComponent: FC<ListComponentProps> = ({ valleys }) => {
                   <HStack spacing={2}>
                     <Icon as={Water} color="blue.500" />
                     <Text fontSize="sm">{valley.max_depth}m</Text>
-                    <Icon
-                      as={People}
-                      color={valley.busy ? 'red.500' : 'green.500'}
-                    />
-                    <Text fontSize="sm">{valley.busy ? '혼잡' : '여유'}</Text>
                   </HStack>
                   <HStack spacing={2}>
                     <Icon as={Star} color="yellow.500" />
