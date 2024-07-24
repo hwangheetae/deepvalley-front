@@ -182,10 +182,10 @@ const ChangePassword: FC = () => {
                     validate={(value: string) => {
                       let error = '';
                       error;
-                      if (!value) {
-                        error = '비밀번호를 다시 입력해주세요';
-                      } else if (value !== values.new_password)
+
+                      if (value !== values.new_password) {
                         return (error = '비밀번호가 같은지 확인하세요');
+                      }
                     }}
                   />
                   <FormErrorMessage>{errors.newPasswordCheck}</FormErrorMessage>

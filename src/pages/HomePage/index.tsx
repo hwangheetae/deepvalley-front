@@ -34,9 +34,7 @@ const HomePage: FC = () => {
           name: response.data.name,
           profile_image_url: response.data.profile_image_url,
         };
-
         updateMe(fetchData);
-        localStorage.setItem('RememberMe', JSON.stringify(fetchData));
       }
     } catch (err: any) {
       if (err.response.status === 400) {
