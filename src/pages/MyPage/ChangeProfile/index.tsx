@@ -53,8 +53,8 @@ const ChangeProfile: FC = () => {
       if (response.status === 200) {
         updateMe(values);
         toast({
-          title: '비밀번호 변경 성공!',
-          description: `비밀번호를 변경하였습니다.`,
+          title: '프로필 변경 성공!',
+          description: `프로필을 변경하였습니다.`,
           status: 'success',
           position: 'top-right',
           isClosable: true,
