@@ -12,10 +12,10 @@ import { Star, Water } from '@mui/icons-material';
 import { ValleysType } from '../../../types';
 
 interface ListComponentProps {
-  valleys: ValleysType[];
+  visibleValleys: ValleysType[]; // 새로운 prop 추가
 }
 
-const ListComponent: FC<ListComponentProps> = ({ valleys }) => {
+const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState('13%');
 
@@ -49,7 +49,7 @@ const ListComponent: FC<ListComponentProps> = ({ valleys }) => {
       </Center>
       {isOpen && (
         <VStack p={4} spacing={2}>
-          {valleys.map((valley, index) => (
+          {visibleValleys.map((valley, index) => (
             <Box
               key={index}
               p={2}

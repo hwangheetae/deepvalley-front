@@ -1,5 +1,5 @@
 import { Map } from 'react-kakao-maps-sdk';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CustomMapMarker from '../CustomMapMarker';
 import Locations from '../Locations';
 import {
@@ -23,10 +23,19 @@ import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/ValleyApi';
 import { useQuery } from '@tanstack/react-query';
 
+interface MapBounds {
+  swLat: number;
+  swLng: number;
+  neLat: number;
+  neLng: number;
+}
+
 export const MapPage = () => {
   const location = Locations();
   const [key, setKey] = useState(0);
   const theme = useTheme();
+  const [bounds, setBounds] = useState<MapBounds | null>(null);
+  const [visibleValleys, setVisibleValleys] = useState<ValleysType[]>([]);
 
   const {
     data: valleys = [],
@@ -35,39 +44,40 @@ export const MapPage = () => {
     refetch,
   } = useQuery<ValleysType[], Error>({
     queryKey: ['valleys'],
-    queryFn: fetchValleys, // 쿼리 실행 조건
-    staleTime: 1000 * 60 * 5, // fresh data time
-    retry: false, // 에러 발생 시 자동 재시도 비활성화
+    queryFn: fetchValleys,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
   });
+
+  useEffect(() => {
+    if (bounds && valleys.length > 0) {
+      const visible = valleys.filter(
+        (valley) =>
+          valley.latitude >= bounds.swLat &&
+          valley.latitude <= bounds.neLat &&
+          valley.longitude >= bounds.swLng &&
+          valley.longitude <= bounds.neLng,
+      );
+      setVisibleValleys(visible);
+    }
+  }, [bounds, valleys]);
+
+  const handleBoundsChanged = (map: any) => {
+    const bounds = map.getBounds();
+    const sw = bounds.getSouthWest();
+    const ne = bounds.getNorthEast();
+    setBounds({
+      swLat: sw.getLat(),
+      swLng: sw.getLng(),
+      neLat: ne.getLat(),
+      neLng: ne.getLng(),
+    });
+  };
 
   const handleRefresh = () => {
     setKey((prevKey) => prevKey + 1);
     refetch();
   };
-
-  // const xxLocation = useMemo(() => {
-  //   if (location) {
-  //     const xlatitudeOffset = 0.008;
-  //     const xlongitudeOffset = 0.008;
-  //     return {
-  //       latitude: location.latitude + xlatitudeOffset,
-  //       longitude: location.longitude + xlongitudeOffset,
-  //     };
-  //   }
-  //   return null;
-  // }, [location]);
-
-  // const yyLocation = useMemo(() => {
-  //   if (location) {
-  //     const ylatitudeOffset = 0.009;
-  //     const ylongitudeOffset = 0.009;
-  //     return {
-  //       latitude: location.latitude + ylatitudeOffset,
-  //       longitude: location.longitude + ylongitudeOffset,
-  //     };
-  //   }
-  //   return null;
-  // }, [location]);
 
   if (!location || isLoading) {
     return <Center h="100vh">Loading...</Center>;
@@ -76,24 +86,6 @@ export const MapPage = () => {
   if (error) {
     return <Center h="100vh">Error loading data</Center>;
   }
-
-  // const valleys = ValleyMockData.map((valley) => {
-  //   if (valley.name === '구름계곡' && xxLocation) {
-  //     return {
-  //       ...valley,
-  //       latitude: xxLocation.latitude,
-  //       longitude: xxLocation.longitude,
-  //     };
-  //   }
-  //   if (valley.name === '굿굿계곡' && yyLocation) {
-  //     return {
-  //       ...valley,
-  //       latitude: yyLocation.latitude,
-  //       longitude: yyLocation.longitude,
-  //     };
-  //   }
-  //   return valley;
-  // });
 
   return (
     <Flex
@@ -108,6 +100,7 @@ export const MapPage = () => {
           key={key}
           center={{ lat: location.latitude, lng: location.longitude }}
           style={{ width: '100%', height: '100%' }}
+          onBoundsChanged={handleBoundsChanged}
         >
           <VStack
             spacing={4}
@@ -190,7 +183,7 @@ export const MapPage = () => {
             zIndex="20"
           />
         </Map>
-        <ListComponent valleys={valleys} />
+        <ListComponent visibleValleys={visibleValleys} />
       </Box>
       <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
         <TapBar />
