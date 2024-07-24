@@ -20,7 +20,7 @@ export interface CustomInputProps extends ChakraInputProps {
 }
 
 export interface HeaderProps {
-  title: string;
+  title?: string;
   showMenuButton?: boolean;
   showBorderBottom?: boolean;
 }

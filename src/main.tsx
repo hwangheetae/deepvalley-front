@@ -7,7 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage/index.tsx';
-import { ReviewPage } from './pages/index.tsx';
+import { ChangePassword, ImageUploadTest, ReviewPage } from './pages/index.tsx';
 import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
 import { fetchReviews } from './api/ReviewsApi/ReviewsApi.ts';
 import MyPage from './pages/MyPage/index.tsx';
@@ -17,6 +17,8 @@ import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import SocialKakaoRedirectPage from './pages/Auth/SocialLogin/KaKao/SocialKakaoRedirectPage/index.tsx';
 import MapPage from './pages/Map/MapPage/index.tsx';
+import Logout from './pages/Auth/Logout/index.tsx';
+import { ChangeProfile } from './pages/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -64,6 +66,10 @@ const router = createBrowserRouter([
     },
   },
   { path: '/register', element: <Register /> },
+  { path: '/logout', element: <Logout /> },
+  { path: '/ChangePassword', element: <ChangePassword /> },
+  { path: '/ChangeProfile', element: <ChangeProfile /> },
+  { path: '/ImageUploadTest', element: <ImageUploadTest /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

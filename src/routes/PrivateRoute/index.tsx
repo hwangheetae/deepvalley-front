@@ -2,6 +2,7 @@
 import { Navigate } from 'react-router-dom';
 import { useToast } from '@chakra-ui/react';
 import { FC, useEffect, ReactNode } from 'react';
+import { useAuthStore } from '../../stores/authStore';
 
 interface PrivateRouteProps {
   children: ReactNode;
@@ -10,9 +11,10 @@ interface PrivateRouteProps {
 const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   const toast = useToast();
   const accessToken = localStorage.getItem('token');
+  const isLoggedOut = useAuthStore((state) => state.isLoggedOut);
 
   useEffect(() => {
-    if (!accessToken) {
+    if (!accessToken && !isLoggedOut) {
       toast({
         title: '로그인 필요',
         description: '로그인을 해주세요!',
@@ -22,7 +24,7 @@ const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
         duration: 5000,
       });
     }
-  }, [accessToken, toast]);
+  }, [accessToken, isLoggedOut]);
 
   if (!accessToken) {
     return <Navigate to="/login" />;

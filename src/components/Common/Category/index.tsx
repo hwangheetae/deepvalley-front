@@ -21,7 +21,7 @@ const Category: FC = () => {
       borderRadius="md"
       boxShadow="md"
     >
-      <SimpleGrid columns={4} spacing={4}>
+      <SimpleGrid columns={4} spacing={0}>
         <CategoryButton
           iconSrc={waterfall}
           label="폭포"

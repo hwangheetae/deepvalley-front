@@ -11,8 +11,12 @@ export const INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE =
 //400 'Invalid email or password'
 export const INVALID_REQUEST_EMAIL_OR_PASSWORD =
   '잘못된 이메일 또는 비밀번호 입니다.';
+
+//401 PASSWORD
+export const INVALID_CURRENT_PASSWORD = '현재 비밀번호가 올바르지 않습니다.';
+
 //404
-export const ERROR_MESSAGE_404 = '페이지를 찾을 수 없습니다.';
+export const ERROR_MESSAGE_404 = '페이지 또는 사용자를 찾을 수 없습니다.';
 
 //409 Email Conflict server message
 export const EMAIL_CONFLICT_SERVER_MESSAGE = 'Login email already in use';
@@ -25,6 +29,10 @@ export const NICKNAME_CONFLICT_SERVER_MESSAGE = 'Name already in use';
 
 //409 NICKNAME Conflict  message
 export const NICKNAME_CONFLICT_MESSAGE = '이미 존재하는 닉네임입니다.';
+
+//422 PASSWORD
+export const SAME_OLD_AND_NEW_PASSWORD =
+  '변경하려는 비밀번호와 이전 비밀번호가 동일합니다.';
 
 //500 'Invalid email or password'
 export const INTERNAL_SERVER_ERROR_MESSAGE =

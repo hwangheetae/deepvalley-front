@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Formik, Field } from 'formik';
@@ -32,11 +32,15 @@ const Login: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();
-  const handleSubmit = async (values: { email: string; password: string }) => {
+  const handleSubmit = async (values: {
+    login_email: string;
+    password: string;
+  }) => {
     try {
-      const response = await login(values.email, values.password);
-      console.log(response);
-      if (response.access_token) {
+      const response = await login(values);
+      if (response.data.access_token) {
+        localStorage.setItem('token', response.data.access_token);
+
         navigate('/');
         toast({
           title: '로그인 성공!',
@@ -48,13 +52,13 @@ const Login: FC = () => {
         });
       }
     } catch (err: any) {
-      console.log(err);
       if (err.response.status === 400) {
         if (err.response.data === INVALID_REUEST_BODY_SERVER_MESSAGE) {
           setError(INVALID_REUEST_BODY_MESSAGE);
         }
         if (
-          err.response.data === INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
+          err.response.status ===
+          INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
         ) {
           setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
         }
@@ -65,16 +69,22 @@ const Login: FC = () => {
       if (err.response.status === 500) {
         setError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
+    }
+  };
+
+  useEffect(() => {
+    if (error !== null) {
       toast({
         title: '에러!',
-        description: `${error}`,
+        description: error,
         status: 'error',
         position: 'top-right',
         isClosable: true,
         duration: 5000,
       });
     }
-  };
+  }, [error, toast]);
+
   return (
     <Layout>
       <Flex
@@ -103,7 +113,7 @@ const Login: FC = () => {
 
         <Formik
           initialValues={{
-            email: '',
+            login_email: '',
             password: '',
             // rememberMe: false,
           }}
@@ -115,11 +125,13 @@ const Login: FC = () => {
               style={{ width: '70%', maxWidth: '400px' }}
             >
               <VStack spacing={4} w="full">
-                <FormControl isInvalid={!!errors.email && touched.email}>
+                <FormControl
+                  isInvalid={!!errors.login_email && touched.login_email}
+                >
                   <Field
                     as={Input}
-                    id="email"
-                    name="email"
+                    id="login_email"
+                    name="login_email"
                     type="email"
                     variant="outline"
                     placeholder="이메일"
@@ -132,7 +144,7 @@ const Login: FC = () => {
                       return error;
                     }}
                   />
-                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                  <FormErrorMessage>{errors.login_email}</FormErrorMessage>
                 </FormControl>
 
                 <FormControl isInvalid={!!errors.password && touched.password}>
