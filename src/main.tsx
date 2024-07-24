@@ -18,6 +18,8 @@ import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import MapPage from './pages/MapPage';
 import ReviewWritingPage from './pages/ReviewWritingPage.tsx';
+import ReviewFixpage from './pages/ReviewFixPage.tsx';
+import { updateReview } from './api/ReviewUpdateApi/ReviewUpdateApi.ts';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -81,6 +83,16 @@ const router = createBrowserRouter([
         <ReviewWritingPage />
       </PrivateRoute>
     ),
+  },
+  {
+    path: '/reviewUpdate/:reviewId',
+    element: <ReviewFixpage />,
+    loader: async ({ params }) => {
+      const { reviewId } = params;
+      if (!reviewId) throw new Error('Review ID is required');
+      const review = await fetchReview(reviewId);
+      return { review, reviewId };
+    },
   },
 ]);
 
