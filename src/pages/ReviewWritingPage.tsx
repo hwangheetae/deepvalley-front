@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, forwardRef } from 'react';
 import {
   Box,
   Flex,
@@ -25,7 +25,26 @@ import { ReviewWritingType } from '../types/ReviewWritingType/ReviewWritingType'
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { CloseIcon } from '@chakra-ui/icons';
+import { CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
+
+const CustomDatePickerInput = forwardRef(
+  ({ value, onClick }: any, ref: any) => (
+    <Button
+      onClick={onClick}
+      ref={ref}
+      variant="outline"
+      fontWeight="light"
+      fontSize="18px"
+      fontFamily="Gmarket Sans TTF"
+      justifyContent="flex-end"
+      rightIcon={<ChevronDownIcon />}
+      width="200px"
+      border="none"
+    >
+      {value || '날짜 선택'}
+    </Button>
+  ),
+);
 
 const ReviewWritingPage: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -252,12 +271,12 @@ const ReviewWritingPage: React.FC = () => {
               border="1px solid black"
               bg="transparent"
               width="100px"
-              height="20px"
+              height="25px"
               top="-5px"
               fontSize="15px"
               fontFamily="Gmarket Sans TTF"
             >
-              사진 추가
+              + 사진 추가
             </Button>
           </Flex>
           <Input
@@ -292,6 +311,9 @@ const ReviewWritingPage: React.FC = () => {
               </Box>
             ))}
           </Flex>
+
+          <Box mt="3" height="1px" bg="#EFEFEF" mb="4" />
+
           <Text
             mb="2"
             fontWeight="bold"
@@ -315,14 +337,37 @@ const ReviewWritingPage: React.FC = () => {
             />
           </Flex>
 
-          <Text mb="2">방문한 날짜</Text>
-          <DatePicker
-            selected={visitedDate}
-            onChange={(date: Date | null) => setVisitedDate(date)}
-            dateFormat="yyyy년 MM월 dd일"
-          />
+          <Box mt="3" height="1px" bg="#EFEFEF" mb="4" />
 
-          <Text mt="4" mb="2">
+          <Flex alignItems="center" mb="2">
+            <Text
+              mb="2"
+              mt="2"
+              fontWeight="bold"
+              fontSize="20px"
+              fontFamily="Gmarket Sans TTF"
+            >
+              방문한 날짜
+            </Text>
+            <Box ml="auto">
+              <DatePicker
+                selected={visitedDate}
+                onChange={(date: Date | null) => setVisitedDate(date)}
+                dateFormat="yyyy년 MM월 dd일"
+                customInput={<CustomDatePickerInput />}
+              />
+            </Box>
+          </Flex>
+
+          <Box height="1px" bg="#EFEFEF" mb="4" />
+
+          <Text
+            mt="4"
+            mb="2"
+            fontFamily="Gmarket Sans TTF"
+            fontSize="20px"
+            fontWeight="bold"
+          >
             태그 선택
           </Text>
           <Flex mb="4" wrap="wrap">
@@ -330,11 +375,19 @@ const ReviewWritingPage: React.FC = () => {
               <Tag
                 key={tag}
                 size="lg"
-                colorScheme={tags.includes(tag) ? 'green' : 'gray'}
-                onClick={() => handleTagClick(tag)}
                 cursor="pointer"
                 mr="2"
                 mb="2"
+                onClick={() => handleTagClick(tag)}
+                borderRadius="full"
+                fontFamily="Gmarket Sans TTF"
+                fontWeight="medium"
+                border="1px solid #306839"
+                boxShadow="inner 25px 25px 10px 5px rgba(0, 0, 0, 0.5)"
+                backgroundColor={
+                  tags.includes(tag) ? 'rgba(0, 69, 11, 0.81)' : 'transparent'
+                }
+                color={tags.includes(tag) ? 'white' : 'black'}
               >
                 <TagLabel>{`#${tag}`}</TagLabel>
               </Tag>
@@ -345,30 +398,68 @@ const ReviewWritingPage: React.FC = () => {
                 <Tag
                   key={tag}
                   size="lg"
-                  colorScheme="green"
-                  onClick={() => handleTagClick(tag)}
                   cursor="pointer"
                   mr="2"
                   mb="2"
+                  borderRadius="full"
+                  onClick={() => handleTagClick(tag)}
+                  fontFamily="Gmarket Sans TTF"
+                  fontWeight="medium"
+                  border="1px solid #306839"
+                  boxShadow="inner 25px 25px 10px 5px rgba(0, 0, 0, 0.5)"
+                  backgroundColor={
+                    tags.includes(tag) ? 'rgba(0, 69, 11, 0.81)' : 'transparent'
+                  }
+                  color={tags.includes(tag) ? 'white' : 'black'}
                 >
                   <TagLabel>{`#${tag}`}</TagLabel>
                 </Tag>
               ))}
           </Flex>
-          <Flex>
+          <Flex mt="-16px" wrap="wrap">
             <Input
               placeholder="새 태그 입력"
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
-              size="sm"
+              size="md"
+              mr="2"
               mb="2"
+              borderRadius="full"
+              boxShadow="inner 25px 25px 10px 5px rgba(0, 0, 0, 0.5)"
+              backgroundColor="transparent"
+              fontFamily="Gmarket Sans TTF"
+              fontWeight="medium"
+              border="1px solid #306839"
+              width="120px"
+              height="32px"
             />
-            <Button onClick={handleAddNewTag} mb="2">
+            <Button
+              onClick={handleAddNewTag}
+              mb="2"
+              size="md"
+              mr="2"
+              borderRadius="full"
+              boxShadow="inner 25px 25px 10px 5px rgba(0, 0, 0, 0.5)"
+              backgroundColor="transparent"
+              fontFamily="Gmarket Sans TTF"
+              fontWeight="medium"
+              border="1px solid #306839"
+              height="32px"
+            >
               +
             </Button>
           </Flex>
 
-          <Text mb="2">공개 범위</Text>
+          <Box mt="3" height="1px" bg="#EFEFEF" mb="4" />
+
+          <Text
+            mb="2"
+            fontFamily="Gmarket Sans TTF"
+            fontSize="20px"
+            fontWeight="bold"
+          >
+            공개 범위
+          </Text>
           <VStack align="start" mb="4">
             {['공개', '일부 공개', '비공개'].map((option) => (
               <Button
@@ -390,15 +481,19 @@ const ReviewWritingPage: React.FC = () => {
             ))}
           </VStack>
 
-          <CustomButton
-            onClick={handleSubmit}
-            ButtonStyle={{
-              background: 'linear-gradient(to right, #39643B, #59B86E)',
-              color: 'white',
-            }}
-          >
-            리뷰 업로드
-          </CustomButton>
+          <Flex justifyContent="center">
+            <CustomButton
+              onClick={handleSubmit}
+              ButtonStyle={{
+                background: 'linear-gradient(to right, #39643B, #59B86E)',
+                color: 'white',
+                borderRadius: 'full',
+                width: '300px',
+              }}
+            >
+              리뷰 업로드
+            </CustomButton>
+          </Flex>
         </Box>
       </Box>
     </Layout>
