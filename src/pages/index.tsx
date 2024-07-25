@@ -5,3 +5,5 @@ export { default as ChangePassword } from './MyPage/ChangePassword';
 export { default as ChangeProfile } from './MyPage/ChangeProfile';
 export { default as ReviewPage } from './ReviewPage';
 export { default as ImageUploadTest } from './MyPage/ImageUploadTest';
+export { default as ReviewFixPage } from './ReviewFixPage';
+export { default as ReviewWritingPage } from './ReviewWritingPage';

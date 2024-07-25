@@ -4,8 +4,8 @@ import { Box, Flex, Text, useToast } from '@chakra-ui/react';
 import ProfileImage from '../Image/ProfileImage';
 import ReviewImage from '../Image/ReviewImage';
 import CustomButton from '../CustomButton';
-import { ReviewType } from '../../../types/ReviewType/ReviewType';
-import { fetchReview } from '../../../api/ReviewApi/ReviewApi';
+import { ReviewType } from '../../../types/ReviewType';
+import { fetchReview } from '../../../api/Review/index';
 import valley1 from '../../../../valley1.png';
 
 // import { useUserStore } from '../../../stores/userStore'; // 추후 구현
@@ -25,7 +25,6 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
     queryKey: ['reviewDetail', reviewId],
     queryFn: () => fetchReview(reviewId),
     initialData,
-    refetchOnWindowFocus: false,
   });
 
   console.log('Data:', data);
