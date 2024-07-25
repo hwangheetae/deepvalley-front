@@ -6,20 +6,21 @@ import './styles/global.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import HomePage from './pages/HomePage';
-import ImagePage from './pages/ImagePage';
-import ReviewPage from './pages/ReviewPage.tsx';
-import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
-import { fetchReviews } from './api/ReviewsApi/ReviewsApi.ts';
-import MyPage from './pages/MyPage.tsx';
+import HomePage from './pages/HomePage/index.tsx';
+import { ChangePassword, ImageUploadTest, ReviewPage } from './pages/index.tsx';
+import { fetchReview } from './api/Review/index.ts';
+import { fetchReviews } from './api/Review/index.ts';
+import MyPage from './pages/MyPage/index.tsx';
 import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
-import MapPage from './pages/MapPage';
-import ReviewWritingPage from './pages/ReviewWritingPage.tsx';
-import ReviewFixpage from './pages/ReviewFixPage.tsx';
-import { updateReview } from './api/ReviewUpdateApi/ReviewUpdateApi.ts';
+import SocialKakaoRedirectPage from './pages/Auth/SocialLogin/KaKao/SocialKakaoRedirectPage/index.tsx';
+import MapPage from './pages/Map/MapPage/index.tsx';
+import Logout from './pages/Auth/Logout/index.tsx';
+import { ChangeProfile } from './pages/index.tsx';
+import ReviewWritingPage from './pages/ReviewWritingPage/index.tsx';
+import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -33,15 +34,6 @@ const router = createBrowserRouter([
     ),
   },
 
-  {
-    path: '/imagepage',
-    element: (
-      <PrivateRoute>
-        <ImagePage />
-      </PrivateRoute>
-    ),
-  },
-  { path: '/mappage', element: <MapPage /> },
   { path: '/mappage', element: <MapPage /> },
   {
     path: '/login',
@@ -54,6 +46,7 @@ const router = createBrowserRouter([
     //에러처리 페이지 ex)404
     // errorElement: <ErrorPage />
   },
+  { path: '/auth', element: <SocialKakaoRedirectPage /> },
   {
     path: 'review/:reviewId',
     element: <ReviewPage />,
@@ -94,6 +87,10 @@ const router = createBrowserRouter([
       return { review, reviewId };
     },
   },
+  { path: '/logout', element: <Logout /> },
+  { path: '/ChangePassword', element: <ChangePassword /> },
+  { path: '/ChangeProfile', element: <ChangeProfile /> },
+  { path: '/ImageUploadTest', element: <ImageUploadTest /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

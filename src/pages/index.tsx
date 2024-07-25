@@ -1,2 +1,9 @@
-export { default as Login } from './Auth/Login';
-export { default as Register } from './Auth/Register';
+export { default as HomePage } from './HomePage';
+export { default as ImagePage } from './ImagePage';
+export { default as MyPage } from './MyPage';
+export { default as ChangePassword } from './MyPage/ChangePassword';
+export { default as ChangeProfile } from './MyPage/ChangeProfile';
+export { default as ReviewPage } from './ReviewPage';
+export { default as ImageUploadTest } from './MyPage/ImageUploadTest';
+export { default as ReviewFixPage } from './ReviewFixPage';
+export { default as ReviewWritingPage } from './ReviewWritingPage';

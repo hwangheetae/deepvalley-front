@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
@@ -28,24 +27,19 @@ import {
   NICKNAME_CONFLICT_SERVER_MESSAGE,
   NICKNAME_CONFLICT_MESSAGE,
 } from '../../../constant/constant';
-const Register = () => {
+
+const Register: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();
   //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
-    email: string;
+    login_email: string;
     name: string;
     password: string;
   }) => {
     try {
-      const userData = await register(
-        values.email,
-        values.name,
-        values.password,
-      );
-      console.log(userData);
-
+      const userData = await register(values);
       if (userData) {
         toast({
           title: '회원가입 성공!',
@@ -58,7 +52,6 @@ const Register = () => {
         navigate('/login');
       }
     } catch (err: any) {
-      console.log(err.response.data);
       if (err.response.status === 400) {
         setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }
@@ -74,7 +67,6 @@ const Register = () => {
           setError(NICKNAME_CONFLICT_MESSAGE);
         }
       }
-
       if (err.response.status === 500) {
         setError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
@@ -120,7 +112,7 @@ const Register = () => {
 
         <Formik
           initialValues={{
-            email: '',
+            login_email: '',
             name: '',
             password: '',
             checkPassword: '',
@@ -133,11 +125,13 @@ const Register = () => {
               style={{ width: '70%', maxWidth: '400px' }}
             >
               <VStack spacing={4} w="full">
-                <FormControl isInvalid={!!errors.email && touched.email}>
+                <FormControl
+                  isInvalid={!!errors.login_email && touched.login_email}
+                >
                   <Field
                     as={Input}
-                    id="email"
-                    name="email"
+                    id="login_email"
+                    name="login_email"
                     type="email"
                     variant="outline"
                     placeholder="이메일"
@@ -152,7 +146,7 @@ const Register = () => {
                       return error;
                     }}
                   />
-                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                  <FormErrorMessage>{errors.login_email}</FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={!!errors.name && touched.name}>
                   <Field
@@ -224,27 +218,6 @@ const Register = () => {
                   ButtonStyle={buttonStyle}
                 >
                   회원가입
-                </CustomButton>
-
-                <CustomButton
-                  type="button"
-                  width="full"
-                  borderRadius="full"
-                  ButtonStyle={{
-                    ...buttonStyle,
-                    backgroundColor: '#fee500',
-                    color: 'black',
-                  }}
-                >
-                  <Flex align="center">
-                    <Image
-                      src="/path/to/kakao_icon.png"
-                      alt="KakaoTalk Icon"
-                      boxSize="20px"
-                      mr={2}
-                    />
-                    카카오로 로그인
-                  </Flex>
                 </CustomButton>
 
                 <Flex w="full" justify="center">
