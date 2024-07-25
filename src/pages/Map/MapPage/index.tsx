@@ -19,9 +19,10 @@ import { useTheme } from '@chakra-ui/react';
 import TapBar from '../../../components/Common/TapBar';
 import { WbSunny, MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
-import { ValleysType } from '../../../types';
+import { ValleysType, FacilityType } from '../../../types';
 import { fetchValleys } from '../../../api/ValleyApi';
 import { useQuery } from '@tanstack/react-query';
+import { fetchfacility } from '../../../api/FacilityApi';
 
 interface MapBounds {
   swLat: number;
@@ -39,12 +40,25 @@ export const MapPage = () => {
 
   const {
     data: valleys = [],
-    isLoading,
-    error,
-    refetch,
+    isLoading: isLoadingValleys,
+    error: errorValleys,
+    refetch: refetchValleys,
   } = useQuery<ValleysType[], Error>({
     queryKey: ['valleys'],
     queryFn: fetchValleys,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+
+  const {
+    data: facilities = [],
+    isLoading: isLoadingFacilities,
+    error: errorFacilities,
+    refetch: refetchFacilities,
+  } = useQuery<FacilityType[], Error>({
+    queryKey: ['facilities', , location?.latitude, location?.longitude],
+    queryFn: () => fetchfacility(location!.latitude, location!.longitude),
+    enabled: !!location,
     staleTime: 1000 * 60 * 5,
     retry: false,
   });
@@ -76,14 +90,15 @@ export const MapPage = () => {
 
   const handleRefresh = () => {
     setKey((prevKey) => prevKey + 1);
-    refetch();
+    refetchValleys();
+    refetchFacilities();
   };
 
-  if (!location || isLoading) {
+  if (!location || isLoadingValleys || isLoadingFacilities) {
     return <Center h="100vh">Loading...</Center>;
   }
 
-  if (error) {
+  if (errorValleys || errorFacilities) {
     return <Center h="100vh">Error loading data</Center>;
   }
 
@@ -166,6 +181,14 @@ export const MapPage = () => {
               src={valley.thumbnail}
               position={{ lat: valley.latitude, lng: valley.longitude }}
               label={valley.name}
+            />
+          ))}
+          {facilities.map((facility) => (
+            <CustomMapMarker
+              key={facility.facility_id}
+              src={facility.thumbnail}
+              position={{ lat: facility.latitude, lng: facility.longitude }}
+              label={facility.name}
             />
           ))}
           <IconButton
