@@ -158,29 +158,6 @@ const ReviewWritingPage: React.FC = () => {
     }
   };
 
-  //     const reviewData: ReviewWritingType = {
-  //       title,
-  //       rating,
-  //       content,
-  //       visited_date: visitedDate
-  //         ? visitedDate.toISOString().split('T')[0]
-  //         : '',
-  //       privacy,
-  //       place_id: 'b',
-  //       tag_names: tags,
-  //       // image_urls: uploadedImageUrls,
-  //       image_urls: [
-  //         'https://images.unsplash.com/photo-1719937206491-ed673f64be1f?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  //       ],
-  //     };
-
-  //     await submitReview(reviewData);
-  //     setIsSubmitted(true);
-  //   } catch (error) {
-  //     console.error('Error submitting review:', error);
-  //   }
-  // };
-
   if (isSubmitted) {
     return (
       <Layout>
