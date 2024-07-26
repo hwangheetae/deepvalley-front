@@ -16,6 +16,7 @@ import theme from './theme'; // 추가된 라인
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import MapPage from './pages/MapPage';
+import ValleyPage from './pages/ValleyPage';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -62,6 +63,7 @@ const router = createBrowserRouter([
     },
   },
   { path: '/register', element: <Register /> },
+  { path: '/ValleyPage', element: <ValleyPage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

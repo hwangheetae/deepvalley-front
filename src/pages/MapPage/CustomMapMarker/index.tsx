@@ -23,7 +23,7 @@ interface CustomMapMarkerProps {
 const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
   position,
   label,
-  icon,
+  // icon,
   src,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
