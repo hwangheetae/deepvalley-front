@@ -21,6 +21,7 @@ import Logout from './pages/Auth/Logout/index.tsx';
 import { ChangeProfile } from './pages/index.tsx';
 import ReviewWritingPage from './pages/ReviewWritingPage/index.tsx';
 import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
+import ValleyPage from './pages/ValleyPage';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -69,6 +70,7 @@ const router = createBrowserRouter([
     },
   },
   { path: '/register', element: <Register /> },
+
   {
     path: 'reviewWriting',
     element: (
@@ -91,6 +93,8 @@ const router = createBrowserRouter([
   { path: '/ChangePassword', element: <ChangePassword /> },
   { path: '/ChangeProfile', element: <ChangeProfile /> },
   { path: '/ImageUploadTest', element: <ImageUploadTest /> },
+
+  { path: '/ValleyPage', element: <ValleyPage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
