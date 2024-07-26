@@ -91,46 +91,53 @@ const MyPage: React.FC = () => {
           최근 리뷰들
         </Text>
         <Box>
-          <SimpleGrid columns={3} spacing={1}>
-            {data?.map((review) => (
-              <Link to={`/review/${review.review_id}`} key={review.review_id}>
-                <Box mb="4">
-                  <Box
-                    width="100%"
-                    position="relative"
-                    mb="4"
-                    boxShadow="inset 0px 0px 10px rgba(0, 0, 0, 0.25)"
-                  >
-                    <InstaImage src={review.image_urls[0]} />
-                    {/* 대표 사진만 표시 */}
-                    <Box position="absolute" top="4px" left="4px" color="white">
-                      <Text
-                        fontSize="20px"
-                        fontWeight="bold"
-                        fontFamily="Gmarket Sans TTF"
-                      >
-                        {review.title}
-                      </Text>
-                    </Box>
+          {data && data.length > 0 && (
+            <SimpleGrid columns={3} spacing={1}>
+              {data.map((review) => (
+                <Link to={`/review/${review.review_id}`} key={review.review_id}>
+                  <Box mb="4">
                     <Box
-                      position="absolute"
-                      bottom="4px"
-                      left="4px"
-                      color="white"
+                      width="100%"
+                      position="relative"
+                      mb="4"
+                      boxShadow="inset 0px 0px 10px rgba(0, 0, 0, 0.25)"
                     >
-                      <Text
-                        fontSize="10px"
-                        fontWeight="light"
-                        fontFamily="Gmarket Sans TTF"
+                      <InstaImage src={review.image_urls[0]} />
+                      {/* 대표 사진만 표시 */}
+                      <Box
+                        position="absolute"
+                        top="4px"
+                        left="4px"
+                        color="white"
                       >
-                        {review.valley_name}
-                      </Text>
+                        <Text
+                          fontSize="20px"
+                          fontWeight="bold"
+                          fontFamily="Gmarket Sans TTF"
+                        >
+                          {review.title}
+                        </Text>
+                      </Box>
+                      <Box
+                        position="absolute"
+                        bottom="4px"
+                        left="4px"
+                        color="white"
+                      >
+                        <Text
+                          fontSize="10px"
+                          fontWeight="light"
+                          fontFamily="Gmarket Sans TTF"
+                        >
+                          {review.valley_name}
+                        </Text>
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
-              </Link>
-            ))}
-          </SimpleGrid>
+                </Link>
+              ))}
+            </SimpleGrid>
+          )}
         </Box>
       </Box>
       <TapBar />

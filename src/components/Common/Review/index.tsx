@@ -97,13 +97,15 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
       </Flex>
 
       <Box mt={4}>
-        <Flex overflowX="scroll" gap="4">
-          {data.image_urls.map((url: string, index: number) => (
-            <Box key={index} minW="300px">
-              <ReviewImage src={url} />
-            </Box>
-          ))}
-        </Flex>
+        {data.image_urls && data.image_urls.length > 0 && (
+          <Flex overflowX="scroll" gap="4">
+            {data.image_urls.map((url: string, index: number) => (
+              <Box key={index} minW="300px">
+                <ReviewImage src={url} />
+              </Box>
+            ))}
+          </Flex>
+        )}
       </Box>
 
       <Box mt="4">
@@ -113,19 +115,21 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
         <Text mt="2" fontFamily="Gmarket Sans TTF" fontWeight="light">
           {data.content}
         </Text>
-        <Flex mt="2">
-          {data.tag_names.map((tag: string, index: number) => (
-            <Text
-              key={index}
-              className="mr-2"
-              fontFamily="Gmarket Sans TTF"
-              fontWeight="light"
-              color="#1E4C28"
-            >
-              #{tag}
-            </Text>
-          ))}
-        </Flex>
+        {data.tag_names && data.tag_names.length > 0 && (
+          <Flex mt="2">
+            {data.tag_names.map((tag: string, index: number) => (
+              <Text
+                key={index}
+                className="mr-2"
+                fontFamily="Gmarket Sans TTF"
+                fontWeight="light"
+                color="#1E4C28"
+              >
+                #{tag}
+              </Text>
+            ))}
+          </Flex>
+        )}
       </Box>
     </Box>
   );

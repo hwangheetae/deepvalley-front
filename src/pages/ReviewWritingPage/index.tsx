@@ -131,8 +131,10 @@ const ReviewWritingPage: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      //   const uploadedImageUrls = await uploadImages(imageFiles);
+      // Create a FormData object
+      const formData = new FormData();
 
+      // Add review data as a JSON string
       const reviewData: ReviewWritingType = {
         title,
         rating,
@@ -143,18 +145,41 @@ const ReviewWritingPage: React.FC = () => {
         privacy,
         place_id: 'b',
         tag_names: tags,
-        // image_urls: uploadedImageUrls,
-        image_urls: [
-          'https://images.unsplash.com/photo-1719937206491-ed673f64be1f?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        ],
+        image_urls: [],
       };
+      formData.append('reviewPostRequest', JSON.stringify(reviewData));
 
-      await submitReview(reviewData);
+      imageFiles.forEach((file) => formData.append('imageUrls', file));
+
+      await submitReview(formData);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting review:', error);
     }
   };
+
+  //     const reviewData: ReviewWritingType = {
+  //       title,
+  //       rating,
+  //       content,
+  //       visited_date: visitedDate
+  //         ? visitedDate.toISOString().split('T')[0]
+  //         : '',
+  //       privacy,
+  //       place_id: 'b',
+  //       tag_names: tags,
+  //       // image_urls: uploadedImageUrls,
+  //       image_urls: [
+  //         'https://images.unsplash.com/photo-1719937206491-ed673f64be1f?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  //       ],
+  //     };
+
+  //     await submitReview(reviewData);
+  //     setIsSubmitted(true);
+  //   } catch (error) {
+  //     console.error('Error submitting review:', error);
+  //   }
+  // };
 
   if (isSubmitted) {
     return (

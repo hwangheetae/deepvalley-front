@@ -52,7 +52,7 @@ const router = createBrowserRouter([
     element: <ReviewPage />,
     loader: async ({ params }) => {
       // const reviewId = params.reviewId as string;
-      const reviewId = '834f2871-6cce-4c3a-9744-dede59d38be8';
+      const reviewId = 'cb7803a6-83f5-450b-801a-9e3819d07242';
       const data = await fetchReview(reviewId);
       queryClient.setQueryData(['reviewDetail', reviewId], data);
       return { reviewId, initialData: data };
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
     path: 'myPage',
     element: <MyPage />,
     loader: async () => {
-      const memberId = '실제 memberId 기입';
+      const memberId = 'admin@test.com';
       const reviews = await fetchReviews(memberId);
       queryClient.setQueryData(['reviews', memberId], reviews);
       return reviews;
