@@ -1,4 +1,4 @@
-import { Map } from 'react-kakao-maps-sdk';
+import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
 import { useState, useEffect } from 'react';
 import CustomMapMarker from '../CustomMapMarker';
 import Locations from '../Locations';
@@ -20,9 +20,8 @@ import TapBar from '../../../components/Common/TapBar';
 import { WbSunny, MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
 import { ValleysType, FacilityType } from '../../../types';
-import { fetchValleys } from '../../../api/ValleyApi';
+import { fetchValleys, fetchfacilities } from '../../../api/ValleyApi';
 import { useQuery } from '@tanstack/react-query';
-import { fetchfacility } from '../../../api/FacilityApi';
 
 interface MapBounds {
   swLat: number;
@@ -37,6 +36,7 @@ export const MapPage = () => {
   const theme = useTheme();
   const [bounds, setBounds] = useState<MapBounds | null>(null);
   const [visibleValleys, setVisibleValleys] = useState<ValleysType[]>([]);
+  const [positions, setPositions] = useState<ValleysType[]>([]);
 
   const {
     data: valleys = [],
@@ -56,8 +56,8 @@ export const MapPage = () => {
     error: errorFacilities,
     refetch: refetchFacilities,
   } = useQuery<FacilityType[], Error>({
-    queryKey: ['facilities', , location?.latitude, location?.longitude],
-    queryFn: () => fetchfacility(location!.latitude, location!.longitude),
+    queryKey: ['facilities', location?.latitude, location?.longitude],
+    queryFn: () => fetchfacilities(location!.latitude, location!.longitude),
     enabled: !!location,
     staleTime: 1000 * 60 * 5,
     retry: false,
@@ -75,6 +75,10 @@ export const MapPage = () => {
       setVisibleValleys(visible);
     }
   }, [bounds, valleys]);
+
+  useEffect(() => {
+    setPositions(valleys);
+  }, [valleys]);
 
   const handleBoundsChanged = (map: any) => {
     const bounds = map.getBounds();
@@ -116,6 +120,7 @@ export const MapPage = () => {
           center={{ lat: location.latitude, lng: location.longitude }}
           style={{ width: '100%', height: '100%' }}
           onBoundsChanged={handleBoundsChanged}
+          level={14}
         >
           <VStack
             spacing={4}
@@ -175,22 +180,24 @@ export const MapPage = () => {
             position={{ lat: location.latitude, lng: location.longitude }}
             label="현재위치"
           />
-          {valleys.map((valley) => (
-            <CustomMapMarker
-              key={valley.valley_id}
-              src={valley.thumbnail}
-              position={{ lat: valley.latitude, lng: valley.longitude }}
-              label={valley.name}
-            />
-          ))}
-          {facilities.map((facility) => (
+          <MarkerClusterer averageCenter={true} minLevel={10}>
+            {positions.map((valley) => (
+              <CustomMapMarker
+                key={valley.valley_id}
+                src={valley.thumbnail}
+                position={{ lat: valley.latitude, lng: valley.longitude }}
+                label={valley.name}
+              />
+            ))}
+          </MarkerClusterer>
+          {/* {facilities.map((facility) => (
             <CustomMapMarker
               key={facility.facility_id}
               src={facility.thumbnail}
               position={{ lat: facility.latitude, lng: facility.longitude }}
               label={facility.name}
             />
-          ))}
+          ))}시설들 데이터 아직 X */}
           <IconButton
             aria-label="현재 위치로 이동"
             icon={<MyLocation />}
