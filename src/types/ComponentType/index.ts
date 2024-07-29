@@ -23,6 +23,8 @@ export interface HeaderProps {
   title?: string;
   showMenuButton?: boolean;
   showBorderBottom?: boolean;
+  bg?: string;
+  MenuColor?: string;
 }
 export interface LayoutProps {
   children: ReactNode;

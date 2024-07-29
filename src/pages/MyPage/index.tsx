@@ -11,9 +11,9 @@ import {
 // import { useUserStore } from '주소'; //여기다가 유저데이터 store 넣으면 됨.
 import Layout from '../../components/Common/Layout';
 import InstaImage from '../../components/Common/Image/InstaImage';
-import { fetchReviews } from '../../api/ReviewsApi/ReviewsApi';
+import { fetchReviews } from '../../api/Review';
 import { Link } from 'react-router-dom';
-import { ReviewType } from '../../types/ReviewType/ReviewType';
+import { ReviewType } from '../../types/ReviewType';
 import ProfileImage from '../../components/Common/Image/ProfileImage';
 import valley1 from '../../../valley1.png';
 import TapBar from '../../components/Common/TapBar';
@@ -33,7 +33,6 @@ const MyPage: React.FC = () => {
     queryKey: ['reviews', memberId],
     queryFn: () => fetchReviews(memberId),
     initialData: reviews,
-    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {

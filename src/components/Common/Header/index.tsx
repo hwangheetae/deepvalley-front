@@ -8,6 +8,8 @@ const Header: FC<HeaderProps> = ({
   title,
   showMenuButton = false,
   showBorderBottom = false,
+  bg = 'white',
+  MenuColor = 'black',
 }) => {
   const navigate = useNavigate();
   const handleBackClick = () => {
@@ -19,7 +21,7 @@ const Header: FC<HeaderProps> = ({
       as="header"
       maxW="428px"
       w="full"
-      bg="white"
+      bg={bg}
       p={4}
       borderBottom={showBorderBottom ? '1px solid #e0e0e0' : 'none'}
       position="fixed"
@@ -32,6 +34,7 @@ const Header: FC<HeaderProps> = ({
           icon={<ChevronLeftIcon />}
           onClick={handleBackClick}
           variant="ghost"
+          color={MenuColor}
         />
         <Text fontSize="xl" fontWeight="bold">
           {title}

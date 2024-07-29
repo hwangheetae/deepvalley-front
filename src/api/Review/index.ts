@@ -1,10 +1,27 @@
-// // 해당부분이 User 03-a 맞나요?? 03-a 기준 재작성해놓았는데 확인부탁드립니다.
-// import basicClient from '../Auth/basicClient';
-// // memberId: string
-// // export const fetchReviews = async (body: {}) => {
-// //   return basicClient.get('api/member/${memberId}/review', body);
-// // };
+import basicClient from '../Auth/basicClient';
 
-// // export const fetchReview = async (body: {}) => {
-// //   return basicClient.get('/api/review/${reviewId}/detail', body);
-// // };
+export const fetchReviews = async (memberId: string) => {
+  const response = await basicClient.get(`api/member/${memberId}/review`);
+  return response.data;
+};
+
+export const fetchReview = async (reviewId: string) => {
+  const response = await basicClient.get(`/api/review/${reviewId}/detail`);
+  return response.data;
+};
+
+export const updateReview = async (reviewId: string, body: {}) => {
+  return basicClient.put(`api/review/${reviewId}`, body, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export const submitReview = async (body: {}) => {
+  return basicClient.post('api/review', body, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
