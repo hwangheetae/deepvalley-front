@@ -19,7 +19,6 @@ const HomePage: FC = () => {
   const { updateMe } = useMe();
   const { handleError } = useHandleError();
   const userResponse = async () => {
-    console.log('실행됨!');
     try {
       const response = await getUser();
       if (response.status === 200) {

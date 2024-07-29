@@ -6,9 +6,10 @@ import Layout from '../../../components/Common/Layout';
 import Logo from '../../../assets/images/Logo.png';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
-import { useToast } from '@chakra-ui/react';
 import { register } from '../../../api/Auth/AuthService';
 import useHandleError from '../../../hooks/useHandleError';
+import useSuccessToast from '../../../hooks/useSuccessToast';
+
 import {
   Flex,
   FormControl,
@@ -28,12 +29,10 @@ import {
   NICKNAME_CONFLICT_SERVER_MESSAGE,
   NICKNAME_CONFLICT_MESSAGE,
 } from '../../../constant/constant';
-
 const Register: FC = () => {
-  const toast = useToast();
   const navigate = useNavigate();
   const { handleError } = useHandleError();
-
+  const { successToast } = useSuccessToast();
   //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
     login_email: string;
@@ -43,14 +42,7 @@ const Register: FC = () => {
     try {
       const userData = await register(values);
       if (userData) {
-        toast({
-          title: '회원가입 성공!',
-          description: '로그인 하고 서비스를 계속 사용하세요.',
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
+        successToast('회원가입 성공!', '로그인 하고 서비스를 계속 사용하세요.');
         navigate('/login');
       }
     } catch (err: any) {

@@ -1,14 +1,13 @@
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { kakaoLoginSendToken } from '../../../../../api/Auth/AuthService';
-import { useToast } from '@chakra-ui/react';
 import { KAKAO_AUTH_ERROR_MESSAGE } from '../../../../../constant/constant';
 import useHandleError from '../../../../../hooks/useHandleError';
+import useSuccessToast from '../../../../../hooks/useSuccessToast';
 const SocialKakaoRedirectPage: FC = () => {
   const navigate = useNavigate();
-  const toast = useToast();
   const { handleError } = useHandleError();
-
+  const { successToast } = useSuccessToast();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -17,22 +16,13 @@ const SocialKakaoRedirectPage: FC = () => {
           const response = await kakaoLoginSendToken(code);
           if (response.status === 200) {
             localStorage.setItem('token', response.data.access_token);
-            console.log('카카오 로그인중!');
-            toast({
-              title: '로그인 성공!',
-              description: `로그인에 성공하였습니다.`,
-              status: 'success',
-              position: 'top-right',
-              isClosable: true,
-              duration: 5000,
-            });
+            successToast('로그인 성공!', '로그인에 성공하였습니다.');
             navigate('/');
           }
         }
       } catch (err: any) {
         if (err.response.status === 500) {
           handleError(KAKAO_AUTH_ERROR_MESSAGE);
-
           navigate('/login');
         }
       }

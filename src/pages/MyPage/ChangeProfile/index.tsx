@@ -30,6 +30,7 @@ import {
 } from '../../../constant/constant';
 import WithdrawalModal from '../WithdrawalModal';
 import useHandleError from '../../../hooks/useHandleError';
+import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const ChangeProfile: FC = () => {
   const toast = useToast();
@@ -37,36 +38,55 @@ const ChangeProfile: FC = () => {
   const { me, updateMe } = useMe();
   const [imgFile, setImgFile] = useState<string>(me.profile_image_url);
   const upload = useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const finalRef = useRef(null);
   const { handleError } = useHandleError();
-
+  const { successToast } = useSuccessToast();
   const imgUpload = () => {
     if (upload.current?.files) {
       const file = upload.current.files[0];
       setImgFile(URL.createObjectURL(file));
+      setFile(file);
     }
   };
 
   const handleSubmit = async (values: {
     name: string;
-    profile_image_url: string;
     description: string;
   }) => {
+    const formData = new FormData();
+    formData.append(
+      'profileRequest',
+      new Blob(
+        [
+          JSON.stringify({
+            name: values.name,
+            description: values.description,
+          }),
+        ],
+        {
+          type: 'application/json',
+        },
+      ),
+    );
+
+    if (file) {
+      formData.append('profileImage', file);
+    }
+
     try {
-      const response = await changeProfile(values);
+      const response = await changeProfile(formData);
       console.log(response);
       if (response.status === 200) {
-        updateMe(values);
-        toast({
-          title: '프로필 변경 성공!',
-          description: `프로필을 변경하였습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
+        updateMe({
+          ...values,
+          profile_image_url: imgFile,
         });
+        toast;
+        successToast('프로필 변경 성공!', `프로필을 변경하였습니다.`);
         navigate('/');
       }
     } catch (err: any) {

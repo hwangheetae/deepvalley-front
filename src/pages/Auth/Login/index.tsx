@@ -15,7 +15,6 @@ import {
   Image,
   Link,
   Text,
-  useToast,
 } from '@chakra-ui/react';
 import { login } from '../../../api/Auth/AuthService';
 import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
@@ -28,12 +27,12 @@ import {
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
 import useHandleError from '../../../hooks/useHandleError';
+import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const Login: FC = () => {
-  const toast = useToast();
   const navigate = useNavigate();
   const { handleError } = useHandleError();
-
+  const { successToast } = useSuccessToast();
   const handleSubmit = async (values: {
     login_email: string;
     password: string;
@@ -44,14 +43,7 @@ const Login: FC = () => {
         localStorage.setItem('token', response.data.access_token);
 
         navigate('/');
-        toast({
-          title: '로그인 성공!',
-          description: `로그인에 성공하였습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
+        successToast('로그인 성공!', '로그인에 성공하였습니다.');
       }
     } catch (err: any) {
       if (err.response.status === 400) {

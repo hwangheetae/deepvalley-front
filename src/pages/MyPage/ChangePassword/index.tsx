@@ -14,7 +14,6 @@ import {
   Input,
   Image,
   Text,
-  useToast,
 } from '@chakra-ui/react';
 import {
   INVALID_REUEST_BODY_MESSAGE,
@@ -26,11 +25,12 @@ import {
 import { passwordRegEx } from '../../../utils/Regex';
 import { Header } from '../../../components/Common';
 import useHandleError from '../../../hooks/useHandleError';
+import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const ChangePassword: FC = () => {
-  const toast = useToast();
   const navigate = useNavigate();
   const { handleError } = useHandleError();
+  const { successToast } = useSuccessToast();
   const handleSubmit = async (values: {
     old_password: string;
     new_password: string;
@@ -39,14 +39,7 @@ const ChangePassword: FC = () => {
       const response = await changePassword(values);
       console.log(response);
       if (response.status === 200) {
-        toast({
-          title: '비밀번호 변경 성공!',
-          description: `비밀번호를 변경하였습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
+        successToast('비밀번호 변경 성공!', `비밀번호를 변경하였습니다.`);
         navigate('/');
       }
     } catch (err: any) {

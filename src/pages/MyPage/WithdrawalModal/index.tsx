@@ -14,7 +14,6 @@ import {
   Button,
   Text,
   FormErrorMessage,
-  useToast,
 } from '@chakra-ui/react';
 import { useMe } from '../../../stores/meStore';
 import { membershipWithdrawal } from '../../../api/User';
@@ -25,7 +24,7 @@ import {
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
 import useHandleError from '../../../hooks/useHandleError';
-
+import useSuccessToast from '../../../hooks/useSuccessToast';
 interface WithdrawalModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -40,9 +39,9 @@ const WithdrawalModal: FC<WithdrawalModalProps> = ({
   finalRef,
 }) => {
   const { me } = useMe();
-  const toast = useToast();
   const navigate = useNavigate();
   const { handleError } = useHandleError();
+  const { successToast } = useSuccessToast();
   const handleSubmit = async (values: {
     login_email: string;
     password: string;
@@ -51,14 +50,6 @@ const WithdrawalModal: FC<WithdrawalModalProps> = ({
       console.log(values);
       const response = await membershipWithdrawal(values);
       if (response.status === 200) {
-        toast({
-          title: '회원탈퇴 성공!',
-          description: `회원탈퇴가 완료되었습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
         onClose();
         navigate('/WithdrawalSuccessPage');
       }
