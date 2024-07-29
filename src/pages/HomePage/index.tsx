@@ -30,7 +30,6 @@ const HomePage: FC = () => {
           profile_image_url: response.data.profile_image_url,
         };
         updateMe(fetchData);
-        localStorage.setItem('RememberMe', JSON.stringify(fetchData));
       }
     } catch (err: any) {
       if (err.response.status === 400) {
@@ -46,10 +45,7 @@ const HomePage: FC = () => {
   };
 
   useEffect(() => {
-    const rememberMe = localStorage.getItem('RememberMe');
-    if (!rememberMe) {
-      userResponse();
-    }
+    userResponse();
   }, []);
 
   return (
