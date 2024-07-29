@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
@@ -20,20 +20,27 @@ import {
   useToast,
   Textarea,
   Box,
+  Button,
+  useDisclosure,
 } from '@chakra-ui/react';
 import {
   INVALID_REUEST_BODY_MESSAGE,
   ERROR_MESSAGE_404,
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
+import WithdrawalModal from '../WithdrawalModal';
+import useHandleError from '../../../hooks/useHandleError';
 
 const ChangeProfile: FC = () => {
-  const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();
   const { me, updateMe } = useMe();
   const [imgFile, setImgFile] = useState<string>(me.profile_image_url);
   const upload = useRef<HTMLInputElement | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = useRef(null);
+  const finalRef = useRef(null);
+  const { handleError } = useHandleError();
 
   const imgUpload = () => {
     if (upload.current?.files) {
@@ -65,29 +72,18 @@ const ChangeProfile: FC = () => {
     } catch (err: any) {
       console.log(err);
       if (err.response.status === 400) {
-        setError(INVALID_REUEST_BODY_MESSAGE);
+        handleError(INVALID_REUEST_BODY_MESSAGE);
       }
       if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
+        handleError(ERROR_MESSAGE_404);
       }
 
       if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
+        handleError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };
-  useEffect(() => {
-    if (error !== null) {
-      toast({
-        title: '에러!',
-        description: error,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-    }
-  }, [error, toast]);
+
   return (
     <Layout>
       <Header />
@@ -202,6 +198,23 @@ const ChangeProfile: FC = () => {
             </form>
           )}
         </Formik>
+        <Button
+          variant="link"
+          colorScheme="gray"
+          fontWeight="light"
+          size="xs"
+          onClick={onOpen}
+          position="absolute"
+          bottom="100px"
+        >
+          회원탈퇴
+        </Button>
+        <WithdrawalModal
+          isOpen={isOpen}
+          onClose={onClose}
+          initialRef={initialRef}
+          finalRef={finalRef}
+        />
       </Flex>
     </Layout>
   );

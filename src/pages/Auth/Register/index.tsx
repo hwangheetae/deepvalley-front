@@ -1,10 +1,14 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
 import Logo from '../../../assets/images/Logo.png';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
+import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
+import { useToast } from '@chakra-ui/react';
+import { register } from '../../../api/Auth/AuthService';
+import useHandleError from '../../../hooks/useHandleError';
 import {
   Flex,
   FormControl,
@@ -15,9 +19,6 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
-import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
-import { useToast } from '@chakra-ui/react';
-import { register } from '../../../api/Auth/AuthService';
 import {
   INVALID_REQUEST_EMAIL_OR_PASSWORD,
   ERROR_MESSAGE_404,
@@ -29,9 +30,10 @@ import {
 } from '../../../constant/constant';
 
 const Register: FC = () => {
-  const [error, setError] = useState<string | null>(null);
   const toast = useToast();
   const navigate = useNavigate();
+  const { handleError } = useHandleError();
+
   //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
     login_email: string;
@@ -53,36 +55,25 @@ const Register: FC = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
+        handleError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }
       if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
+        handleError(ERROR_MESSAGE_404);
       }
 
       if (err.response.status === 409) {
         if (err.response.data === EMAIL_CONFLICT_SERVER_MESSAGE) {
-          setError(EMAIL_CONFLICT_MESSAGE);
+          handleError(EMAIL_CONFLICT_MESSAGE);
         }
         if (err.response.data === NICKNAME_CONFLICT_SERVER_MESSAGE) {
-          setError(NICKNAME_CONFLICT_MESSAGE);
+          handleError(NICKNAME_CONFLICT_MESSAGE);
         }
       }
       if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
+        handleError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };
-  useEffect(() => {
-    if (error !== null)
-      toast({
-        title: '에러!',
-        description: `${error}`,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-  }, [error]);
 
   return (
     <Layout>

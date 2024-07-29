@@ -25,6 +25,9 @@ export const changePassword = async (body: {
 //body =>
 // "login_email" : "string"
 // "password": "string",
-export const membershipWithdrawal = async (body: {}) => {
-  return basicClient.delete('/api/member', body);
+export const membershipWithdrawal = async (body: {
+  login_email: string;
+  password: string;
+}) => {
+  return basicClient.delete('/api/member', { data: body });
 };
