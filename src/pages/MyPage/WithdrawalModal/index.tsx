@@ -24,7 +24,6 @@ import {
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
 import useHandleError from '../../../hooks/useHandleError';
-import useSuccessToast from '../../../hooks/useSuccessToast';
 interface WithdrawalModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -41,7 +40,6 @@ const WithdrawalModal: FC<WithdrawalModalProps> = ({
   const { me } = useMe();
   const navigate = useNavigate();
   const { handleError } = useHandleError();
-  const { successToast } = useSuccessToast();
   const handleSubmit = async (values: {
     login_email: string;
     password: string;

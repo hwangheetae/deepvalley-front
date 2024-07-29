@@ -46,6 +46,9 @@ const router = createBrowserRouter([
     // errorElement: <ErrorPage />
   },
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
+  { path: '/register', element: <Register /> },
+  { path: '/logout', element: <Logout /> },
+
   {
     path: 'review/:reviewId',
     element: <ReviewPage />,
@@ -66,11 +69,31 @@ const router = createBrowserRouter([
       return reviews;
     },
   },
-  { path: '/register', element: <Register /> },
-  { path: '/logout', element: <Logout /> },
-  { path: '/ChangePassword', element: <ChangePassword /> },
-  { path: '/ChangeProfile', element: <ChangeProfile /> },
-  { path: '/WithdrawalSuccessPage', element: <WithdrawalSuccessPage /> },
+
+  {
+    path: '/ChangePassword',
+    element: (
+      <PrivateRoute>
+        <ChangePassword />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/ChangeProfile',
+    element: (
+      <PrivateRoute>
+        <ChangeProfile />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/WithdrawalSuccessPage',
+    element: (
+      <PrivateRoute>
+        <WithdrawalSuccessPage />
+      </PrivateRoute>
+    ),
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
