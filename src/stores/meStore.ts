@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
 export const initialMe = {
   created_date: '1970-01-01T00:00:00',
@@ -21,21 +20,14 @@ interface MeState {
   reset: () => void;
 }
 
-export const useMe = create<MeState>()(
-  persist(
-    (set) => ({
-      me: initialMe,
-      updateMe: (data) =>
-        set((state) => ({
-          me: {
-            ...state.me,
-            ...data,
-          },
-        })),
-      reset: () => set({ me: initialMe }),
-    }),
-    {
-      name: 'RememberMe', // 저장소 이름
-    },
-  ),
-);
+export const useMe = create<MeState>()((set) => ({
+  me: initialMe,
+  updateMe: (data) =>
+    set((state) => ({
+      me: {
+        ...state.me,
+        ...data,
+      },
+    })),
+  reset: () => set({ me: initialMe }),
+}));
