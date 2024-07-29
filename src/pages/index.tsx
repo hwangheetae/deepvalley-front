@@ -4,6 +4,7 @@ export { default as MyPage } from './MyPage';
 export { default as ChangePassword } from './MyPage/ChangePassword';
 export { default as ChangeProfile } from './MyPage/ChangeProfile';
 export { default as ReviewPage } from './ReviewPage';
-export { default as ImageUploadTest } from './MyPage/ImageUploadTest';
+export { default as WithdrawalModal } from './MyPage/WithdrawalModal';
+export { default as WithdrawalSuccessPage } from './MyPage/WithdrawalSuccessPage';
 export { default as ReviewFixPage } from './ReviewFixPage';
 export { default as ReviewWritingPage } from './ReviewWritingPage';
