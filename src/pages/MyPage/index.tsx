@@ -8,7 +8,7 @@ import {
   SimpleGrid,
   Divider,
 } from '@chakra-ui/react';
-// import { useUserStore } from '주소'; //여기다가 유저데이터 store 넣으면 됨.
+import { useMe } from '../../stores/meStore';
 import Layout from '../../components/Common/Layout';
 import InstaImage from '../../components/Common/Image/InstaImage';
 import { fetchReviews } from '../../api/Review';
@@ -20,18 +20,18 @@ import TapBar from '../../components/Common/TapBar';
 import Header from '../../components/Common/Header';
 
 const MyPage: React.FC = () => {
+  const { me } = useMe();
   const reviews = useLoaderData() as ReviewType[];
 
-  const login_email = 'dlwoqls4280@naver.com';
-  const nickname = '이재빈';
-  const profile_image_url = valley1; // 사용할 이미지 URL
+  const login_email = me.login_email;
+  const nickname = me.name;
+  const profile_image_url = me.profile_image_url; // 사용할 이미지 URL
 
-  const memberId = login_email;
   const toast = useToast();
 
   const { data, error, isLoading } = useQuery<ReviewType[]>({
-    queryKey: ['reviews', memberId],
-    queryFn: () => fetchReviews(memberId),
+    queryKey: ['reviews', login_email],
+    queryFn: () => fetchReviews(login_email),
     initialData: reviews,
   });
 

@@ -1,7 +1,7 @@
 import basicClient from '../Auth/basicClient';
 
-export const fetchReviews = async (memberId: string) => {
-  const response = await basicClient.get(`api/member/${memberId}/review`);
+export const fetchReviews = async (login_email: string) => {
+  const response = await basicClient.get(`api/member/${login_email}/review`);
   return response.data;
 };
 
@@ -10,18 +10,18 @@ export const fetchReview = async (reviewId: string) => {
   return response.data;
 };
 
-export const updateReview = async (reviewId: string, body: {}) => {
-  return basicClient.put(`api/review/${reviewId}`, body, {
+export const updateReview = async (reviewId: string, formData: FormData) => {
+  return basicClient.put(`api/review/${reviewId}`, formData, {
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
   });
 };
 
-export const submitReview = async (body: {}) => {
-  return basicClient.post('api/review', body, {
+export const submitReview = async (formData: FormData) => {
+  return basicClient.post('api/review', formData, {
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
     },
   });
 };

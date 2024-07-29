@@ -131,10 +131,8 @@ const ReviewWritingPage: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      // Create a FormData object
       const formData = new FormData();
 
-      // Add review data as a JSON string
       const reviewData: ReviewWritingType = {
         title,
         rating,
@@ -143,11 +141,14 @@ const ReviewWritingPage: React.FC = () => {
           ? visitedDate.toISOString().split('T')[0]
           : '',
         privacy,
-        place_id: 'b',
+        place_id: 'idA',
         tag_names: tags,
         image_urls: [],
       };
-      formData.append('reviewPostRequest', JSON.stringify(reviewData));
+      const reviewDataBlob = new Blob([JSON.stringify(reviewData)], {
+        type: 'application/json',
+      });
+      formData.append('reviewPostRequest', reviewDataBlob);
 
       imageFiles.forEach((file) => formData.append('imageUrls', file));
 

@@ -21,6 +21,7 @@ import Logout from './pages/Auth/Logout/index.tsx';
 import { ChangeProfile } from './pages/index.tsx';
 import ReviewWritingPage from './pages/ReviewWritingPage/index.tsx';
 import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
+import { useMe } from './stores/meStore.ts';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -62,7 +63,8 @@ const router = createBrowserRouter([
     path: 'myPage',
     element: <MyPage />,
     loader: async () => {
-      const memberId = 'admin@test.com';
+      const { me } = useMe.getState();
+      const memberId = me.login_email;
       const reviews = await fetchReviews(memberId);
       queryClient.setQueryData(['reviews', memberId], reviews);
       return reviews;
@@ -81,7 +83,8 @@ const router = createBrowserRouter([
     path: '/reviewUpdate/:reviewId',
     element: <ReviewFixpage />,
     loader: async ({ params }) => {
-      const { reviewId } = params;
+      // const { reviewId } = params;
+      const reviewId = 'db6e65ef-1781-4d81-8833-9cd60dd37052';
       if (!reviewId) throw new Error('Review ID is required');
       const review = await fetchReview(reviewId);
       return { review, reviewId };
