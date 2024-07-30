@@ -12,7 +12,7 @@ import { fetchReview } from './api/Review/index.ts';
 import { fetchReviews } from './api/Review/index.ts';
 import MyPage from './pages/MyPage/index.tsx';
 import Login from './pages/Auth/Login';
-import theme from './theme'; // 추가된 라인
+import theme from './theme';
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import SocialKakaoRedirectPage from './pages/Auth/SocialLogin/KaKao/SocialKakaoRedirectPage/index.tsx';
@@ -80,10 +80,10 @@ const router = createBrowserRouter([
     path: 'review/:reviewId',
     element: <ReviewPage />,
     loader: async ({ params }) => {
-      const review_id = params.review_id as string;
-      const data = await fetchReview(review_id);
-      queryClient.setQueryData(['reviewDetail', review_id], data);
-      return { reviewId: review_id, initialData: data };
+      const reviewId = params.reviewId as string;
+      const data = await fetchReview(reviewId);
+      queryClient.setQueryData(['reviewDetail', reviewId], data);
+      return { reviewId: reviewId, initialData: data };
     },
   },
   {

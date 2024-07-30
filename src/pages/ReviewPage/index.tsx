@@ -20,7 +20,7 @@ const ReviewPage: React.FC = () => {
   const handleDelete = async () => {
     try {
       await deleteReview(reviewId);
-      setIsDeleted(true); // 삭제 성공 시 상태 업데이트
+      setIsDeleted(true);
     } catch (error) {
       toast({
         title: '삭제 실패',
