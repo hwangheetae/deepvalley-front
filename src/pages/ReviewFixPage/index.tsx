@@ -138,6 +138,8 @@ const ReviewFixPage: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
+      const formData = new FormData();
+
       const reviewData: ReviewUpdateType = {
         title,
         rating,
@@ -150,8 +152,14 @@ const ReviewFixPage: React.FC = () => {
         tag_names: tags,
         image_urls: imageUrls,
       };
+      const reviewDataBlob = new Blob([JSON.stringify(reviewData)], {
+        type: 'application/json',
+      });
+      formData.append('reviewPostRequest', reviewDataBlob);
 
-      await updateReview(reviewId, reviewData);
+      imageFiles.forEach((file) => formData.append('imageUrls', file));
+
+      await updateReview(reviewId, formData);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error updating review:', error);

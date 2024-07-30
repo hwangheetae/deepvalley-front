@@ -7,22 +7,22 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage/index.tsx';
-
 import { ChangePassword, ReviewPage } from './pages/index.tsx';
 import { fetchReview } from './api/Review/index.ts';
 import { fetchReviews } from './api/Review/index.ts';
 import MyPage from './pages/MyPage/index.tsx';
 import Login from './pages/Auth/Login';
-import theme from './theme'; // 추가된 라인
+import theme from './theme';
 import PrivateRoute from './routes/PrivateRoute';
 import Register from './pages/Auth/Register';
 import SocialKakaoRedirectPage from './pages/Auth/SocialLogin/KaKao/SocialKakaoRedirectPage/index.tsx';
 import MapPage from './pages/Map/MapPage/index.tsx';
 import Logout from './pages/Auth/Logout/index.tsx';
 import { ChangeProfile } from './pages/index.tsx';
-import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ReviewWritingPage from './pages/ReviewWritingPage/index.tsx';
 import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
+import { useMe } from './stores/meStore.ts';
+import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
 
 const queryClient = new QueryClient();
@@ -80,29 +80,37 @@ const router = createBrowserRouter([
     path: 'review/:reviewId',
     element: <ReviewPage />,
     loader: async ({ params }) => {
-      // const reviewId = params.reviewId as string;
-      const reviewId = '834f2871-6cce-4c3a-9744-dede59d38be8';
+      const reviewId = params.reviewId as string;
       const data = await fetchReview(reviewId);
       queryClient.setQueryData(['reviewDetail', reviewId], data);
-      return { reviewId, initialData: data };
+      return { reviewId: reviewId, initialData: data };
     },
   },
   {
     path: 'myPage',
     element: <MyPage />,
     loader: async () => {
-      const memberId = '실제 memberId 기입';
-      const reviews = await fetchReviews(memberId);
-      queryClient.setQueryData(['reviews', memberId], reviews);
-      return reviews;
+      const { me } = useMe.getState();
+      const memberId = me.login_email;
+      const reviewsData = await fetchReviews(memberId);
+      queryClient.setQueryData(['reviews', memberId], reviewsData);
+      return reviewsData;
     },
   },
-
+  { path: '/register', element: <Register /> },
   {
     path: 'reviewWriting',
     element: (
       <PrivateRoute>
         <ReviewWritingPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/ChangePassword',
+    element: (
+      <PrivateRoute>
+        <ChangePassword />
       </PrivateRoute>
     ),
   },
@@ -116,7 +124,25 @@ const router = createBrowserRouter([
       return { review, reviewId };
     },
   },
-
+  { path: '/logout', element: <Logout /> },
+  { path: '/ChangePassword', element: <ChangePassword /> },
+  { path: '/ChangeProfile', element: <ChangeProfile /> },
+  {
+    path: '/ChangeProfile',
+    element: (
+      <PrivateRoute>
+        <ChangeProfile />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/WithdrawalSuccessPage',
+    element: (
+      <PrivateRoute>
+        <WithdrawalSuccessPage />
+      </PrivateRoute>
+    ),
+  },
   { path: '/ValleyPage', element: <ValleyPage /> },
 ]);
 

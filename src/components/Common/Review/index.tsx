@@ -6,10 +6,9 @@ import ReviewImage from '../Image/ReviewImage';
 import CustomButton from '../CustomButton';
 import { ReviewType } from '../../../types/ReviewType';
 import { fetchReview } from '../../../api/Review/index';
-import valley1 from '../../../../valley1.png';
+import { useMe } from '../../../stores/meStore';
+import PasswordChangeLogo from '../../../assets/images/PasswordChangeLogo.png';
 
-// import { useUserStore } from '../../../stores/userStore'; // 추후 구현
-// 여기서 user이름이랑 프로필 사진 받아와야함
 import 'tailwindcss/tailwind.css';
 
 interface ReviewProps {
@@ -19,7 +18,7 @@ interface ReviewProps {
 
 const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
   const toast = useToast();
-  // const username = useUserStore((state) => state.username); // 추후 구현
+  const { me } = useMe();
 
   const { data, error, isLoading } = useQuery<ReviewType>({
     queryKey: ['reviewDetail', reviewId],
@@ -53,7 +52,7 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
           <Box mb={4}>
-            <ProfileImage src={valley1} />
+            <ProfileImage src={me.profile_image_url || PasswordChangeLogo} />
           </Box>
           <Box ml="4">
             <Text
@@ -62,7 +61,7 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
               fontFamily="Gmarket Sans TTF"
               color="black"
             >
-              김구름
+              {me.name}
             </Text>
             <Text
               fontSize="10px"
@@ -97,13 +96,15 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
       </Flex>
 
       <Box mt={4}>
-        <Flex overflowX="scroll" gap="4">
-          {data.image_urls.map((url: string, index: number) => (
-            <Box key={index} minW="300px">
-              <ReviewImage src={url} />
-            </Box>
-          ))}
-        </Flex>
+        {data.image_urls && data.image_urls.length > 0 && (
+          <Flex overflowX="scroll" gap="4">
+            {data.image_urls.map((url: string, index: number) => (
+              <Box key={index} minW="300px">
+                <ReviewImage src={url} />
+              </Box>
+            ))}
+          </Flex>
+        )}
       </Box>
 
       <Box mt="4">
@@ -113,19 +114,21 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
         <Text mt="2" fontFamily="Gmarket Sans TTF" fontWeight="light">
           {data.content}
         </Text>
-        <Flex mt="2">
-          {data.tag_names.map((tag: string, index: number) => (
-            <Text
-              key={index}
-              className="mr-2"
-              fontFamily="Gmarket Sans TTF"
-              fontWeight="light"
-              color="#1E4C28"
-            >
-              #{tag}
-            </Text>
-          ))}
-        </Flex>
+        {data.tag_names && data.tag_names.length > 0 && (
+          <Flex mt="2">
+            {data.tag_names.map((tag: string, index: number) => (
+              <Text
+                key={index}
+                className="mr-2"
+                fontFamily="Gmarket Sans TTF"
+                fontWeight="light"
+                color="#1E4C28"
+              >
+                #{tag}
+              </Text>
+            ))}
+          </Flex>
+        )}
       </Box>
     </Box>
   );
