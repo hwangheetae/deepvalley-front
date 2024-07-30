@@ -7,6 +7,7 @@ import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
 import Logo from '../../../assets/images/Logo.png';
 import { login } from '../../../api/Auth/AuthService';
+import { useMutation } from '@tanstack/react-query';
 import {
   Flex,
   FormControl,
@@ -30,18 +31,15 @@ const Login: FC = () => {
   const navigate = useNavigate();
   const { errorToast } = useHandleError();
   const { successToast } = useSuccessToast();
-  const handleSubmit = async (values: {
-    login_email: string;
-    password: string;
-  }) => {
-    try {
-      const response = await login(values);
-      if (response.status === 200) {
-        localStorage.setItem('token', response.data.access_token);
-        navigate('/');
-        successToast('로그인 성공!', '로그인에 성공하였습니다.');
-      }
-    } catch (err: any) {
+
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (response) => {
+      localStorage.setItem('token', response.data.access_token);
+      navigate('/');
+      successToast('로그인 성공!', '로그인에 성공하였습니다.');
+    },
+    onError: (err: any) => {
       if (err.response.status === 400) {
         errorToast(잘못된요청);
       }
@@ -54,7 +52,11 @@ const Login: FC = () => {
       if (err.response.status === 500) {
         errorToast(서버오류);
       }
-    }
+    },
+  });
+
+  const handleSubmit = (values: { login_email: string; password: string }) => {
+    mutation.mutate(values);
   };
 
   return (

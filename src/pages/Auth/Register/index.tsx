@@ -9,7 +9,7 @@ import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
 import { register } from '../../../api/Auth/AuthService';
 import useErrorToast from '../../../hooks/useErrorToast';
 import useSuccessToast from '../../../hooks/useSuccessToast';
-
+import { useMutation } from '@tanstack/react-query';
 import {
   Flex,
   FormControl,
@@ -33,19 +33,15 @@ const Register: FC = () => {
   const navigate = useNavigate();
   const { errorToast } = useErrorToast();
   const { successToast } = useSuccessToast();
-  //db 명칭상 이유로 nickname => name
-  const handleSubmit = async (values: {
-    login_email: string;
-    name: string;
-    password: string;
-  }) => {
-    try {
-      const response = await register(values);
-      if (response.status === 201) {
-        successToast('회원가입 성공!', '로그인 하고 서비스를 계속 사용하세요.');
-        navigate('/login');
-      }
-    } catch (err: any) {
+
+  const mutation = useMutation({
+    mutationFn: register,
+    onSuccess: (response) => {
+      localStorage.setItem('token', response.data.access_token);
+      navigate('/');
+      successToast('로그인 성공!', '로그인에 성공하였습니다.');
+    },
+    onError: (err: any) => {
       if (err.response.status === 400) {
         errorToast(잘못된요청);
       }
@@ -60,7 +56,15 @@ const Register: FC = () => {
       if (err.response.status === 500) {
         errorToast(서버오류);
       }
-    }
+    },
+  });
+
+  const handleSubmit = (values: {
+    login_email: string;
+    name: string;
+    password: string;
+  }) => {
+    mutation.mutate(values);
   };
 
   return (
