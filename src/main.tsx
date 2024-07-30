@@ -8,7 +8,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage/index.tsx';
 
-import { ChangePassword, ImageUploadTest, ReviewPage } from './pages/index.tsx';
+import { ChangePassword, ReviewPage } from './pages/index.tsx';
 import { fetchReview } from './api/Review/index.ts';
 import { fetchReviews } from './api/Review/index.ts';
 import MyPage from './pages/MyPage/index.tsx';
@@ -36,22 +36,45 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  //EX: loader, errorElement 예시
+  // 데이터 패칭 및 로더 가능
+  // loader: rootLoader,
 
-  { path: '/mappage', element: <MapPage /> },
+  //에러처리 페이지 ex)404
+  // errorElement: <ErrorPage />
   {
     path: '/login',
     element: <Login />,
-
-    //EX: loader, errorElement 예시
-    // 데이터 패칭 및 로더 가능
-    // loader: rootLoader,
-
-    //에러처리 페이지 ex)404
-    // errorElement: <ErrorPage />
   },
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
   { path: '/register', element: <Register /> },
   { path: '/logout', element: <Logout /> },
+
+  {
+    path: '/ChangePassword',
+    element: (
+      <PrivateRoute>
+        <ChangePassword />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/ChangeProfile',
+    element: (
+      <PrivateRoute>
+        <ChangeProfile />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/WithdrawalSuccessPage',
+    element: (
+      <PrivateRoute>
+        <WithdrawalSuccessPage />
+      </PrivateRoute>
+    ),
+  },
+  { path: '/mappage', element: <MapPage /> },
 
   {
     path: 'review/:reviewId',
@@ -75,8 +98,6 @@ const router = createBrowserRouter([
     },
   },
 
-  { path: '/register', element: <Register /> },
-
   {
     path: 'reviewWriting',
     element: (
@@ -86,7 +107,6 @@ const router = createBrowserRouter([
     ),
   },
   {
-
     path: '/reviewUpdate/:reviewId',
     element: <ReviewFixpage />,
     loader: async ({ params }) => {
@@ -96,20 +116,8 @@ const router = createBrowserRouter([
       return { review, reviewId };
     },
   },
-  { path: '/logout', element: <Logout /> },
-  { path: '/ChangePassword', element: <ChangePassword /> },
-  { path: '/ChangeProfile', element: <ChangeProfile /> },
-  { path: '/ImageUploadTest', element: <ImageUploadTest /> },
 
   { path: '/ValleyPage', element: <ValleyPage /> },
-        {
-    path: '/WithdrawalSuccessPage',
-    element: (
-      <PrivateRoute>
-        <WithdrawalSuccessPage />
-      </PrivateRoute>
-    ),
-  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

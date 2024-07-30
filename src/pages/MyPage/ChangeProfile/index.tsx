@@ -79,7 +79,6 @@ const ChangeProfile: FC = () => {
 
     try {
       const response = await changeProfile(formData);
-      console.log(response);
       if (response.status === 200) {
         updateMe({
           ...values,
@@ -90,7 +89,6 @@ const ChangeProfile: FC = () => {
         navigate('/');
       }
     } catch (err: any) {
-      console.log(err);
       if (err.response.status === 400) {
         handleError(INVALID_REUEST_BODY_MESSAGE);
       }
