@@ -8,11 +8,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { FC, useEffect } from 'react';
 import { getUser } from '../../api/User';
 import { useMe } from '../../stores/meStore';
-import {
-  INVALID_REUEST_BODY_MESSAGE,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-} from '../../constant/constant';
+import { 에러404, 서버오류, 잘못된요청 } from '../../constant/constant';
 import useErrorToast from '../../hooks/useErrorToast';
 
 const HomePage: FC = () => {
@@ -33,13 +29,13 @@ const HomePage: FC = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        errorToast(INVALID_REUEST_BODY_MESSAGE);
+        errorToast(잘못된요청);
       }
       if (err.response.status === 404) {
-        errorToast(ERROR_MESSAGE_404);
+        errorToast(에러404);
       }
       if (err.response.status === 500) {
-        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(서버오류);
       }
     }
   };

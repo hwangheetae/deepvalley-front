@@ -18,12 +18,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import {
-  INVALID_REUEST_BODY_SERVER_MESSAGE,
-  INVALID_REUEST_BODY_MESSAGE,
-  INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE,
-  INVALID_REQUEST_EMAIL_OR_PASSWORD,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
+  잘못된요청,
+  잘못된비밀번호,
+  에러404,
+  서버오류,
 } from '../../../constant/constant';
 import useHandleError from '../../../hooks/useErrorToast';
 import useSuccessToast from '../../../hooks/useSuccessToast';
@@ -38,28 +36,23 @@ const Login: FC = () => {
   }) => {
     try {
       const response = await login(values);
-      if (response.data.access_token) {
+      if (response.status === 200) {
         localStorage.setItem('token', response.data.access_token);
-
         navigate('/');
         successToast('로그인 성공!', '로그인에 성공하였습니다.');
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        if (err.response.data === INVALID_REUEST_BODY_SERVER_MESSAGE) {
-          errorToast(INVALID_REUEST_BODY_MESSAGE);
-        }
-        if (
-          err.response.data === INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
-        ) {
-          errorToast(INVALID_REQUEST_EMAIL_OR_PASSWORD);
-        }
+        errorToast(잘못된요청);
+      }
+      if (err.response.status === 401) {
+        errorToast(잘못된비밀번호);
       }
       if (err.response.status === 404) {
-        errorToast(ERROR_MESSAGE_404);
+        errorToast(에러404);
       }
       if (err.response.status === 500) {
-        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(서버오류);
       }
     }
   };

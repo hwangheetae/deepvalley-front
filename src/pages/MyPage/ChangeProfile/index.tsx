@@ -17,23 +17,17 @@ import {
   Input,
   Image,
   Text,
-  useToast,
   Textarea,
   Box,
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
-import {
-  INVALID_REUEST_BODY_MESSAGE,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-} from '../../../constant/constant';
+import { 잘못된요청, 에러404, 서버오류 } from '../../../constant/constant';
 import WithdrawalModal from '../WithdrawalModal';
 import useErrorToast from '../../../hooks/useErrorToast';
 import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const ChangeProfile: FC = () => {
-  const toast = useToast();
   const navigate = useNavigate();
   const { me, updateMe } = useMe();
   const [imgFile, setImgFile] = useState<string>(me.profile_image_url);
@@ -84,20 +78,18 @@ const ChangeProfile: FC = () => {
           ...values,
           profile_image_url: imgFile,
         });
-        toast;
         successToast('프로필 변경 성공!', `프로필을 변경하였습니다.`);
         navigate('/');
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        errorToast(INVALID_REUEST_BODY_MESSAGE);
+        errorToast(잘못된요청);
       }
       if (err.response.status === 404) {
-        errorToast(ERROR_MESSAGE_404);
+        errorToast(에러404);
       }
-
       if (err.response.status === 500) {
-        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(서버오류);
       }
     }
   };

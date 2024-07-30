@@ -16,11 +16,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 import {
-  INVALID_REUEST_BODY_MESSAGE,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-  INVALID_CURRENT_PASSWORD,
-  SAME_OLD_AND_NEW_PASSWORD,
+  잘못된요청,
+  잘못된비밀번호,
+  에러404,
+  서로같은비밀번호설정,
+  서버오류,
 } from '../../../constant/constant';
 import { passwordRegEx } from '../../../utils/Regex';
 import { Header } from '../../../components/Common';
@@ -43,19 +43,19 @@ const ChangePassword: FC = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        errorToast(INVALID_REUEST_BODY_MESSAGE);
+        errorToast(잘못된요청);
       }
       if (err.response.status === 401) {
-        errorToast(INVALID_CURRENT_PASSWORD);
+        errorToast(잘못된비밀번호);
       }
       if (err.response.status === 404) {
-        errorToast(ERROR_MESSAGE_404);
+        errorToast(에러404);
       }
       if (err.response.status === 422) {
-        errorToast(SAME_OLD_AND_NEW_PASSWORD);
+        errorToast(서로같은비밀번호설정);
       }
       if (err.response.status === 500) {
-        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(서버오류);
       }
     }
   };

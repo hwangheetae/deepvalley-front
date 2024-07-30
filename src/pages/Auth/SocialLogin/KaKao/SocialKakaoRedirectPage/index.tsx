@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { kakaoLoginSendToken } from '../../../../../api/Auth/AuthService';
-import { KAKAO_AUTH_ERROR_MESSAGE } from '../../../../../constant/constant';
+import { 서버오류 } from '../../../../../constant/constant';
 import useErrorToast from '../../../../../hooks/useErrorToast';
 import useSuccessToast from '../../../../../hooks/useSuccessToast';
 const SocialKakaoRedirectPage: FC = () => {
@@ -22,7 +22,7 @@ const SocialKakaoRedirectPage: FC = () => {
         }
       } catch (err: any) {
         if (err.response.status === 500) {
-          errorToast(KAKAO_AUTH_ERROR_MESSAGE);
+          errorToast(서버오류);
           navigate('/login');
         }
       }
