@@ -131,7 +131,7 @@ const ReviewWritingPage: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      //   const uploadedImageUrls = await uploadImages(imageFiles);
+      const formData = new FormData();
 
       const reviewData: ReviewWritingType = {
         title,
@@ -141,15 +141,18 @@ const ReviewWritingPage: React.FC = () => {
           ? visitedDate.toISOString().split('T')[0]
           : '',
         privacy,
-        place_id: 'b',
+        place_id: 'idA',
         tag_names: tags,
-        // image_urls: uploadedImageUrls,
-        image_urls: [
-          'https://images.unsplash.com/photo-1719937206491-ed673f64be1f?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        ],
+        image_urls: [],
       };
+      const reviewDataBlob = new Blob([JSON.stringify(reviewData)], {
+        type: 'application/json',
+      });
+      formData.append('reviewPostRequest', reviewDataBlob);
 
-      await submitReview(reviewData);
+      imageFiles.forEach((file) => formData.append('imageUrls', file));
+
+      await submitReview(formData);
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting review:', error);
@@ -261,7 +264,7 @@ const ReviewWritingPage: React.FC = () => {
             <Button
               as="label"
               htmlFor="image-upload"
-              ml="190px"
+              ml="180px"
               mt="5px"
               borderRadius="full"
               fontWeight="light"

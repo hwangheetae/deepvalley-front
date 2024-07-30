@@ -1,10 +1,15 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
 import Logo from '../../../assets/images/Logo.png';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
+import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
+import { register } from '../../../api/Auth/AuthService';
+import useErrorToast from '../../../hooks/useErrorToast';
+import useSuccessToast from '../../../hooks/useSuccessToast';
+
 import {
   Flex,
   FormControl,
@@ -15,9 +20,6 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
-import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
-import { useToast } from '@chakra-ui/react';
-import { register } from '../../../api/Auth/AuthService';
 import {
   INVALID_REQUEST_EMAIL_OR_PASSWORD,
   ERROR_MESSAGE_404,
@@ -27,11 +29,10 @@ import {
   NICKNAME_CONFLICT_SERVER_MESSAGE,
   NICKNAME_CONFLICT_MESSAGE,
 } from '../../../constant/constant';
-
 const Register: FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
   const navigate = useNavigate();
+  const { errorToast } = useErrorToast();
+  const { successToast } = useSuccessToast();
   //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
     login_email: string;
@@ -41,48 +42,30 @@ const Register: FC = () => {
     try {
       const userData = await register(values);
       if (userData) {
-        toast({
-          title: '회원가입 성공!',
-          description: '로그인 하고 서비스를 계속 사용하세요.',
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
+        successToast('회원가입 성공!', '로그인 하고 서비스를 계속 사용하세요.');
         navigate('/login');
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
+        errorToast(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }
       if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
+        errorToast(ERROR_MESSAGE_404);
       }
 
       if (err.response.status === 409) {
         if (err.response.data === EMAIL_CONFLICT_SERVER_MESSAGE) {
-          setError(EMAIL_CONFLICT_MESSAGE);
+          errorToast(EMAIL_CONFLICT_MESSAGE);
         }
         if (err.response.data === NICKNAME_CONFLICT_SERVER_MESSAGE) {
-          setError(NICKNAME_CONFLICT_MESSAGE);
+          errorToast(NICKNAME_CONFLICT_MESSAGE);
         }
       }
       if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };
-  useEffect(() => {
-    if (error !== null)
-      toast({
-        title: '에러!',
-        description: `${error}`,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-  }, [error]);
 
   return (
     <Layout>

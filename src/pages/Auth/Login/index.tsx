@@ -1,11 +1,12 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { Formik, Field } from 'formik';
-import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
-import Logo from '../../../assets/images/Logo.png';
+import CustomButton from '../../../components/Common/CustomButton';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
+import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
+import Logo from '../../../assets/images/Logo.png';
+import { login } from '../../../api/Auth/AuthService';
 import {
   Flex,
   FormControl,
@@ -15,10 +16,7 @@ import {
   Image,
   Link,
   Text,
-  useToast,
 } from '@chakra-ui/react';
-import { login } from '../../../api/Auth/AuthService';
-import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
 import {
   INVALID_REUEST_BODY_SERVER_MESSAGE,
   INVALID_REUEST_BODY_MESSAGE,
@@ -27,11 +25,13 @@ import {
   ERROR_MESSAGE_404,
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
+import useHandleError from '../../../hooks/useErrorToast';
+import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const Login: FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
   const navigate = useNavigate();
+  const { errorToast } = useHandleError();
+  const { successToast } = useSuccessToast();
   const handleSubmit = async (values: {
     login_email: string;
     password: string;
@@ -42,48 +42,27 @@ const Login: FC = () => {
         localStorage.setItem('token', response.data.access_token);
 
         navigate('/');
-        toast({
-          title: '로그인 성공!',
-          description: `로그인에 성공하였습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
+        successToast('로그인 성공!', '로그인에 성공하였습니다.');
       }
     } catch (err: any) {
       if (err.response.status === 400) {
         if (err.response.data === INVALID_REUEST_BODY_SERVER_MESSAGE) {
-          setError(INVALID_REUEST_BODY_MESSAGE);
+          errorToast(INVALID_REUEST_BODY_MESSAGE);
         }
         if (
-          err.response.status ===
-          INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
+          err.response.data === INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
         ) {
-          setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
+          errorToast(INVALID_REQUEST_EMAIL_OR_PASSWORD);
         }
       }
       if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
+        errorToast(ERROR_MESSAGE_404);
       }
       if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };
-
-  useEffect(() => {
-    if (error !== null) {
-      toast({
-        title: '에러!',
-        description: error,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-    }
-  }, [error, toast]);
 
   return (
     <Layout>

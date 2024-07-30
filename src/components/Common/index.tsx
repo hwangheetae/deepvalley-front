@@ -8,3 +8,4 @@ export { default as Layout } from './Layout';
 export { default as MainPageHeader } from './MainPageHeader';
 export { default as TapBar } from './TapBar';
 export { default as Review } from './Review';
+export { default as ReviewMenuModal } from './ReviewMenuModal';

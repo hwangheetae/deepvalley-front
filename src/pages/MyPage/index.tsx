@@ -8,32 +8,38 @@ import {
   SimpleGrid,
   Divider,
 } from '@chakra-ui/react';
-// import { useUserStore } from '주소'; //여기다가 유저데이터 store 넣으면 됨.
+import { useMe } from '../../stores/meStore';
 import Layout from '../../components/Common/Layout';
 import InstaImage from '../../components/Common/Image/InstaImage';
 import { fetchReviews } from '../../api/Review';
 import { Link } from 'react-router-dom';
 import { ReviewType } from '../../types/ReviewType';
 import ProfileImage from '../../components/Common/Image/ProfileImage';
-import valley1 from '../../../valley1.png';
 import TapBar from '../../components/Common/TapBar';
 import Header from '../../components/Common/Header';
+import PasswordChangeLogo from '../../assets/images/PasswordChangeLogo.png';
+
+const DEFAULT_IMAGE_URL =
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvQNXE66kR9nlnWK3Lv_ZBsMYJYDpiqs7eyVw_tZFY2OZpaNU0vTSpLVhNfTGNdoOxOVk&usqp=CAU';
 
 const MyPage: React.FC = () => {
-  const reviews = useLoaderData() as ReviewType[];
+  const { me } = useMe();
+  const reviewsData = useLoaderData() as { reviews: ReviewType[] };
 
-  const login_email = 'dlwoqls4280@naver.com';
-  const nickname = '이재빈';
-  const profile_image_url = valley1; // 사용할 이미지 URL
+  const login_email = me.login_email;
+  const nickname = me.name;
+  const profile_image_url = me.profile_image_url;
 
-  const memberId = login_email;
   const toast = useToast();
 
-  const { data, error, isLoading } = useQuery<ReviewType[]>({
-    queryKey: ['reviews', memberId],
-    queryFn: () => fetchReviews(memberId),
-    initialData: reviews,
+  const { data, error, isLoading } = useQuery<{ reviews: ReviewType[] }>({
+    queryKey: ['reviews', login_email],
+    queryFn: () => fetchReviews(login_email),
+    initialData: reviewsData,
   });
+
+  console.log('data:', data); // 데이터를 확인하기 위해 추가
+  console.log('error:', error); // 에러를 확인하기 위해 추가
 
   if (isLoading) {
     return <Box>Loading...</Box>;
@@ -49,6 +55,10 @@ const MyPage: React.FC = () => {
     return <Box>Error loading reviews...</Box>;
   }
 
+  const reviews = data?.reviews || [];
+
+  const sortedReviews = [...reviews].reverse();
+
   return (
     <Layout>
       <Header
@@ -59,7 +69,7 @@ const MyPage: React.FC = () => {
       <Box p="4" pt="20" pb="20">
         <Flex alignItems="center" mb="4">
           <Box mb={4} marginBottom={4}>
-            <ProfileImage src={profile_image_url} />
+            <ProfileImage src={profile_image_url || PasswordChangeLogo} />
           </Box>
           <Box ml="4">
             <Text
@@ -92,7 +102,7 @@ const MyPage: React.FC = () => {
         </Text>
         <Box>
           <SimpleGrid columns={3} spacing={1}>
-            {data?.map((review) => (
+            {sortedReviews.map((review) => (
               <Link to={`/review/${review.review_id}`} key={review.review_id}>
                 <Box mb="4">
                   <Box
@@ -101,8 +111,13 @@ const MyPage: React.FC = () => {
                     mb="4"
                     boxShadow="inset 0px 0px 10px rgba(0, 0, 0, 0.25)"
                   >
-                    <InstaImage src={review.image_urls[0]} />
-                    {/* 대표 사진만 표시 */}
+                    <InstaImage
+                      src={
+                        review.image_urls.length > 0
+                          ? review.image_urls[0]
+                          : DEFAULT_IMAGE_URL
+                      }
+                    />
                     <Box position="absolute" top="4px" left="4px" color="white">
                       <Text
                         fontSize="20px"
