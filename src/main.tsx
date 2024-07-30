@@ -7,9 +7,10 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage/index.tsx';
-import { ChangePassword, ReviewPage } from './pages/index.tsx';
-import { fetchReview } from './api/ReviewApi/ReviewApi.ts';
-import { fetchReviews } from './api/ReviewsApi/ReviewsApi.ts';
+
+import { ChangePassword, ImageUploadTest, ReviewPage } from './pages/index.tsx';
+import { fetchReview } from './api/Review/index.ts';
+import { fetchReviews } from './api/Review/index.ts';
 import MyPage from './pages/MyPage/index.tsx';
 import Login from './pages/Auth/Login';
 import theme from './theme'; // 추가된 라인
@@ -20,6 +21,9 @@ import MapPage from './pages/Map/MapPage/index.tsx';
 import Logout from './pages/Auth/Logout/index.tsx';
 import { ChangeProfile } from './pages/index.tsx';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
+import ReviewWritingPage from './pages/ReviewWritingPage/index.tsx';
+import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
+import ValleyPage from './pages/ValleyPage';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -53,7 +57,8 @@ const router = createBrowserRouter([
     path: 'review/:reviewId',
     element: <ReviewPage />,
     loader: async ({ params }) => {
-      const reviewId = params.reviewId as string;
+      // const reviewId = params.reviewId as string;
+      const reviewId = '834f2871-6cce-4c3a-9744-dede59d38be8';
       const data = await fetchReview(reviewId);
       queryClient.setQueryData(['reviewDetail', reviewId], data);
       return { reviewId, initialData: data };
@@ -70,23 +75,34 @@ const router = createBrowserRouter([
     },
   },
 
+  { path: '/register', element: <Register /> },
+
   {
-    path: '/ChangePassword',
+    path: 'reviewWriting',
     element: (
       <PrivateRoute>
-        <ChangePassword />
+        <ReviewWritingPage />
       </PrivateRoute>
     ),
   },
   {
-    path: '/ChangeProfile',
-    element: (
-      <PrivateRoute>
-        <ChangeProfile />
-      </PrivateRoute>
-    ),
+
+    path: '/reviewUpdate/:reviewId',
+    element: <ReviewFixpage />,
+    loader: async ({ params }) => {
+      const { reviewId } = params;
+      if (!reviewId) throw new Error('Review ID is required');
+      const review = await fetchReview(reviewId);
+      return { review, reviewId };
+    },
   },
-  {
+  { path: '/logout', element: <Logout /> },
+  { path: '/ChangePassword', element: <ChangePassword /> },
+  { path: '/ChangeProfile', element: <ChangeProfile /> },
+  { path: '/ImageUploadTest', element: <ImageUploadTest /> },
+
+  { path: '/ValleyPage', element: <ValleyPage /> },
+        {
     path: '/WithdrawalSuccessPage',
     element: (
       <PrivateRoute>
