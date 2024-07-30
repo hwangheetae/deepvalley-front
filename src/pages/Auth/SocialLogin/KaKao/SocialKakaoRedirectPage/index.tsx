@@ -5,6 +5,8 @@ import { 서버오류 } from '../../../../../constant/constant';
 import useErrorToast from '../../../../../hooks/useErrorToast';
 import useSuccessToast from '../../../../../hooks/useSuccessToast';
 import { useMutation } from '@tanstack/react-query';
+import LoadingSpinner from '../../../../../components/LoadingSpinner';
+import { Layout } from '../../../../../components/Common';
 const SocialKakaoRedirectPage: FC = () => {
   const navigate = useNavigate();
   const { errorToast } = useErrorToast();
@@ -58,7 +60,7 @@ const SocialKakaoRedirectPage: FC = () => {
   //   return <div>로그인 중...</div>;
   // };
 
-  return <div>{mutation.isPending ? 'kakao login 중' : <></>}</div>;
+  return <Layout>{mutation.isPending ? <LoadingSpinner /> : <></>}</Layout>;
 };
 
 export default SocialKakaoRedirectPage;

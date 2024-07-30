@@ -22,7 +22,7 @@ const LoadingSpinner: React.FC = () => {
             className="dot animate-jump3 w-16 h-16"
           />
         </div>
-        <Text className="text-center text-2xl ">Loading!</Text>
+        <Text className="text-center text-2xl ">로딩중!</Text>
       </div>
     </Layout>
   );
