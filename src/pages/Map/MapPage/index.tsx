@@ -1,5 +1,5 @@
-import { Map } from 'react-kakao-maps-sdk';
-import { useState, useMemo } from 'react';
+import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
+import { useState, useEffect } from 'react';
 import CustomMapMarker from '../CustomMapMarker';
 import Locations from '../Locations';
 import {
@@ -14,69 +14,97 @@ import {
   HStack,
   Button,
 } from '@chakra-ui/react';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTheme } from '@chakra-ui/react';
 import TapBar from '../../../components/Common/TapBar';
-import { WbSunny } from '@mui/icons-material';
+import { WbSunny, MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
-import ValleyMockData, { Valley } from '../../../api/ValleyApi/ValleyMockData';
+import { ValleysType, FacilityType } from '../../../types';
+import { fetchValleys, fetchfacilities } from '../../../api/ValleyApi';
+import { useQuery } from '@tanstack/react-query';
+
+interface MapBounds {
+  swLat: number;
+  swLng: number;
+  neLat: number;
+  neLng: number;
+}
 
 export const MapPage = () => {
   const location = Locations();
   const [key, setKey] = useState(0);
   const theme = useTheme();
+  const [bounds, setBounds] = useState<MapBounds | null>(null);
+  const [visibleValleys, setVisibleValleys] = useState<ValleysType[]>([]);
+  const [positions, setPositions] = useState<ValleysType[]>([]);
+
+  const {
+    data: valleys = [],
+    isLoading: isLoadingValleys,
+    error: errorValleys,
+    refetch: refetchValleys,
+  } = useQuery<ValleysType[], Error>({
+    queryKey: ['valleys'],
+    queryFn: fetchValleys,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+
+  const {
+    data: facilities = [],
+    isLoading: isLoadingFacilities,
+    error: errorFacilities,
+    refetch: refetchFacilities,
+  } = useQuery<FacilityType[], Error>({
+    queryKey: ['facilities', location?.latitude, location?.longitude],
+    queryFn: () => fetchfacilities(location!.latitude, location!.longitude),
+    enabled: !!location,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+
+  useEffect(() => {
+    if (bounds && valleys.length > 0) {
+      const visible = valleys.filter(
+        (valley) =>
+          valley.latitude >= bounds.swLat &&
+          valley.latitude <= bounds.neLat &&
+          valley.longitude >= bounds.swLng &&
+          valley.longitude <= bounds.neLng,
+      );
+      setVisibleValleys(visible);
+    }
+  }, [bounds, valleys]);
+
+  useEffect(() => {
+    setPositions(valleys);
+  }, [valleys]);
+
+  const handleBoundsChanged = (map: any) => {
+    const bounds = map.getBounds();
+    const sw = bounds.getSouthWest();
+    const ne = bounds.getNorthEast();
+    setBounds({
+      swLat: sw.getLat(),
+      swLng: sw.getLng(),
+      neLat: ne.getLat(),
+      neLng: ne.getLng(),
+    });
+  };
 
   const handleRefresh = () => {
     setKey((prevKey) => prevKey + 1);
+    refetchValleys();
+    refetchFacilities();
   };
 
-  const xxLocation = useMemo(() => {
-    if (location) {
-      const xlatitudeOffset = 0.008;
-      const xlongitudeOffset = 0.008;
-      return {
-        latitude: location.latitude + xlatitudeOffset,
-        longitude: location.longitude + xlongitudeOffset,
-      };
-    }
-    return null;
-  }, [location]);
-
-  const yyLocation = useMemo(() => {
-    if (location) {
-      const ylatitudeOffset = 0.009;
-      const ylongitudeOffset = 0.009;
-      return {
-        latitude: location.latitude + ylatitudeOffset,
-        longitude: location.longitude + ylongitudeOffset,
-      };
-    }
-    return null;
-  }, [location]);
-
-  if (!location) {
+  if (!location || isLoadingValleys || isLoadingFacilities) {
     return <Center h="100vh">Loading...</Center>;
   }
 
-  const valleys: Valley[] = ValleyMockData.map((valley) => {
-    if (valley.name === '구름계곡' && xxLocation) {
-      return {
-        ...valley,
-        latitude: xxLocation.latitude,
-        longitude: xxLocation.longitude,
-      };
-    }
-    if (valley.name === '굿굿계곡' && yyLocation) {
-      return {
-        ...valley,
-        latitude: yyLocation.latitude,
-        longitude: yyLocation.longitude,
-      };
-    }
-    return valley;
-  });
+  if (errorValleys || errorFacilities) {
+    return <Center h="100vh">Error loading data</Center>;
+  }
 
   return (
     <Flex
@@ -91,6 +119,8 @@ export const MapPage = () => {
           key={key}
           center={{ lat: location.latitude, lng: location.longitude }}
           style={{ width: '100%', height: '100%' }}
+          onBoundsChanged={handleBoundsChanged}
+          level={14}
         >
           <VStack
             spacing={4}
@@ -140,7 +170,7 @@ export const MapPage = () => {
           </VStack>
           <CustomMapMarker
             icon={
-              <LocationOnIcon
+              <LocationOn
                 style={{
                   color: theme.colors.secondary[500],
                   fontSize: '34px',
@@ -150,23 +180,27 @@ export const MapPage = () => {
             position={{ lat: location.latitude, lng: location.longitude }}
             label="현재위치"
           />
-          {xxLocation && (
+          <MarkerClusterer averageCenter={true} minLevel={10}>
+            {positions.map((valley) => (
+              <CustomMapMarker
+                key={valley.valley_id}
+                src={valley.thumbnail}
+                position={{ lat: valley.latitude, lng: valley.longitude }}
+                label={valley.name}
+              />
+            ))}
+          </MarkerClusterer>
+          {/* {facilities.map((facility) => (
             <CustomMapMarker
-              src="ValleyIcon.png"
-              position={{ lat: xxLocation.latitude, lng: xxLocation.longitude }}
-              label="굿굿계곡"
+              key={facility.facility_id}
+              src={facility.thumbnail}
+              position={{ lat: facility.latitude, lng: facility.longitude }}
+              label={facility.name}
             />
-          )}
-          {yyLocation && (
-            <CustomMapMarker
-              src="ValleyIcon.png"
-              position={{ lat: yyLocation.latitude, lng: yyLocation.longitude }}
-              label="구름계곡"
-            />
-          )}
+          ))}시설들 데이터 아직 X */}
           <IconButton
             aria-label="현재 위치로 이동"
-            icon={<MyLocationIcon />}
+            icon={<MyLocation />}
             onClick={handleRefresh}
             isRound={true}
             position="absolute"
@@ -179,7 +213,7 @@ export const MapPage = () => {
             zIndex="20"
           />
         </Map>
-        <ListComponent valleys={valleys} />
+        <ListComponent visibleValleys={visibleValleys} />
       </Box>
       <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
         <TapBar />
