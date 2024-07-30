@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  Text,
-  Flex,
-  Icon,
-  HStack,
-  VStack,
-  Button,
-} from '@chakra-ui/react';
-import { StarIcon, PhoneIcon } from '@chakra-ui/icons';
+import { Box, Text, Flex, Icon, HStack, VStack } from '@chakra-ui/react';
+import { PhoneIcon } from '@chakra-ui/icons';
 import {
   FaSwimmingPool,
   FaTimesCircle,
@@ -23,40 +15,59 @@ interface InfoProps {
 
 const Info: React.FC<InfoProps> = ({ valley }) => {
   return (
-    <Box p={4}>
-      <Flex justify="space-between" align="center">
-        <Text fontSize="2xl" fontWeight="bold">
-          {valley.name}
-        </Text>
-        <HStack spacing={2}>
-          <Text fontSize="lg" fontWeight="bold">
-            {valley.rating}
-          </Text>
-          <StarIcon color="yellow.400" />
-          <Button size="sm" colorScheme="green">
-            길찾기
-          </Button>
-          <Button size="sm" colorScheme="green" variant="outline">
-            지도 보기
-          </Button>
+    <Box p={1}>
+      <Box border="2px" borderColor="green.500" borderRadius="md" p={3} mb={4}>
+        <HStack spacing={5} justifyContent="space-around">
+          <Flex direction="column" align="center">
+            <Box position="relative">
+              <Icon as={FaSwimmingPool} boxSize={12} />
+              <Icon
+                as={FaTimesCircle}
+                boxSize={6}
+                color="red.500"
+                position="absolute"
+                bottom="0"
+                right="0"
+              />
+            </Box>
+            <Text mt={2} fontSize="lg">
+              수영
+            </Text>
+          </Flex>
+          <Flex direction="column" align="center">
+            <Box position="relative">
+              <Icon
+                as={FaCheckCircle}
+                boxSize={6}
+                color="green.500"
+                position="absolute"
+                bottom="0"
+                right="0"
+              />
+              <Icon as={FaCheckCircle} boxSize={12} />
+            </Box>
+            <Text mt={2} fontSize="lg">
+              취사 가능
+            </Text>
+          </Flex>
+          <Flex direction="column" align="center">
+            <Box position="relative">
+              <Icon as={FaParking} boxSize={12} />
+              <Icon
+                as={FaCheckCircle}
+                boxSize={6}
+                color="green.500"
+                position="absolute"
+                bottom="0"
+                right="0"
+              />
+            </Box>
+            <Text mt={2} fontSize="lg">
+              주차장
+            </Text>
+          </Flex>
         </HStack>
-      </Flex>
-      <Text color="gray.500">{valley.region}</Text>
-      <HStack spacing={4} my={4}>
-        <Flex align="center">
-          <Icon as={FaSwimmingPool} boxSize={6} color="red.500" />
-          <Text ml={2}>수영</Text>
-          <Icon as={FaTimesCircle} boxSize={4} color="red.500" />
-        </Flex>
-        <Flex align="center">
-          <Icon as={FaCheckCircle} boxSize={6} color="green.500" />
-          <Text ml={2}>취사 가능</Text>
-        </Flex>
-        <Flex align="center">
-          <Icon as={FaParking} boxSize={6} color="green.500" />
-          <Text ml={2}>주차장</Text>
-        </Flex>
-      </HStack>
+      </Box>
       <VStack align="start" spacing={2}>
         <Text>주소: {valley.address}</Text>
         <Text>영업시간: {valley.opened ? '지금 영업 중' : '영업 종료'}</Text>
@@ -67,7 +78,6 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
         <Text>
           수심: 평균 {valley.avg_depth}M / 깊은 곳 {valley.max_depth}M
         </Text>
-        <Text>수온: 24°C - 32°C</Text>
       </VStack>
       <Box mt={4}>
         <Text fontSize="lg" fontWeight="bold">

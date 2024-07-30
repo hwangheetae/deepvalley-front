@@ -33,4 +33,5 @@ export interface ValleyDetailType {
   opened: boolean;
   opening_time: string;
   closing_time: string;
+  avg_rating: string;
 }

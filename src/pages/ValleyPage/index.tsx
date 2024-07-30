@@ -9,7 +9,10 @@ import {
   Button,
   Divider,
   HStack,
+  VStack,
+  Text,
 } from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
 import Info from './Info';
@@ -29,10 +32,38 @@ const ValleyPage: React.FC = () => {
         showBorderBottom={false}
       />
       <Box mt="78px" w="full">
-        <HStack spacing={4} justify="center" mb={4}>
-          <Button colorScheme="green">길 찾기</Button>
-          <Button colorScheme="green">지도 보기</Button>
-        </HStack>
+        <VStack spacing={4} align="flex-start" mb={4} px={4}>
+          <HStack>
+            <Text fontSize="2xl" fontWeight="bold">
+              {valley.name}
+            </Text>
+            <HStack spacing={1} align="center">
+              <StarIcon color="yellow.400" />
+              <Text fontSize="lg" fontWeight="bold">
+                {valley.avg_rating}
+              </Text>
+            </HStack>
+          </HStack>
+          <HStack spacing={4} w="full">
+            <Button
+              colorScheme="green"
+              borderRadius="full"
+              flex="1"
+              maxW="200px"
+            >
+              길 찾기
+            </Button>
+            <Button
+              colorScheme="green"
+              variant="outline"
+              borderRadius="full"
+              flex="1"
+              maxW="200px"
+            >
+              지도 보기
+            </Button>
+          </HStack>
+        </VStack>
         <Divider mb={4} />
         <Box mt="4">
           <Tabs position="relative" variant="unstyled" align="center">
