@@ -8,7 +8,10 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ src }) => (
     height="150px"
     left="65px"
     top="225px"
-    background={src ? `url(${src})` : '#4B995C'}
+    background={src ? 'transparent' : '#4B995C'}
+    backgroundImage={src ? `url(${src})` : 'none'}
+    backgroundSize="cover"
+    backgroundPosition="center"
     borderRadius="full"
   />
 );

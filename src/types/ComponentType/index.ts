@@ -25,6 +25,7 @@ export interface HeaderProps {
   showBorderBottom?: boolean;
   bg?: string;
   MenuColor?: string;
+  onMenuClick?: () => void;
 }
 export interface LayoutProps {
   children: ReactNode;

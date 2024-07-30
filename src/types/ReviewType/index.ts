@@ -1,5 +1,6 @@
 export interface ReviewType {
   review_id: string;
+  uuid: string;
   title: string;
   rating: string;
   content: string;

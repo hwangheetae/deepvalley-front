@@ -6,10 +6,9 @@ import ReviewImage from '../Image/ReviewImage';
 import CustomButton from '../CustomButton';
 import { ReviewType } from '../../../types/ReviewType';
 import { fetchReview } from '../../../api/Review/index';
-import valley1 from '../../../../valley1.png';
+import { useMe } from '../../../stores/meStore';
+import PasswordChangeLogo from '../../../assets/images/PasswordChangeLogo.png';
 
-// import { useUserStore } from '../../../stores/userStore'; // 추후 구현
-// 여기서 user이름이랑 프로필 사진 받아와야함
 import 'tailwindcss/tailwind.css';
 
 interface ReviewProps {
@@ -19,7 +18,7 @@ interface ReviewProps {
 
 const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
   const toast = useToast();
-  // const username = useUserStore((state) => state.username); // 추후 구현
+  const { me } = useMe();
 
   const { data, error, isLoading } = useQuery<ReviewType>({
     queryKey: ['reviewDetail', reviewId],
@@ -53,7 +52,7 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
           <Box mb={4}>
-            <ProfileImage src={valley1} />
+            <ProfileImage src={me.profile_image_url || PasswordChangeLogo} />
           </Box>
           <Box ml="4">
             <Text
@@ -62,7 +61,7 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
               fontFamily="Gmarket Sans TTF"
               color="black"
             >
-              김구름
+              {me.name}
             </Text>
             <Text
               fontSize="10px"

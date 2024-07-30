@@ -53,14 +53,13 @@ const router = createBrowserRouter([
   { path: '/logout', element: <Logout /> },
 
   {
-    path: 'review/:reviewId',
+    path: 'review/:review_id',
     element: <ReviewPage />,
     loader: async ({ params }) => {
-      // const reviewId = params.reviewId as string;
-      const reviewId = 'cb7803a6-83f5-450b-801a-9e3819d07242';
-      const data = await fetchReview(reviewId);
-      queryClient.setQueryData(['reviewDetail', reviewId], data);
-      return { reviewId, initialData: data };
+      const review_id = params.review_id as string;
+      const data = await fetchReview(review_id);
+      queryClient.setQueryData(['reviewDetail', review_id], data);
+      return { reviewId: review_id, initialData: data };
     },
   },
   {
@@ -69,9 +68,9 @@ const router = createBrowserRouter([
     loader: async () => {
       const { me } = useMe.getState();
       const memberId = me.login_email;
-      const reviews = await fetchReviews(memberId);
-      queryClient.setQueryData(['reviews', memberId], reviews);
-      return reviews;
+      const reviewsData = await fetchReviews(memberId);
+      queryClient.setQueryData(['reviews', memberId], reviewsData);
+      return reviewsData;
     },
   },
   { path: '/register', element: <Register /> },
@@ -95,8 +94,7 @@ const router = createBrowserRouter([
     path: '/reviewUpdate/:reviewId',
     element: <ReviewFixpage />,
     loader: async ({ params }) => {
-      // const { reviewId } = params;
-      const reviewId = 'db6e65ef-1781-4d81-8833-9cd60dd37052';
+      const { reviewId } = params;
       if (!reviewId) throw new Error('Review ID is required');
       const review = await fetchReview(reviewId);
       return { review, reviewId };
