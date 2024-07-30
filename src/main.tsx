@@ -151,7 +151,7 @@ const router = createBrowserRouter([
       const valleyId = params.valleyId as string;
       const data = await fetchValleyDetail(valleyId);
       queryClient.setQueryData(['valleyDetail', valleyId], data);
-      return { valleyId, initialData: data };
+      return { valley: data };
     },
   },
 ]);

@@ -8,7 +8,6 @@ import {
   Box,
   Button,
   Divider,
-  Flex,
   HStack,
 } from '@chakra-ui/react';
 import Layout from '../../components/Common/Layout';
@@ -16,8 +15,12 @@ import Header from '../../components/Common/Header';
 import Info from './Info';
 import Review from './Review';
 import Picture from './Picture';
+import { useLoaderData } from 'react-router-dom';
+import { ValleyDetailType } from '../../types';
 
 const ValleyPage: React.FC = () => {
+  const { valley } = useLoaderData() as { valley: ValleyDetailType };
+
   return (
     <Layout>
       <Header
@@ -52,7 +55,7 @@ const ValleyPage: React.FC = () => {
             />
             <TabPanels>
               <TabPanel>
-                <Info />
+                <Info valley={valley} />
               </TabPanel>
               <TabPanel>
                 <Review />
