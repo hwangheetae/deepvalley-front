@@ -264,7 +264,7 @@ const ReviewWritingPage: React.FC = () => {
             <Button
               as="label"
               htmlFor="image-upload"
-              ml="190px"
+              ml="180px"
               mt="5px"
               borderRadius="full"
               fontWeight="light"
