@@ -23,7 +23,7 @@ import {
   ERROR_MESSAGE_404,
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
-import useHandleError from '../../../hooks/useHandleError';
+import useErrorToast from '../../../hooks/useErrorToast';
 interface WithdrawalModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -39,13 +39,12 @@ const WithdrawalModal: FC<WithdrawalModalProps> = ({
 }) => {
   const { me } = useMe();
   const navigate = useNavigate();
-  const { handleError } = useHandleError();
+  const { errorToast } = useErrorToast();
   const handleSubmit = async (values: {
     login_email: string;
     password: string;
   }) => {
     try {
-      console.log(values);
       const response = await membershipWithdrawal(values);
       if (response.status === 200) {
         onClose();
@@ -53,14 +52,14 @@ const WithdrawalModal: FC<WithdrawalModalProps> = ({
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        handleError(INVALID_REUEST_BODY_MESSAGE);
+        errorToast(INVALID_REUEST_BODY_MESSAGE);
       }
       if (err.response.status === 404) {
-        handleError(ERROR_MESSAGE_404);
+        errorToast(ERROR_MESSAGE_404);
       }
 
       if (err.response.status === 500) {
-        handleError(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };

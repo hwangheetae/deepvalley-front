@@ -29,7 +29,7 @@ import {
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../../constant/constant';
 import WithdrawalModal from '../WithdrawalModal';
-import useHandleError from '../../../hooks/useHandleError';
+import useErrorToast from '../../../hooks/useErrorToast';
 import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const ChangeProfile: FC = () => {
@@ -43,7 +43,7 @@ const ChangeProfile: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const finalRef = useRef(null);
-  const { handleError } = useHandleError();
+  const { errorToast } = useErrorToast();
   const { successToast } = useSuccessToast();
   const imgUpload = () => {
     if (upload.current?.files) {
@@ -90,14 +90,14 @@ const ChangeProfile: FC = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        handleError(INVALID_REUEST_BODY_MESSAGE);
+        errorToast(INVALID_REUEST_BODY_MESSAGE);
       }
       if (err.response.status === 404) {
-        handleError(ERROR_MESSAGE_404);
+        errorToast(ERROR_MESSAGE_404);
       }
 
       if (err.response.status === 500) {
-        handleError(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };

@@ -24,12 +24,12 @@ import {
 } from '../../../constant/constant';
 import { passwordRegEx } from '../../../utils/Regex';
 import { Header } from '../../../components/Common';
-import useHandleError from '../../../hooks/useHandleError';
+import useErrorToast from '../../../hooks/useErrorToast';
 import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const ChangePassword: FC = () => {
   const navigate = useNavigate();
-  const { handleError } = useHandleError();
+  const { errorToast } = useErrorToast();
   const { successToast } = useSuccessToast();
   const handleSubmit = async (values: {
     old_password: string;
@@ -43,19 +43,19 @@ const ChangePassword: FC = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        handleError(INVALID_REUEST_BODY_MESSAGE);
+        errorToast(INVALID_REUEST_BODY_MESSAGE);
       }
       if (err.response.status === 401) {
-        handleError(INVALID_CURRENT_PASSWORD);
+        errorToast(INVALID_CURRENT_PASSWORD);
       }
       if (err.response.status === 404) {
-        handleError(ERROR_MESSAGE_404);
+        errorToast(ERROR_MESSAGE_404);
       }
       if (err.response.status === 422) {
-        handleError(SAME_OLD_AND_NEW_PASSWORD);
+        errorToast(SAME_OLD_AND_NEW_PASSWORD);
       }
       if (err.response.status === 500) {
-        handleError(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };

@@ -7,7 +7,7 @@ import Logo from '../../../assets/images/Logo.png';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
 import { register } from '../../../api/Auth/AuthService';
-import useHandleError from '../../../hooks/useHandleError';
+import useErrorToast from '../../../hooks/useErrorToast';
 import useSuccessToast from '../../../hooks/useSuccessToast';
 
 import {
@@ -31,7 +31,7 @@ import {
 } from '../../../constant/constant';
 const Register: FC = () => {
   const navigate = useNavigate();
-  const { handleError } = useHandleError();
+  const { errorToast } = useErrorToast();
   const { successToast } = useSuccessToast();
   //db 명칭상 이유로 nickname => name
   const handleSubmit = async (values: {
@@ -47,22 +47,22 @@ const Register: FC = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        handleError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
+        errorToast(INVALID_REQUEST_EMAIL_OR_PASSWORD);
       }
       if (err.response.status === 404) {
-        handleError(ERROR_MESSAGE_404);
+        errorToast(ERROR_MESSAGE_404);
       }
 
       if (err.response.status === 409) {
         if (err.response.data === EMAIL_CONFLICT_SERVER_MESSAGE) {
-          handleError(EMAIL_CONFLICT_MESSAGE);
+          errorToast(EMAIL_CONFLICT_MESSAGE);
         }
         if (err.response.data === NICKNAME_CONFLICT_SERVER_MESSAGE) {
-          handleError(NICKNAME_CONFLICT_MESSAGE);
+          errorToast(NICKNAME_CONFLICT_MESSAGE);
         }
       }
       if (err.response.status === 500) {
-        handleError(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };

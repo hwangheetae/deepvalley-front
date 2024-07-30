@@ -2,11 +2,11 @@ import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { kakaoLoginSendToken } from '../../../../../api/Auth/AuthService';
 import { KAKAO_AUTH_ERROR_MESSAGE } from '../../../../../constant/constant';
-import useHandleError from '../../../../../hooks/useHandleError';
+import useErrorToast from '../../../../../hooks/useErrorToast';
 import useSuccessToast from '../../../../../hooks/useSuccessToast';
 const SocialKakaoRedirectPage: FC = () => {
   const navigate = useNavigate();
-  const { handleError } = useHandleError();
+  const { errorToast } = useErrorToast();
   const { successToast } = useSuccessToast();
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +22,7 @@ const SocialKakaoRedirectPage: FC = () => {
         }
       } catch (err: any) {
         if (err.response.status === 500) {
-          handleError(KAKAO_AUTH_ERROR_MESSAGE);
+          errorToast(KAKAO_AUTH_ERROR_MESSAGE);
           navigate('/login');
         }
       }
