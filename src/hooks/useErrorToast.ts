@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/react';
 
-const useHandleError = () => {
+const useErrorToast = () => {
   const toast = useToast();
   const [error, setError] = useState<string | null>(null);
 
-  const handleError = (errorMessage: string) => {
+  const errorToast = (errorMessage: string) => {
     setError(errorMessage);
     toast({
       title: '에러!',
@@ -17,7 +17,7 @@ const useHandleError = () => {
     });
   };
 
-  return { error, handleError };
+  return { error, errorToast };
 };
 
-export default useHandleError;
+export default useErrorToast;

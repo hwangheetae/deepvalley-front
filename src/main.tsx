@@ -23,6 +23,7 @@ import ReviewWritingPage from './pages/ReviewWritingPage/index.tsx';
 import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
+import ValleyPage from './pages/ValleyPage';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -35,25 +36,48 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  //EX: loader, errorElement 예시
+  // 데이터 패칭 및 로더 가능
+  // loader: rootLoader,
 
-  { path: '/mappage', element: <MapPage /> },
+  //에러처리 페이지 ex)404
+  // errorElement: <ErrorPage />
   {
     path: '/login',
     element: <Login />,
-
-    //EX: loader, errorElement 예시
-    // 데이터 패칭 및 로더 가능
-    // loader: rootLoader,
-
-    //에러처리 페이지 ex)404
-    // errorElement: <ErrorPage />
   },
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
   { path: '/register', element: <Register /> },
   { path: '/logout', element: <Logout /> },
 
   {
-    path: 'review/:review_id',
+    path: '/ChangePassword',
+    element: (
+      <PrivateRoute>
+        <ChangePassword />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/ChangeProfile',
+    element: (
+      <PrivateRoute>
+        <ChangeProfile />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/WithdrawalSuccessPage',
+    element: (
+      <PrivateRoute>
+        <WithdrawalSuccessPage />
+      </PrivateRoute>
+    ),
+  },
+  { path: '/mappage', element: <MapPage /> },
+
+  {
+    path: 'review/:reviewId',
     element: <ReviewPage />,
     loader: async ({ params }) => {
       const review_id = params.review_id as string;
@@ -119,6 +143,7 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  { path: '/ValleyPage', element: <ValleyPage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
