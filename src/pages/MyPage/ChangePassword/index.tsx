@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
@@ -14,7 +14,6 @@ import {
   Input,
   Image,
   Text,
-  useToast,
 } from '@chakra-ui/react';
 import {
   INVALID_REUEST_BODY_MESSAGE,
@@ -25,12 +24,13 @@ import {
 } from '../../../constant/constant';
 import { passwordRegEx } from '../../../utils/Regex';
 import { Header } from '../../../components/Common';
+import useHandleError from '../../../hooks/useHandleError';
+import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const ChangePassword: FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
   const navigate = useNavigate();
-
+  const { handleError } = useHandleError();
+  const { successToast } = useSuccessToast();
   const handleSubmit = async (values: {
     old_password: string;
     new_password: string;
@@ -39,47 +39,29 @@ const ChangePassword: FC = () => {
       const response = await changePassword(values);
       console.log(response);
       if (response.status === 200) {
-        toast({
-          title: '비밀번호 변경 성공!',
-          description: `비밀번호를 변경하였습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
+        successToast('비밀번호 변경 성공!', `비밀번호를 변경하였습니다.`);
         navigate('/');
       }
     } catch (err: any) {
       console.log(err);
       if (err.response.status === 400) {
-        setError(INVALID_REUEST_BODY_MESSAGE);
+        handleError(INVALID_REUEST_BODY_MESSAGE);
       }
       if (err.response.status === 401) {
-        setError(INVALID_CURRENT_PASSWORD);
+        handleError(INVALID_CURRENT_PASSWORD);
       }
       if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
+        handleError(ERROR_MESSAGE_404);
       }
       if (err.response.status === 422) {
-        setError(SAME_OLD_AND_NEW_PASSWORD);
+        handleError(SAME_OLD_AND_NEW_PASSWORD);
       }
       if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
+        handleError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };
-  useEffect(() => {
-    if (error !== null) {
-      toast({
-        title: '에러!',
-        description: error,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-    }
-  }, [error, toast]);
+
   return (
     <Layout>
       <Header />

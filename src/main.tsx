@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage/index.tsx';
+
 import { ChangePassword, ImageUploadTest, ReviewPage } from './pages/index.tsx';
 import { fetchReview } from './api/Review/index.ts';
 import { fetchReviews } from './api/Review/index.ts';
@@ -19,6 +20,7 @@ import SocialKakaoRedirectPage from './pages/Auth/SocialLogin/KaKao/SocialKakaoR
 import MapPage from './pages/Map/MapPage/index.tsx';
 import Logout from './pages/Auth/Logout/index.tsx';
 import { ChangeProfile } from './pages/index.tsx';
+import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ReviewWritingPage from './pages/ReviewWritingPage/index.tsx';
 import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import ValleyPage from './pages/ValleyPage';
@@ -48,6 +50,9 @@ const router = createBrowserRouter([
     // errorElement: <ErrorPage />
   },
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
+  { path: '/register', element: <Register /> },
+  { path: '/logout', element: <Logout /> },
+
   {
     path: 'review/:reviewId',
     element: <ReviewPage />,
@@ -69,6 +74,7 @@ const router = createBrowserRouter([
       return reviews;
     },
   },
+
   { path: '/register', element: <Register /> },
 
   {
@@ -80,6 +86,7 @@ const router = createBrowserRouter([
     ),
   },
   {
+
     path: '/reviewUpdate/:reviewId',
     element: <ReviewFixpage />,
     loader: async ({ params }) => {
@@ -95,6 +102,14 @@ const router = createBrowserRouter([
   { path: '/ImageUploadTest', element: <ImageUploadTest /> },
 
   { path: '/ValleyPage', element: <ValleyPage /> },
+        {
+    path: '/WithdrawalSuccessPage',
+    element: (
+      <PrivateRoute>
+        <WithdrawalSuccessPage />
+      </PrivateRoute>
+    ),
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

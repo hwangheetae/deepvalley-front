@@ -3,14 +3,9 @@ import MainPageHeader from '../../components/Common/MainPageHeader';
 import TapBar from '../../components/Common/TapBar';
 import Carousel from '../../components/Common/Carousel';
 import Category from '../../components/Common/Category';
-import {
-  InputGroup,
-  InputLeftElement,
-  Input,
-  useToast,
-} from '@chakra-ui/react';
+import { InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { getUser } from '../../api/User';
 import { useMe } from '../../stores/meStore';
 import {
@@ -18,11 +13,11 @@ import {
   ERROR_MESSAGE_404,
   INTERNAL_SERVER_ERROR_MESSAGE,
 } from '../../constant/constant';
-const HomePage: FC = () => {
-  const [error, setError] = useState('');
-  const toast = useToast();
-  const { updateMe } = useMe();
+import useHandleError from '../../hooks/useHandleError';
 
+const HomePage: FC = () => {
+  const { updateMe } = useMe();
+  const { handleError } = useHandleError();
   const userResponse = async () => {
     try {
       const response = await getUser();
@@ -38,35 +33,20 @@ const HomePage: FC = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        setError(INVALID_REUEST_BODY_MESSAGE);
+        handleError(INVALID_REUEST_BODY_MESSAGE);
       }
       if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
+        handleError(ERROR_MESSAGE_404);
       }
       if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
+        handleError(INTERNAL_SERVER_ERROR_MESSAGE);
       }
     }
   };
-  useEffect(() => {
-    const rememberMe = localStorage.getItem('RememberMe');
-    if (rememberMe === null) {
-      userResponse();
-    }
-  }, []);
 
   useEffect(() => {
-    if (error) {
-      toast({
-        title: '에러!',
-        description: error,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-    }
-  }, [error, toast]);
+    userResponse();
+  }, []);
 
   return (
     <div>

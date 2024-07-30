@@ -20,7 +20,6 @@ interface MeState {
   updateMe: (data: Partial<MeState['me']>) => void;
   reset: () => void;
 }
-
 export const useMe = create<MeState>()(
   persist(
     (set) => ({
@@ -36,6 +35,7 @@ export const useMe = create<MeState>()(
     }),
     {
       name: 'RememberMe', // 저장소 이름
+      getStorage: () => localStorage,
     },
   ),
 );
