@@ -20,7 +20,7 @@ import TapBar from '../../../components/Common/TapBar';
 import { WbSunny, MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
 import { ValleysType, FacilityType } from '../../../types';
-import { fetchValleys, fetchfacilities } from '../../../api/ValleyApi';
+import { fetchValleys, fetchfacilities } from '../../../api/Valley';
 import { useQuery } from '@tanstack/react-query';
 
 interface MapBounds {

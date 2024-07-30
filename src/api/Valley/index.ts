@@ -1,4 +1,4 @@
-import basicClient from '../../api/Auth/basicClient';
+import basicClient from '../Auth/basicClient';
 import { ValleysType } from '../../types';
 
 export const fetchfacilities = async (latitude: number, longitude: number) => {
@@ -27,5 +27,18 @@ export const fetchValleys = async (): Promise<ValleysType[]> => {
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch valleys');
+  }
+};
+
+export const fetchValleyDetail = async (valleyId: string) => {
+  try {
+    const response = await basicClient.get(`/api/valley/${valleyId}/detail`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch ValleyDetail');
   }
 };

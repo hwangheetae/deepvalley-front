@@ -24,6 +24,7 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
+import { fetchValleyDetail } from './api/Valley/index.ts';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -143,7 +144,16 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-  { path: '/ValleyPage', element: <ValleyPage /> },
+  {
+    path: '/valley/:valleyId/detail',
+    element: <ValleyPage />,
+    loader: async ({ params }) => {
+      const valleyId = params.valleyId as string;
+      const data = await fetchValleyDetail(valleyId);
+      queryClient.setQueryData(['valleyDetail', valleyId], data);
+      return { valleyId, initialData: data };
+    },
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
