@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from '../Common';
+import { Layout } from '..';
 import '../../styles/LoadingSpinner.css';
 import 산잉 from '../../assets/images/산잉.png';
 import 바다잉 from '../../assets/images/바다잉.png';

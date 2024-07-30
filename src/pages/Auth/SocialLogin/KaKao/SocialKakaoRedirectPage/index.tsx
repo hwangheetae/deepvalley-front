@@ -5,7 +5,7 @@ import { 서버오류 } from '../../../../../constant/constant';
 import useErrorToast from '../../../../../hooks/useErrorToast';
 import useSuccessToast from '../../../../../hooks/useSuccessToast';
 import { useMutation } from '@tanstack/react-query';
-import LoadingSpinner from '../../../../../components/LoadingSpinner';
+import LoadingSpinner from '../../../../../components/Common/LoadingSpinner';
 import { Layout } from '../../../../../components/Common';
 const SocialKakaoRedirectPage: FC = () => {
   const navigate = useNavigate();
