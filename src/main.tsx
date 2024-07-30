@@ -24,7 +24,7 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
-
+import LoadingSpinner from './components/LoadingSpinner';
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
@@ -144,6 +144,7 @@ const router = createBrowserRouter([
     ),
   },
   { path: '/ValleyPage', element: <ValleyPage /> },
+  { path: '/LoadingSpinner', element: <LoadingSpinner /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

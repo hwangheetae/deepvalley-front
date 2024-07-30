@@ -17,7 +17,7 @@ import { ReviewType } from '../../types/ReviewType';
 import ProfileImage from '../../components/Common/Image/ProfileImage';
 import TapBar from '../../components/Common/TapBar';
 import Header from '../../components/Common/Header';
-import PasswordChangeLogo from '../../assets/images/PasswordChangeLogo.png';
+import 산잉 from '../../assets/images/산잉.png';
 
 const DEFAULT_IMAGE_URL =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvQNXE66kR9nlnWK3Lv_ZBsMYJYDpiqs7eyVw_tZFY2OZpaNU0vTSpLVhNfTGNdoOxOVk&usqp=CAU';
@@ -69,7 +69,7 @@ const MyPage: React.FC = () => {
       <Box p="4" pt="20" pb="20">
         <Flex alignItems="center" mb="4">
           <Box mb={4} marginBottom={4}>
-            <ProfileImage src={profile_image_url || PasswordChangeLogo} />
+            <ProfileImage src={profile_image_url || 산잉} />
           </Box>
           <Box ml="4">
             <Text

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
-import PasswordChangeLogo from '../../../assets/images/PasswordChangeLogo.png';
+import 산잉 from '../../../assets/images/산잉.png';
 import { changePassword } from '../../../api/User';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import {
@@ -77,8 +77,8 @@ const ChangePassword: FC = () => {
           <Image
             boxSize="100px"
             objectFit="contain"
-            src={PasswordChangeLogo}
-            alt="PasswordChangeLogo"
+            src={산잉}
+            alt="산잉"
             mb={4}
           />
           <Text fontSize="2xl" fontWeight="bold" fontFamily="Cafe24Ssurround">

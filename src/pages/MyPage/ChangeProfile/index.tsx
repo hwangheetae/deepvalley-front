@@ -7,7 +7,7 @@ import { changeProfile } from '../../../api/User';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import { Header } from '../../../components/Common';
 import { useMe } from '../../../stores/meStore';
-import PasswordChangeLogo from '../../../assets/images/PasswordChangeLogo.png';
+import 산잉 from '../../../assets/images/산잉.png';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import {
   Flex,
@@ -112,7 +112,7 @@ const ChangeProfile: FC = () => {
           <Image
             borderRadius="full"
             boxSize="150px"
-            src={imgFile || PasswordChangeLogo}
+            src={imgFile || 산잉}
             alt="profile-image"
           />
           <input
