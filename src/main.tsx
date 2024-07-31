@@ -24,7 +24,7 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
-import { fetchValleyDetail } from './api/Valley/index.ts';
+import { fetchValleyDetailInfo } from './api/Valley/index.ts';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -149,7 +149,7 @@ const router = createBrowserRouter([
     element: <ValleyPage />,
     loader: async ({ params }) => {
       const valleyId = params.valleyId as string;
-      const data = await fetchValleyDetail(valleyId);
+      const data = await fetchValleyDetailInfo(valleyId);
       queryClient.setQueryData(['valleyDetail', valleyId], data);
       return { valley: data };
     },

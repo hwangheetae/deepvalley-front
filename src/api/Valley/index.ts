@@ -30,7 +30,7 @@ export const fetchValleys = async (): Promise<ValleysType[]> => {
   }
 };
 
-export const fetchValleyDetail = async (valleyId: string) => {
+export const fetchValleyDetailInfo = async (valleyId: string) => {
   try {
     const response = await basicClient.get(`/api/valley/${valleyId}/detail`, {
       headers: {
@@ -39,6 +39,6 @@ export const fetchValleyDetail = async (valleyId: string) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error('Failed to fetch ValleyDetail');
+    throw new Error('Failed to fetch ValleyDetailinfo');
   }
 };

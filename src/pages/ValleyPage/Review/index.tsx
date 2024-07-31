@@ -18,9 +18,6 @@ const Review: React.FC = () => {
         <Text fontSize="lg" fontWeight="bold">
           nickname
         </Text>
-        <Button colorScheme="green" variant="outline">
-          + 팔로우
-        </Button>
       </HStack>
 
       <Flex mb={4}>
