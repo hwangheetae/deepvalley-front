@@ -12,9 +12,10 @@ const TapBar: FC = () => {
       w="100%"
       bg="white"
       p={4}
-      boxShadow="0 -2px 10px rgba(0, 0, 0, 0.2)"
+      boxShadow="0 0 10px rgba(0, 0, 0, 0.2)"
       position="fixed"
       bottom="0"
+      // border={'1px solid black'}
       zIndex="2"
     >
       <Flex justify="space-between" align="center">

@@ -1,5 +1,5 @@
 export const wrapperStyle = {
-  padding: '0px',
+  padding: '0',
   maxWidth: 400,
   margin: '0 auto',
 };

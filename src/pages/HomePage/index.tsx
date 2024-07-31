@@ -10,6 +10,7 @@ import { getUser } from '../../api/User';
 import { useMe } from '../../stores/meStore';
 import { 에러404, 서버오류, 잘못된요청 } from '../../constant/constant';
 import useErrorToast from '../../hooks/useErrorToast';
+import { RecommendReview } from '../../components/Common';
 
 const HomePage: FC = () => {
   const { updateMe } = useMe();
@@ -43,35 +44,32 @@ const HomePage: FC = () => {
   useEffect(() => {
     userResponse();
   }, []);
-
   return (
-    <div>
-      <Layout hasHeader={true} hasTapBar={true}>
-        <MainPageHeader
-          title="깊은산 골짜기"
-          fontFamily="Cafe24Ssurround"
-          showMenuButton={true}
-        />
+    <Layout hasHeader={true} hasTapBar={true}>
+      <MainPageHeader
+        title="깊은산 골짜기"
+        fontFamily="Cafe24Ssurround"
+        showMenuButton={false}
+      />
 
-        <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<SearchIcon color="black" />}
-          />
-          <Input
-            placeholder="지역을 입력하세요"
-            size="md"
-            borderRadius="full"
-            boxShadow="md"
-            bg="white"
-          />
-        </InputGroup>
-        <Category />
-        <Carousel />
-        <TapBar />
-      </Layout>
-    </div>
+      <InputGroup>
+        <InputLeftElement
+          pointerEvents="none"
+          children={<SearchIcon color="black" />}
+        />
+        <Input
+          placeholder="지역을 입력하세요"
+          size="md"
+          borderRadius="full"
+          boxShadow="md"
+          bg="white"
+        />
+      </InputGroup>
+      <Category />
+      <Carousel />
+      <RecommendReview />
+      <TapBar />
+    </Layout>
   );
 };
-
 export default HomePage;
