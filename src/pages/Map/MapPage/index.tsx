@@ -78,7 +78,7 @@ export const MapPage = () => {
 
   useEffect(() => {
     setPositions(valleys);
-  }, [valleys]);
+  }, []);
 
   const handleBoundsChanged = (map: any) => {
     const bounds = map.getBounds();
