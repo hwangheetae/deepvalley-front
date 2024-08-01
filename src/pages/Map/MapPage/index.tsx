@@ -120,7 +120,7 @@ export const MapPage = () => {
           center={{ lat: location.latitude, lng: location.longitude }}
           style={{ width: '100%', height: '100%' }}
           onBoundsChanged={handleBoundsChanged}
-          level={14}
+          level={5}
         >
           <VStack
             spacing={4}
