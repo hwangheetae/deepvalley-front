@@ -1,5 +1,5 @@
 import basicClient from '../Auth/basicClient';
-import { ValleysType } from '../../types';
+import { ValleyDetailReviewResponseType, ValleysType } from '../../types';
 
 export const fetchfacilities = async (latitude: number, longitude: number) => {
   try {
@@ -40,5 +40,33 @@ export const fetchValleyDetailInfo = async (valleyId: string) => {
     return response.data;
   } catch (error) {
     throw new Error('Failed to fetch ValleyDetailinfo');
+  }
+};
+
+export const fetchValleyDetailReview = async (
+  valleyId: string,
+): Promise<ValleyDetailReviewResponseType> => {
+  try {
+    const response = await basicClient.get(`/api/valley/${valleyId}/review`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch ValleyDetailReview');
+  }
+};
+
+export const fetchValleyDetailImage = async (valleyId: string) => {
+  try {
+    const response = await basicClient.get(`/api/valley/${valleyId}/image`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to fetch ValleyDetailimage');
   }
 };

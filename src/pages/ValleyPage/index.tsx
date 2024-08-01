@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Tabs,
   TabList,
@@ -19,10 +20,14 @@ import Info from './Info';
 import Review from './Review';
 import Picture from './Picture';
 import { useLoaderData } from 'react-router-dom';
-import { ValleyDetailType } from '../../types';
+import { ValleyDetailInfoType, ValleyDetailReviewType } from '../../types';
 
 const ValleyPage: React.FC = () => {
-  const { valley } = useLoaderData() as { valley: ValleyDetailType };
+  const { valley, reviews, images } = useLoaderData() as {
+    valley: ValleyDetailInfoType;
+    reviews: ValleyDetailReviewType[];
+    images: { review_id: string; image_urls: string[] }[];
+  };
 
   return (
     <Layout>
@@ -89,10 +94,14 @@ const ValleyPage: React.FC = () => {
                 <Info valley={valley} />
               </TabPanel>
               <TabPanel>
-                <Review />
+                <Review
+                  reviews={reviews}
+                  valley_id={valley.valley_id}
+                  thumbnail={valley.thumbnail}
+                />
               </TabPanel>
               <TabPanel>
-                <Picture />
+                <Picture images={images} reviews={reviews} />
               </TabPanel>
             </TabPanels>
           </Tabs>

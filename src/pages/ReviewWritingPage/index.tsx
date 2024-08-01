@@ -1,4 +1,6 @@
+// ReviewWritingPage.tsx
 import { useState, forwardRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -44,6 +46,12 @@ const CustomDatePickerInput = forwardRef(
 );
 
 const ReviewWritingPage: React.FC = () => {
+  const location = useLocation();
+  const { valley_id, thumbnail } = location.state as {
+    valley_id: string;
+    thumbnail: string;
+  };
+
   const [title, setTitle] = useState('');
   const [rating, setRating] = useState('ZERO');
   const [content, setContent] = useState('');
@@ -141,7 +149,7 @@ const ReviewWritingPage: React.FC = () => {
           ? visitedDate.toISOString().split('T')[0]
           : '',
         privacy,
-        place_id: 'idA',
+        place_id: valley_id,
         tag_names: tags,
         image_urls: [],
       };
@@ -185,17 +193,16 @@ const ReviewWritingPage: React.FC = () => {
       <Box pt="20">
         <Box position="relative" mb="4">
           <Box
-            backgroundImage="url('https://cdn.pixabay.com/photo/2020/07/03/10/28/waterfall-5365926_1280.jpg')"
+            backgroundImage={`url(${thumbnail})`}
             backgroundSize="cover"
             backgroundPosition="center"
             filter="brightness(50%)"
             height="250px"
-            width="100%"
+            width="100vw"
             position="absolute"
             top="-20"
-            left="0"
-            right="0"
-            bottom="0"
+            left="50%"
+            transform="translateX(-50%)"
             zIndex="-1"
           />
           <CustomInput

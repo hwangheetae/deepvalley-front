@@ -8,56 +8,102 @@ import {
   Avatar,
   HStack,
   VStack,
+  Link,
 } from '@chakra-ui/react';
+import { ValleyDetailReviewType } from '../../../types';
+import { useNavigate } from 'react-router-dom';
 
-const Review: React.FC = () => {
+interface ReviewProps {
+  reviews: ValleyDetailReviewType[];
+  valley_id: string;
+  thumbnail: string;
+}
+
+const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
+  const navigate = useNavigate();
+
+  const handleWriteReview = () => {
+    navigate('/reviewWriting', { state: { valley_id, thumbnail } });
+  };
+
   return (
-    <Box p={4} mt="60px">
-      <HStack spacing={4} mb={4}>
-        <Avatar size="md" src="profile_image_url" />
-        <Text fontSize="lg" fontWeight="bold">
-          nickname
-        </Text>
-      </HStack>
+    <Box p={4}>
+      {reviews.length === 0 ? (
+        <Box textAlign="center">
+          <Text fontSize="lg" fontWeight="bold">
+            작성된 리뷰가 없습니다.
+          </Text>
+          <Text mb={4}>첫 번째 리뷰를 작성해보세요!</Text>
+          <Button colorScheme="green" width="100%" onClick={handleWriteReview}>
+            리뷰작성하기
+          </Button>
+        </Box>
+      ) : (
+        <>
+          <Box
+            mb={4}
+            overflowX="auto"
+            whiteSpace="nowrap"
+            p={4}
+            borderRadius="md"
+            boxShadow="md"
+            css={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+            }}
+          >
+            <HStack spacing={6} display="inline-flex" justifyContent="center">
+              {reviews.map((review) => (
+                <Link key={review.review_id} href={`#${review.review_id}`}>
+                  <Avatar size="md" src={review.profile_image_url ?? ''} />
+                </Link>
+              ))}
+            </HStack>
+          </Box>
 
-      <Flex mb={4}>
-        <Image
-          boxSize="150px"
-          src="valley1.png"
-          alt="image1"
-          borderRadius="md"
-          mr={2}
-        />
-        <Image
-          boxSize="150px"
-          src="valley1.png"
-          alt="image2"
-          borderRadius="md"
-          mr={2}
-        />
-        <Image
-          boxSize="150px"
-          src="valley1.png"
-          alt="image2"
-          borderRadius="md"
-        />
-      </Flex>
+          {reviews.map((review) => (
+            <Box
+              key={review.review_id}
+              p={4}
+              borderWidth="1px"
+              borderRadius="lg"
+              mb={4}
+              id={review.review_id}
+            >
+              <HStack spacing={4} mb={4}>
+                <Avatar size="md" src={review.profile_image_url ?? ''} />
+                <Text fontSize="lg" fontWeight="bold">
+                  {review.member_id}
+                </Text>
+              </HStack>
 
-      <VStack align="start" mb={4}>
-        <Text fontSize="md" fontWeight="bold">
-          청계천이 좋드라구요
-        </Text>
-        <Text>
-          청계천은 서울 도심을 가로지르는 계곡으로 인조섬에서 발원한다. 수질
-          보호지역으로 인하여 놀러온 친구들과 깨끗한 자연을 즐길 수 있다. 한적한
-          계곡이어서 도시의 소음을 피할 수 있어 편안하다. 정기적으로 정화 작업을
-          해서 깨끗함이 유지되고 있다. 가족과 함께 오기 좋은 곳이다.
-        </Text>
-      </VStack>
+              <Flex mb={4}>
+                {review.image_urls.map((url, index) => (
+                  <Image
+                    key={index}
+                    boxSize="150px"
+                    src={url}
+                    alt={`image${index + 1}`}
+                    borderRadius="md"
+                    mr={2}
+                  />
+                ))}
+              </Flex>
 
-      <Button colorScheme="green" width="100%">
-        리뷰작성하기
-      </Button>
+              <VStack align="start" mb={4}>
+                <Text fontSize="md" fontWeight="bold">
+                  {review.title}
+                </Text>
+                <Text>{review.content}</Text>
+              </VStack>
+            </Box>
+          ))}
+          <Button colorScheme="green" width="100%" onClick={handleWriteReview}>
+            리뷰작성하기
+          </Button>
+        </>
+      )}
     </Box>
   );
 };

@@ -7,10 +7,10 @@ import {
   FaCheckCircle,
   FaParking,
 } from 'react-icons/fa';
-import { ValleyDetailType } from '../../../types';
+import { ValleyDetailInfoType } from '../../../types';
 
 interface InfoProps {
-  valley: ValleyDetailType;
+  valley: ValleyDetailInfoType;
 }
 
 const Info: React.FC<InfoProps> = ({ valley }) => {
