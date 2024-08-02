@@ -1,44 +1,28 @@
-// 400 'Invalid request body server message'
-export const INVALID_REUEST_BODY_SERVER_MESSAGE = 'Invalid request body';
-
-// 400 'Invalid request body'
-export const INVALID_REUEST_BODY_MESSAGE = '잘못된 요청입니다.';
-
-//400 'Invalid email or password server message'
-export const INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE =
-  'Invalid email or password';
-
 //400 'Invalid email or password'
-export const INVALID_REQUEST_EMAIL_OR_PASSWORD =
-  '잘못된 이메일 또는 비밀번호 입니다.';
+export const 잘못된요청 = '잘못된 요청입니다.';
 
 //401 PASSWORD
-export const INVALID_CURRENT_PASSWORD = '현재 비밀번호가 올바르지 않습니다.';
+export const 잘못된비밀번호 = '현재 비밀번호가 올바르지 않습니다.';
 
 //404
-export const ERROR_MESSAGE_404 = '페이지 또는 사용자를 찾을 수 없습니다.';
+export const 에러404 = '페이지 또는 사용자를 찾을 수 없습니다.';
 
 //409 Email Conflict server message
-export const EMAIL_CONFLICT_SERVER_MESSAGE = 'Login email already in use';
+export const 이메일이중복되었어요 = 'Login email already in use';
 
 //409 Email Conflict message
-export const EMAIL_CONFLICT_MESSAGE = '이미 존재하는 이메일입니다.';
+export const 이미존재하는이메일입니다 = '이미 존재하는 이메일입니다.';
 
 //409 NICKNAME Conflict server message
-export const NICKNAME_CONFLICT_SERVER_MESSAGE = 'Name already in use';
+export const 닉네임이중복되었어요 = 'Name already in use';
 
 //409 NICKNAME Conflict  message
-export const NICKNAME_CONFLICT_MESSAGE = '이미 존재하는 닉네임입니다.';
+export const 이미존재하는닉네임입니다 = '이미 존재하는 닉네임입니다.';
 
 //422 PASSWORD
-export const SAME_OLD_AND_NEW_PASSWORD =
+export const 서로같은비밀번호설정 =
   '변경하려는 비밀번호와 이전 비밀번호가 동일합니다.';
 
 //500 'Invalid email or password'
-export const INTERNAL_SERVER_ERROR_MESSAGE =
+export const 서버오류 =
   '서버에서 오류가 발생했습니다. 나중에 다시 시도해 주세요.';
-
-export const KAKAO_GET_TOKEN_SERVER_ERROR_MESSAGE = 'Invalid code';
-
-//kakao 500 error
-export const KAKAO_AUTH_ERROR_MESSAGE = '카카오 인증에 에러가 있습니다.';

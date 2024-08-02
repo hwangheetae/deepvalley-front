@@ -9,7 +9,7 @@ import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
 import { register } from '../../../api/Auth/AuthService';
 import useErrorToast from '../../../hooks/useErrorToast';
 import useSuccessToast from '../../../hooks/useSuccessToast';
-
+import { useMutation } from '@tanstack/react-query';
 import {
   Flex,
   FormControl,
@@ -21,50 +21,50 @@ import {
   Text,
 } from '@chakra-ui/react';
 import {
-  INVALID_REQUEST_EMAIL_OR_PASSWORD,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-  EMAIL_CONFLICT_SERVER_MESSAGE,
-  EMAIL_CONFLICT_MESSAGE,
-  NICKNAME_CONFLICT_SERVER_MESSAGE,
-  NICKNAME_CONFLICT_MESSAGE,
+  잘못된요청,
+  이미존재하는이메일입니다,
+  이메일이중복되었어요,
+  닉네임이중복되었어요,
+  이미존재하는닉네임입니다,
+  서버오류,
 } from '../../../constant/constant';
+
 const Register: FC = () => {
   const navigate = useNavigate();
   const { errorToast } = useErrorToast();
   const { successToast } = useSuccessToast();
-  //db 명칭상 이유로 nickname => name
-  const handleSubmit = async (values: {
+
+  const mutation = useMutation({
+    mutationFn: register,
+    onSuccess: (response) => {
+      localStorage.setItem('token', response.data.access_token);
+      navigate('/');
+      successToast('로그인 성공!', '로그인에 성공하였습니다.');
+    },
+    onError: (err: any) => {
+      if (err.response.status === 400) {
+        errorToast(잘못된요청);
+      }
+      if (err.response.status === 409) {
+        if (err.response.data === 이메일이중복되었어요) {
+          errorToast(이미존재하는이메일입니다);
+        }
+        if (err.response.data === 닉네임이중복되었어요) {
+          errorToast(이미존재하는닉네임입니다);
+        }
+      }
+      if (err.response.status === 500) {
+        errorToast(서버오류);
+      }
+    },
+  });
+
+  const handleSubmit = (values: {
     login_email: string;
     name: string;
     password: string;
   }) => {
-    try {
-      const userData = await register(values);
-      if (userData) {
-        successToast('회원가입 성공!', '로그인 하고 서비스를 계속 사용하세요.');
-        navigate('/login');
-      }
-    } catch (err: any) {
-      if (err.response.status === 400) {
-        errorToast(INVALID_REQUEST_EMAIL_OR_PASSWORD);
-      }
-      if (err.response.status === 404) {
-        errorToast(ERROR_MESSAGE_404);
-      }
-
-      if (err.response.status === 409) {
-        if (err.response.data === EMAIL_CONFLICT_SERVER_MESSAGE) {
-          errorToast(EMAIL_CONFLICT_MESSAGE);
-        }
-        if (err.response.data === NICKNAME_CONFLICT_SERVER_MESSAGE) {
-          errorToast(NICKNAME_CONFLICT_MESSAGE);
-        }
-      }
-      if (err.response.status === 500) {
-        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
-      }
-    }
+    mutation.mutate(values);
   };
 
   return (

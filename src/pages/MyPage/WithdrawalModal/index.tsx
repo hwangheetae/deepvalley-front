@@ -18,11 +18,7 @@ import {
 import { useMe } from '../../../stores/meStore';
 import { membershipWithdrawal } from '../../../api/User';
 import { useNavigate } from 'react-router-dom';
-import {
-  INVALID_REUEST_BODY_MESSAGE,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-} from '../../../constant/constant';
+import { 잘못된요청, 에러404, 서버오류 } from '../../../constant/constant';
 import useErrorToast from '../../../hooks/useErrorToast';
 interface WithdrawalModalProps {
   isOpen: boolean;
@@ -52,14 +48,13 @@ const WithdrawalModal: FC<WithdrawalModalProps> = ({
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        errorToast(INVALID_REUEST_BODY_MESSAGE);
+        errorToast(잘못된요청);
       }
       if (err.response.status === 404) {
-        errorToast(ERROR_MESSAGE_404);
+        errorToast(에러404);
       }
-
       if (err.response.status === 500) {
-        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(서버오류);
       }
     }
   };

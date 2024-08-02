@@ -24,6 +24,7 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
+import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
 import {
   fetchValleyDetailInfo,
   fetchValleyDetailReview,
@@ -148,6 +149,7 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  { path: '/LoadingSpinner', element: <LoadingSpinner /> },
   {
     path: '/valley/:valleyId/detail',
     element: <ValleyPage />,

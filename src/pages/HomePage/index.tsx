@@ -8,12 +8,9 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { FC, useEffect } from 'react';
 import { getUser } from '../../api/User';
 import { useMe } from '../../stores/meStore';
-import {
-  INVALID_REUEST_BODY_MESSAGE,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-} from '../../constant/constant';
+import { 에러404, 서버오류, 잘못된요청 } from '../../constant/constant';
 import useErrorToast from '../../hooks/useErrorToast';
+import { RecommendReview } from '../../components/Common';
 
 const HomePage: FC = () => {
   const { updateMe } = useMe();
@@ -33,13 +30,13 @@ const HomePage: FC = () => {
       }
     } catch (err: any) {
       if (err.response.status === 400) {
-        errorToast(INVALID_REUEST_BODY_MESSAGE);
+        errorToast(잘못된요청);
       }
       if (err.response.status === 404) {
-        errorToast(ERROR_MESSAGE_404);
+        errorToast(에러404);
       }
       if (err.response.status === 500) {
-        errorToast(INTERNAL_SERVER_ERROR_MESSAGE);
+        errorToast(서버오류);
       }
     }
   };
@@ -47,35 +44,32 @@ const HomePage: FC = () => {
   useEffect(() => {
     userResponse();
   }, []);
-
   return (
-    <div>
-      <Layout hasHeader={true} hasTapBar={true}>
-        <MainPageHeader
-          title="깊은산 골짜기"
-          fontFamily="Cafe24Ssurround"
-          showMenuButton={true}
-        />
+    <Layout hasHeader={true} hasTapBar={true}>
+      <MainPageHeader
+        title="깊은산 골짜기"
+        fontFamily="Cafe24Ssurround"
+        showMenuButton={false}
+      />
 
-        <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<SearchIcon color="black" />}
-          />
-          <Input
-            placeholder="지역을 입력하세요"
-            size="md"
-            borderRadius="full"
-            boxShadow="md"
-            bg="white"
-          />
-        </InputGroup>
-        <Category />
-        <Carousel />
-        <TapBar />
-      </Layout>
-    </div>
+      <InputGroup>
+        <InputLeftElement
+          pointerEvents="none"
+          children={<SearchIcon color="black" />}
+        />
+        <Input
+          placeholder="지역을 입력하세요"
+          size="md"
+          borderRadius="full"
+          boxShadow="md"
+          bg="white"
+        />
+      </InputGroup>
+      <Category />
+      <Carousel />
+      <RecommendReview />
+      <TapBar />
+    </Layout>
   );
 };
-
 export default HomePage;
