@@ -49,7 +49,7 @@ const HomePage: FC = () => {
       <MainPageHeader
         title="깊은산 골짜기"
         fontFamily="Cafe24Ssurround"
-        showMenuButton={false}
+        showMenuButton={true}
       />
 
       <InputGroup>

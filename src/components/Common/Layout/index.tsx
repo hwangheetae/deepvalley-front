@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import { LayoutProps } from '../../../types/ComponentType';
 import { Box } from '@chakra-ui/react';
-
+import MainPageHeader from '../MainPageHeader';
 const Layout: FC<LayoutProps> = ({
   children,
   hasHeader = false,
@@ -26,7 +26,13 @@ const Layout: FC<LayoutProps> = ({
           right={0}
           height={`${headerHeight}px`}
           zIndex={1000}
-        ></Box>
+        >
+          <MainPageHeader
+            title="깊은산 골짜기"
+            fontFamily="Cafe24Ssurround"
+            showMenuButton={true}
+          />
+        </Box>
       )}
       <Box
         as="main"
