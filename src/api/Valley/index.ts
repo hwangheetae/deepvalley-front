@@ -67,6 +67,6 @@ export const fetchValleyDetailImage = async (valleyId: string) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error('Failed to fetch ValleyDetailimage');
+    throw new Error('Failed to fetch ValleyDetailImage');
   }
 };
