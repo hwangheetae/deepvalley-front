@@ -54,7 +54,7 @@ const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
           {visibleValleys.map((valley, index) => (
             <ChakraLink
               as={RouterLink}
-              to={`/ValleyPage/${valley.valley_id}`}
+              to={`/valley/${valley.valley_id}/detail`}
               w="100%"
               key={index}
             >

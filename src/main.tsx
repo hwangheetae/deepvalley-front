@@ -24,6 +24,11 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
+import {
+  fetchValleyDetailInfo,
+  fetchValleyDetailReview,
+  fetchValleyDetailImage,
+} from './api/Valley/index.ts';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -143,7 +148,24 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-  { path: '/ValleyPage', element: <ValleyPage /> },
+  {
+    path: '/valley/:valleyId/detail',
+    element: <ValleyPage />,
+    loader: async ({ params }) => {
+      const valleyId = params.valleyId as string;
+      const valleyData = await fetchValleyDetailInfo(valleyId);
+      const reviewData = await fetchValleyDetailReview(valleyId);
+      const imageData = await fetchValleyDetailImage(valleyId);
+      queryClient.setQueryData(['valleyDetail', valleyId], valleyData);
+      queryClient.setQueryData(['reviews', valleyId], reviewData);
+      queryClient.setQueryData(['images', valleyId], imageData);
+      return {
+        valley: valleyData,
+        reviews: reviewData.reviews,
+        images: imageData,
+      };
+    },
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
