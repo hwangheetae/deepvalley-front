@@ -29,6 +29,11 @@ const ValleyPage: React.FC = () => {
     images: { review_id: string; image_urls: string[] }[];
   };
 
+  const findRoute = () =>
+    window.open(
+      `https://map.kakao.com/link/to/${valley.name},${valley.latitude},${valley.longitude}`,
+    );
+
   return (
     <Layout>
       <Header
@@ -55,6 +60,7 @@ const ValleyPage: React.FC = () => {
               borderRadius="full"
               flex="1"
               maxW="200px"
+              onClick={findRoute}
             >
               길 찾기
             </Button>
