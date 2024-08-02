@@ -38,7 +38,10 @@ const ChangePassword: FC = () => {
     try {
       const response = await changePassword(values);
       if (response.status === 200) {
-        successToast('비밀번호 변경 성공!', `비밀번호를 변경하였습니다.`);
+        successToast({
+          title: '비밀번호 변경 성공!',
+          description: `비밀번호를 변경하였습니다.`,
+        });
         navigate('/');
       }
     } catch (err: any) {

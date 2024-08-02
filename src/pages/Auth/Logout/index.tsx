@@ -11,7 +11,10 @@ const Logout = () => {
   useEffect(() => {
     logout();
     setIsLoggedOut(true);
-    successToast('로그아웃 성공!', `성공적으로 로그아웃 하였습니다.`);
+    successToast({
+      title: '로그아웃 성공!',
+      description: `성공적으로 로그아웃 하였습니다.`,
+    });
     navigate('/');
   }, []);
 

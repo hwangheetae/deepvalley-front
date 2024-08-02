@@ -78,7 +78,10 @@ const ChangeProfile: FC = () => {
           ...values,
           profile_image_url: imgFile,
         });
-        successToast('프로필 변경 성공!', `프로필을 변경하였습니다.`);
+        successToast({
+          title: '프로필 변경 성공!',
+          description: `프로필을 변경하였습니다.`,
+        });
         navigate('/');
       }
     } catch (err: any) {

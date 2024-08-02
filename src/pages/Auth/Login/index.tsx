@@ -37,7 +37,10 @@ const Login: FC = () => {
     onSuccess: (response) => {
       localStorage.setItem('token', response.data.access_token);
       navigate('/');
-      successToast('로그인 성공!', '로그인에 성공하였습니다.');
+      successToast({
+        title: '로그인 성공!',
+        description: '로그인에 성공하였습니다.',
+      });
     },
     onError: (err: any) => {
       if (err.response.status === 400) {
