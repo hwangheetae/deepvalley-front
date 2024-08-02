@@ -7,12 +7,14 @@ import {
   Image,
   HStack,
   Icon,
+  Link as ChakraLink,
 } from '@chakra-ui/react';
 import { Star, Water } from '@mui/icons-material';
 import { ValleysType } from '../../../types';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface ListComponentProps {
-  visibleValleys: ValleysType[]; // 새로운 prop 추가
+  visibleValleys: ValleysType[];
 }
 
 const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
@@ -50,43 +52,49 @@ const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
       {isOpen && (
         <VStack p={4} spacing={2}>
           {visibleValleys.map((valley, index) => (
-            <Box
-              key={index}
-              p={2}
-              borderWidth="1px"
-              borderRadius="lg"
+            <ChakraLink
+              as={RouterLink}
+              to={`/valley/${valley.valley_id}/detail`}
               w="100%"
-              boxShadow="md"
+              key={index}
             >
-              <HStack spacing={4}>
-                <Image
-                  src={valley.thumbnail}
-                  alt={valley.name}
-                  borderRadius="lg"
-                  boxSize="140px"
-                  objectFit="cover"
-                />
-                <VStack align="start" spacing={1}>
-                  <Text fontWeight="bold" fontSize="lg">
-                    {valley.name}
-                  </Text>
-                  <Text color="gray.600" fontSize="sm">
-                    {valley.address}
-                  </Text>
-                  <HStack spacing={2}>
-                    <Icon as={Water} color="blue.500" />
-                    <Text fontSize="sm">{valley.max_depth}m</Text>
-                  </HStack>
-                  <HStack spacing={2}>
-                    <Icon as={Star} color="yellow.500" />
-                    <Text fontSize="sm">{valley.rating}</Text>
-                    <Text fontSize="sm" color="gray.500">
-                      리뷰 {valley.post_count}개
+              <Box
+                p={2}
+                borderWidth="1px"
+                borderRadius="lg"
+                w="100%"
+                boxShadow="md"
+              >
+                <HStack spacing={4}>
+                  <Image
+                    src={valley.thumbnail}
+                    alt={valley.name}
+                    borderRadius="lg"
+                    boxSize="140px"
+                    objectFit="cover"
+                  />
+                  <VStack align="start" spacing={1}>
+                    <Text fontWeight="bold" fontSize="lg">
+                      {valley.name}
                     </Text>
-                  </HStack>
-                </VStack>
-              </HStack>
-            </Box>
+                    <Text color="gray.600" fontSize="sm">
+                      {valley.address}
+                    </Text>
+                    <HStack spacing={2}>
+                      <Icon as={Water} color="blue.500" />
+                      <Text fontSize="sm">{valley.max_depth}m</Text>
+                    </HStack>
+                    <HStack spacing={2}>
+                      <Icon as={Star} color="yellow.500" />
+                      <Text fontSize="sm">{valley.rating}</Text>
+                      <Text fontSize="sm" color="gray.500">
+                        리뷰 {valley.post_count}개
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </HStack>
+              </Box>
+            </ChakraLink>
           ))}
         </VStack>
       )}

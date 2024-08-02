@@ -10,3 +10,4 @@ export { default as TapBar } from './TapBar';
 export { default as Review } from './Review';
 export { default as ReviewMenuModal } from './ReviewMenuModal';
 export { default as RecommendReview } from './RecommendReview';
+export { default as BusyChart } from '../BusyChart';
