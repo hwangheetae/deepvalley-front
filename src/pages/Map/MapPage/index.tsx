@@ -22,6 +22,8 @@ import ListComponent from '../ListComponent';
 import { ValleysType, FacilityType } from '../../../types';
 import { fetchValleys, fetchfacilities } from '../../../api/Valley';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import config from '../../../config';
 
 interface MapBounds {
   swLat: number;
@@ -78,7 +80,7 @@ export const MapPage = () => {
 
   useEffect(() => {
     setPositions(valleys);
-  }, [valleys]);
+  }, []);
 
   const handleBoundsChanged = (map: any) => {
     const bounds = map.getBounds();
@@ -105,6 +107,55 @@ export const MapPage = () => {
   if (errorValleys || errorFacilities) {
     return <Center h="100vh">Error loading data</Center>;
   }
+
+  const textEncoder = new TextEncoder();
+  const bytes = textEncoder.encode('SK T타워');
+  console.log(bytes);
+  // const options = {
+  //   method: 'POST',
+  //   headers: {
+  //     accept: 'application/json',
+  //     'content-type': 'application/json',
+  //     appKey: 'cLIOg4SCAc5qylsGdDrvy99oksqozj5h3CkWhCrZ',
+  //   },
+  //   body: JSON.stringify({
+  //     routesInfo: {
+  //       departure: {
+  //         name: 'test1',
+  //         lon: '126.963936',
+  //         lat: '37.536025',
+  //         depSearchFlag: '05',
+  //       },
+  //       destination: {
+  //         name: 'test2',
+  //         lon: '129.222222',
+  //         lat: '35.111111',
+  //         poiId: '1000559885',
+  //         rpFlag: '16',
+  //         destSearchFlag: '03',
+  //       },
+  //       predictionType: 'departure',
+  //       predictionTime: '2013-05-19T18:31:22+0900',
+  //       wayPoints: {
+  //         wayPoint: [
+  //           { lon: '126.814383', lat: '35.157242', poiId: '1000559888' },
+  //           { lon: '128.565503', lat: '35.874493', poiId: '1000559886' },
+  //         ],
+  //       },
+  //       searchOption: '00',
+  //       tollgateCarType: 'car',
+  //       trafficInfo: 'N',
+  //     },
+  //   }),
+  // };
+
+  // fetch(
+  //   'https://apis.openapi.sk.com/tmap/routes/prediction?version=1&resCoordType=WGS84GEO&reqCoordType=WGS84GEO&sort=index&callback=function&totalValue=2',
+  //   options,
+  // )
+  //   .then((response) => response.json())
+  //   .then((response) => console.log(response))
+  //   .catch((err) => console.error(err));
 
   return (
     <Flex

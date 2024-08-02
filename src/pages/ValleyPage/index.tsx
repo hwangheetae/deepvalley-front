@@ -24,6 +24,11 @@ import { ValleyDetailType } from '../../types';
 const ValleyPage: React.FC = () => {
   const { valley } = useLoaderData() as { valley: ValleyDetailType };
 
+  const findRoute = () =>
+    window.open(
+      `https://map.kakao.com/link/to/${valley.name},${valley.latitude},${valley.longitude}`,
+    );
+
   return (
     <Layout>
       <Header
@@ -50,6 +55,7 @@ const ValleyPage: React.FC = () => {
               borderRadius="full"
               flex="1"
               maxW="200px"
+              onClick={findRoute}
             >
               길 찾기
             </Button>
