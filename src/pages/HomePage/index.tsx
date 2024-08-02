@@ -1,5 +1,4 @@
 import Layout from '../../components/Common/Layout';
-import MainPageHeader from '../../components/Common/MainPageHeader';
 import TapBar from '../../components/Common/TapBar';
 import Carousel from '../../components/Common/Carousel';
 import Category from '../../components/Common/Category';
@@ -45,13 +44,7 @@ const HomePage: FC = () => {
     userResponse();
   }, []);
   return (
-    <Layout hasHeader={true} hasTapBar={true}>
-      <MainPageHeader
-        title="깊은산 골짜기"
-        fontFamily="Cafe24Ssurround"
-        showMenuButton={true}
-      />
-
+    <Layout hasHeader={true} hasTapBar={true} showMenuButton={true}>
       <InputGroup>
         <InputLeftElement
           pointerEvents="none"

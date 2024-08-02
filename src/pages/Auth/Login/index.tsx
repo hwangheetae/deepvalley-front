@@ -1,13 +1,11 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import Layout from '../../../components/Common/Layout';
 import CustomButton from '../../../components/Common/CustomButton';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
 import Logo from '../../../assets/images/Logo.png';
-import { login } from '../../../api/Auth/AuthService';
-import { useMutation } from '@tanstack/react-query';
+import useLoginMutation from '../../../queries/useLoginMutation';
 import {
   Flex,
   FormControl,
@@ -18,45 +16,9 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
-import {
-  잘못된요청,
-  잘못된비밀번호,
-  에러404,
-  서버오류,
-} from '../../../constant/constant';
-import useHandleError from '../../../hooks/useErrorToast';
-import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const Login: FC = () => {
-  const navigate = useNavigate();
-  const { errorToast } = useHandleError();
-  const { successToast } = useSuccessToast();
-
-  const mutation = useMutation({
-    mutationFn: login,
-    onSuccess: (response) => {
-      localStorage.setItem('token', response.data.access_token);
-      navigate('/');
-      successToast({
-        title: '로그인 성공!',
-        description: '로그인에 성공하였습니다.',
-      });
-    },
-    onError: (err: any) => {
-      if (err.response.status === 400) {
-        errorToast(잘못된요청);
-      }
-      if (err.response.status === 401) {
-        errorToast(잘못된비밀번호);
-      }
-      if (err.response.status === 404) {
-        errorToast(에러404);
-      }
-      if (err.response.status === 500) {
-        errorToast(서버오류);
-      }
-    },
-  });
+  const mutation = useLoginMutation();
 
   const handleSubmit = (values: { login_email: string; password: string }) => {
     mutation.mutate(values);

@@ -31,6 +31,7 @@ export interface LayoutProps {
   children: ReactNode;
   hasHeader?: boolean;
   hasTapBar?: boolean;
+  showMenuButton?: boolean;
 }
 
 export interface MainPageHeaderProps {

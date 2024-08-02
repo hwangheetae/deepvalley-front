@@ -1,34 +1,11 @@
 import { FC, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { kakaoLoginSendToken } from '../../../../../api/Auth/AuthService';
-import { 서버오류 } from '../../../../../constant/constant';
-import useErrorToast from '../../../../../hooks/useErrorToast';
-import useSuccessToast from '../../../../../hooks/useSuccessToast';
-import { useMutation } from '@tanstack/react-query';
 import LoadingSpinner from '../../../../../components/Common/LoadingSpinner';
-import { Layout } from '../../../../../components/Common';
-const SocialKakaoRedirectPage: FC = () => {
-  const navigate = useNavigate();
-  const { errorToast } = useErrorToast();
-  const { successToast } = useSuccessToast();
+import useKakaoLoginMutation from '../../../../../queries/useKakaoLoginMutation';
 
+const SocialKakaoRedirectPage: FC = () => {
   const code = new URL(window.location.href).searchParams.get('code');
 
-  const mutation = useMutation({
-    mutationFn: kakaoLoginSendToken,
-    onSuccess: (response) => {
-      localStorage.setItem('token', response.data.access_token);
-      successToast({
-        title: '로그인 성공!',
-        description: '로그인에 성공하였습니다.',
-      });
-      navigate('/');
-    },
-    onError: () => {
-      errorToast(서버오류);
-      navigate('/login');
-    },
-  });
+  const mutation = useKakaoLoginMutation();
 
   const fetchData = () => {
     if (!code) return;
@@ -39,6 +16,7 @@ const SocialKakaoRedirectPage: FC = () => {
     fetchData();
   }, []);
 
+  if (mutation.isPending) return <LoadingSpinner />;
   //   useEffect(() => {
   //     const fetchData = async () => {
   //       try {
@@ -62,8 +40,6 @@ const SocialKakaoRedirectPage: FC = () => {
   //   }, []);
   //   return <div>로그인 중...</div>;
   // };
-
-  return <Layout>{mutation.isPending ? <LoadingSpinner /> : <></>}</Layout>;
 };
 
 export default SocialKakaoRedirectPage;
