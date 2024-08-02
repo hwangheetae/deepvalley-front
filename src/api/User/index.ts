@@ -1,6 +1,7 @@
 import basicClient from '../Auth/basicClient';
 
 export const getUser = async () => {
+  console.log('getuser 실행됨');
   return basicClient.get('/api/member');
 };
 

@@ -19,9 +19,8 @@ const useRegisterMutation = () => {
 
   return useMutation({
     mutationFn: register,
-    onSuccess: (response) => {
-      localStorage.setItem('token', response.data.access_token);
-      navigate('/');
+    onSuccess: () => {
+      navigate('/login');
       successToast({
         title: '회원가입 성공!',
         description: '회원가입에 성공하였습니다.',
