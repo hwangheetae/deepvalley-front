@@ -7,7 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage/index.tsx';
-import { ChangePassword, ReviewPage } from './pages/index.tsx';
+import { ChangePassword, ErrorPage, ReviewPage } from './pages/index.tsx';
 import { fetchReview } from './api/Review/index.ts';
 import { fetchReviews } from './api/Review/index.ts';
 import MyPage from './pages/MyPage/index.tsx';
@@ -82,7 +82,6 @@ const router = createBrowserRouter([
     ),
   },
   { path: '/mappage', element: <MapPage /> },
-
   {
     path: 'review/:reviewId',
     element: <ReviewPage />,
@@ -168,6 +167,10 @@ const router = createBrowserRouter([
         images: imageData,
       };
     },
+  },
+  {
+    path: '*',
+    element: <ErrorPage />,
   },
 ]);
 
