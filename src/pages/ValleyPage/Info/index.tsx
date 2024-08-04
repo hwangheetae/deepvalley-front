@@ -18,7 +18,6 @@ import {
   FaParking,
 } from 'react-icons/fa';
 import { ValleyDetailInfoType } from '../../../types';
-import BusyChart from '../../../components/BusyChart';
 
 interface InfoProps {
   valley: ValleyDetailInfoType;
@@ -186,7 +185,6 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
         <Text fontSize="lg" fontWeight="bold">
           실시간 혼잡도
         </Text>
-        {/* <BusyChart /> */}
         <Text>{valley.busy}</Text>
         <Box mt={4} p={4} bg="green.500" borderRadius="md" color="white">
           <Flex align="center">
