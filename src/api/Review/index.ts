@@ -29,3 +29,8 @@ export const submitReview = async (formData: FormData) => {
 export const deleteReview = async (reviewid: string) => {
   return basicClient.delete(`api/review/${reviewid}`);
 };
+
+export const fetchRecommendReview = async () => {
+  console.log('추천리뷰 실행됨!');
+  return basicClient.get('/api/review/recommend');
+};
