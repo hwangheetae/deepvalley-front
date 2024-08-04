@@ -25,6 +25,7 @@ import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
 import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
   fetchValleyDetailInfo,
   fetchValleyDetailReview,
@@ -174,6 +175,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </ChakraProvider>

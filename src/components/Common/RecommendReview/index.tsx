@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import ItemsCarousel from 'react-items-carousel';
-import { Box, Image, Text, VStack } from '@chakra-ui/react';
+import { Flex, Box, Image, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@chakra-ui/react';
 import { fetchRecommendReview } from '../../../api/Review';
 const noOfCards = 1;
 const chevronWidth = 40;
+
 const RecommendReview: React.FC = () => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
 
@@ -13,18 +14,6 @@ const RecommendReview: React.FC = () => {
     queryKey: ['recommendReview'],
     queryFn: fetchRecommendReview,
   });
-
-  if (isPending) {
-    return (
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="teal.500"
-        size="xl"
-      />
-    );
-  }
 
   if (isError) {
     return <span>Error: {error.message}</span>;
@@ -35,60 +24,76 @@ const RecommendReview: React.FC = () => {
       <Text fontSize="xl" fontWeight="bold">
         오늘의 추천 계곡
       </Text>
-
-      <Box position="relative" width="100%">
-        <ItemsCarousel
-          infiniteLoop
-          gutter={0}
-          activePosition={'center'}
-          disableSwipe={false}
-          alwaysShowChevrons={false}
-          numberOfCards={noOfCards}
-          activeItemIndex={activeItemIndex}
-          outsideChevron={false}
-          showSlither={true}
-          requestToChangeActive={setActiveItemIndex}
-          chevronWidth={chevronWidth}
+      {isPending ? (
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          width="100%"
+          height="20vh"
         >
-          {data.data.map((item: any, index: any) => (
-            <Box
-              key={index}
-              position="relative"
-              boxShadow=""
-              borderRadius="lg"
-              overflow="hidden"
-              height="34vh"
-              backgroundColor={'white'}
-              p={2}
-            >
-              <Image
-                src={item.image_url}
-                alt={item.valley_name}
-                style={{ height: '90%', width: '100%', objectFit: 'cover' }}
-              />
+          <Spinner
+            thickness="4px"
+            speed="2s"
+            emptyColor="gray.200"
+            color="teal.500"
+            size="xl"
+          />
+        </Flex>
+      ) : (
+        <Box position="relative" width="100%">
+          <ItemsCarousel
+            infiniteLoop
+            gutter={0}
+            activePosition={'center'}
+            disableSwipe={false}
+            alwaysShowChevrons={false}
+            numberOfCards={noOfCards}
+            activeItemIndex={activeItemIndex}
+            outsideChevron={false}
+            showSlither={true}
+            requestToChangeActive={setActiveItemIndex}
+            chevronWidth={chevronWidth}
+          >
+            {data.data.map((item: any, index: any) => (
               <Box
-                position="absolute"
-                bottom="40px"
-                width={'95%'}
-                height={'20%'}
-                bg="rgba(0, 0, 0, 0.6)"
-                color="white"
+                key={index}
+                position="relative"
+                boxShadow=""
+                borderRadius="lg"
+                overflow="hidden"
+                height="34vh"
+                backgroundColor={'white'}
                 p={2}
-                borderRadius="md"
               >
-                <Text fontSize="lg" fontWeight="bold">
-                  {item.valley_name}
+                <Image
+                  src={item.image_url}
+                  alt={item.valley_name}
+                  style={{ height: '90%', width: '100%', objectFit: 'cover' }}
+                />
+                <Box
+                  position="absolute"
+                  bottom="40px"
+                  width={'95%'}
+                  height={'20%'}
+                  bg="rgba(0, 0, 0, 0.6)"
+                  color="white"
+                  p={2}
+                  borderRadius="md"
+                >
+                  <Text fontSize="lg" fontWeight="bold">
+                    {item.valley_name}
+                  </Text>
+                  <Text fontSize="sm">{item.address}</Text>
+                </Box>
+                <Text p={3} fontSize="sm" color="teal.500">
+                  {item.tag_names.join(' ')}
                 </Text>
-                <Text fontSize="sm">{item.address}</Text>
+                <Box p={4}></Box>
               </Box>
-              <Text p={3} fontSize="sm" color="teal.500">
-                {item.tag_names.join(' ')}
-              </Text>
-              <Box p={4}></Box>
-            </Box>
-          ))}
-        </ItemsCarousel>
-      </Box>
+            ))}
+          </ItemsCarousel>
+        </Box>
+      )}
     </VStack>
   );
 };
