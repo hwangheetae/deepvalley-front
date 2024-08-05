@@ -1,13 +1,13 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Flex, Text, useToast } from '@chakra-ui/react';
+import { Box, Flex, Text, useToast, Button } from '@chakra-ui/react';
 import ProfileImage from '../Image/ProfileImage';
 import ReviewImage from '../Image/ReviewImage';
-import CustomButton from '../CustomButton';
 import { ReviewType } from '../../../types/ReviewType';
 import { fetchReview } from '../../../api/Review/index';
 import { useMe } from '../../../stores/meStore';
 import 산잉 from '../../../assets/images/산잉.png';
+import { Link } from 'react-router-dom';
 
 import 'tailwindcss/tailwind.css';
 
@@ -75,8 +75,10 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
           </Box>
         </Flex>
         <Flex alignItems="center">
-          <CustomButton
-            ButtonStyle={{
+          <Button
+            as={Link}
+            to={`/valley/${data.place_id}/detail`}
+            style={{
               background: 'white',
               color: 'black',
               borderRadius: '28px',
@@ -87,11 +89,10 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
               height: '30px',
               fontSize: '10px',
             }}
-            onClick={() => {}}
             size="md"
           >
             {data.valley_name}
-          </CustomButton>
+          </Button>
         </Flex>
       </Flex>
 

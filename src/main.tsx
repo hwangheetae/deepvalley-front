@@ -24,6 +24,8 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
+import SearchPage from './pages/SearchPage/index.tsx';
+import { fetchValleysByFilter } from './api/ValleyApi/index.ts';
 import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
 import {
   fetchValleyDetailInfo,
@@ -148,6 +150,15 @@ const router = createBrowserRouter([
         <WithdrawalSuccessPage />
       </PrivateRoute>
     ),
+  },
+
+  {
+    path: '/search',
+    element: <SearchPage />,
+    loader: async () => {
+      const valleys = await fetchValleysByFilter();
+      return { valleys };
+    },
   },
   { path: '/LoadingSpinner', element: <LoadingSpinner /> },
   {

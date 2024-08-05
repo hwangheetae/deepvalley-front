@@ -11,6 +11,7 @@ import {
   Tag,
   TagLabel,
   IconButton,
+  useToast,
 } from '@chakra-ui/react';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
@@ -18,7 +19,7 @@ import CustomButton from '../../components/Common/CustomButton';
 import CustomInput from '../../components/Common/CustomInput';
 import InstaImage from '../../components/Common/Image/InstaImage';
 import { updateReview } from '../../api/Review/index';
-import { useLoaderData, Link } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { ReviewUpdateType } from '../../types/ReviewUpdateType';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -60,7 +61,9 @@ const ReviewFixPage: React.FC = () => {
   const [newTag, setNewTag] = useState('');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>(review.image_urls);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const predefinedTags = [
     '캠핑가능',
@@ -160,25 +163,18 @@ const ReviewFixPage: React.FC = () => {
       imageFiles.forEach((file) => formData.append('imageUrls', file));
 
       await updateReview(reviewId, formData);
-      setIsSubmitted(true);
+      toast({
+        title: '리뷰가 성공적으로 수정되었습니다!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+
+      navigate('/mypage');
     } catch (error) {
       console.error('Error updating review:', error);
     }
   };
-
-  if (isSubmitted) {
-    return (
-      <Layout>
-        <Header title="" showMenuButton={false} showBorderBottom={false} />
-        <Box p="4" pt="20">
-          <Text>리뷰가 성공적으로 수정되었습니다!</Text>
-          <Link to="/">
-            <Button mt="4">메인 페이지로 이동</Button>
-          </Link>
-        </Box>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>

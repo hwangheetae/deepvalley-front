@@ -1,4 +1,3 @@
-// ReviewWritingPage.tsx
 import { useState, forwardRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
@@ -13,6 +12,7 @@ import {
   Tag,
   TagLabel,
   IconButton,
+  useToast,
 } from '@chakra-ui/react';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
@@ -21,7 +21,7 @@ import CustomInput from '../../components/Common/CustomInput';
 import InstaImage from '../../components/Common/Image/InstaImage';
 import { submitReview } from '../../api/Review/index';
 import { ReviewWritingType } from '../../types/ReviewWritingType';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
@@ -52,6 +52,9 @@ const ReviewWritingPage: React.FC = () => {
     thumbnail: string;
   };
 
+  const toast = useToast();
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState('');
   const [rating, setRating] = useState('ZERO');
   const [content, setContent] = useState('');
@@ -61,7 +64,6 @@ const ReviewWritingPage: React.FC = () => {
   const [newTag, setNewTag] = useState('');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const predefinedTags = [
     '캠핑가능',
@@ -161,25 +163,18 @@ const ReviewWritingPage: React.FC = () => {
       imageFiles.forEach((file) => formData.append('imageUrls', file));
 
       await submitReview(formData);
-      setIsSubmitted(true);
+      toast({
+        title: '리뷰가 성공적으로 업로드 되었습니다!',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+
+      navigate(-1);
     } catch (error) {
       console.error('Error submitting review:', error);
     }
   };
-
-  if (isSubmitted) {
-    return (
-      <Layout>
-        <Header title="" showMenuButton={false} showBorderBottom={false} />
-        <Box p="4" pt="20">
-          <Text>리뷰가 성공적으로 업로드 되었습니다!</Text>
-          <Link to="/">
-            <Button mt="4">메인 페이지로 이동</Button>
-          </Link>
-        </Box>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
