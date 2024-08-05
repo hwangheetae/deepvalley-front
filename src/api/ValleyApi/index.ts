@@ -30,25 +30,11 @@ export const fetchValleys = async (): Promise<ValleysType[]> => {
   }
 };
 
-export const fetchValleysByKeyword = async (
-  keyword: string,
-): Promise<ValleysType[]> => {
-  try {
-    const response = await basicClient.get(`/api/valley?keyword=${keyword}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error('Failed to fetch valleys by keyword');
-  }
-};
-
 export const fetchValleysByFilter = async (
-  filters: any,
+  filters: any = {},
 ): Promise<ValleysType[]> => {
-  const { position, radius, tag_names, rating, offset, region } = filters;
+  const { position, radius, tag_names, rating, offset, region, keyword } =
+    filters;
 
   let queryParams = '';
   if (position) queryParams += `position=${position}&`;
@@ -57,6 +43,7 @@ export const fetchValleysByFilter = async (
   if (rating) queryParams += `rating=${rating}&`;
   if (offset) queryParams += `offset=${offset}&`;
   if (region) queryParams += `region=${region}&`;
+  if (keyword) queryParams += `keyword=${keyword}&`;
 
   try {
     const response = await basicClient.get(`/api/valley?${queryParams}`, {

@@ -24,18 +24,16 @@ import {
   Collapse,
   SimpleGrid,
   Center,
+  List,
+  ListItem,
 } from '@chakra-ui/react';
 import { SearchIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import { Star, Water } from '@mui/icons-material';
 
-import {
-  fetchValleysByFilter,
-  fetchValleysByKeyword,
-  fetchRegions,
-} from '../../api/ValleyApi';
+import { fetchValleysByFilter, fetchRegions } from '../../api/ValleyApi';
 import { ValleysType } from '../../types';
 
 const predefinedTags = [
@@ -57,13 +55,14 @@ const SearchPage: React.FC = () => {
   const [region, setRegion] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
   const [regions, setRegions] = useState<string[]>([]);
+  const [filteredRegions, setFilteredRegions] = useState<string[]>([]);
   const [offset, setOffset] = useState<number>(0);
   const [regionOpen, setRegionOpen] = useState<boolean>(false);
   const observer = useRef<IntersectionObserver | null>(null);
 
-  // Temporary states for modal changes
   const [tempRegion, setTempRegion] = useState<string>('');
   const [tempTags, setTempTags] = useState<string[]>([]);
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchRegionData = async () => {
@@ -79,21 +78,24 @@ const SearchPage: React.FC = () => {
   }, []);
 
   const handleSearch = async (keyword: string) => {
+    setOffset(0);
+    setHasMore(true);
+    const newFilters = { ...filters, region, keyword };
     try {
-      const response = await fetchValleysByKeyword(keyword);
+      const response = await fetchValleysByFilter(newFilters);
       setValleys(response);
-      setOffset(1);
     } catch (error) {
       console.error('Failed to fetch valleys', error);
     }
   };
 
   const applyFilters = async () => {
-    const newFilters = { region: tempRegion, tag_names: tempTags };
+    setOffset(0);
+    setHasMore(true);
+    const newFilters = { region: tempRegion, tag_names: tempTags, keyword };
     try {
-      const response = await fetchValleysByFilter({ ...newFilters, offset: 0 });
+      const response = await fetchValleysByFilter(newFilters);
       setValleys(response);
-      setOffset(1);
     } catch (error) {
       console.error('Failed to fetch valleys', error);
     }
@@ -105,6 +107,7 @@ const SearchPage: React.FC = () => {
 
   const handleRegionClick = (region: string) => {
     setTempRegion(region);
+    setFilteredRegions([]);
   };
 
   const handleTagClick = (tag: string) => {
@@ -120,11 +123,12 @@ const SearchPage: React.FC = () => {
       ? tags.filter((t) => t !== tag)
       : [...tags, tag];
     setTags(updatedTags);
-    const newFilters = { region, tag_names: updatedTags };
+    const newFilters = { region, tag_names: updatedTags, keyword };
+    setOffset(0);
+    setHasMore(true);
     try {
-      const response = await fetchValleysByFilter({ ...newFilters, offset: 0 });
+      const response = await fetchValleysByFilter(newFilters);
       setValleys(response);
-      setOffset(1);
     } catch (error) {
       console.error('Failed to fetch valleys', error);
     }
@@ -134,29 +138,46 @@ const SearchPage: React.FC = () => {
   const resetFilters = () => {
     setRegion('');
     setTags([]);
+    setKeyword('');
     setFilters({});
     setValleys(initialValleys);
     setOffset(0);
+    setHasMore(true);
   };
 
   const lastValleyElementRef = useCallback(
     (node: HTMLElement | null) => {
       if (observer.current) observer.current.disconnect();
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          loadMoreValleys();
+        if (entries[0].isIntersecting && hasMore) {
+          setOffset((offset) => offset + 10);
         }
       });
       if (node) observer.current.observe(node);
     },
-    [valleys, filters],
+    [hasMore, filters, region, keyword],
   );
+
+  useEffect(() => {
+    if (offset > 0) {
+      loadMoreValleys();
+    }
+  }, [offset]);
 
   const loadMoreValleys = async () => {
     try {
-      const response = await fetchValleysByFilter({ ...filters, offset });
-      setValleys((prevValleys) => [...prevValleys, ...response]);
-      setOffset((prevOffset) => prevOffset + 1);
+      console.log(offset);
+      const response = await fetchValleysByFilter({
+        ...filters,
+        region,
+        keyword,
+        offset,
+      });
+      if (response.length === 0) {
+        setHasMore(false);
+      } else {
+        setValleys((prevValleys) => [...prevValleys, ...response]);
+      }
     } catch (error) {
       console.error('Failed to fetch more valleys', error);
     }
@@ -168,10 +189,23 @@ const SearchPage: React.FC = () => {
     onOpen();
   };
 
+  const handleRegionInputChange = (value: string) => {
+    setTempRegion(value);
+    if (value) {
+      setFilteredRegions(
+        regions.filter((region) =>
+          region.toLowerCase().includes(value.toLowerCase()),
+        ),
+      );
+    } else {
+      setFilteredRegions([]);
+    }
+  };
+
   return (
     <Layout hasHeader>
       <Header title="검색" />
-      <Box px={4}>
+      <Box mt={4} px={4}>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="black" />
@@ -248,88 +282,53 @@ const SearchPage: React.FC = () => {
         <Box mt={4}>
           <VStack spacing={4}>
             {valleys.map((valley, index) => {
-              if (index === valleys.length - 1) {
-                return (
-                  <Box
-                    ref={lastValleyElementRef}
-                    key={index}
-                    p={4}
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    w="100%"
-                    boxShadow="md"
-                  >
-                    <HStack spacing={4}>
-                      <Image
-                        src={valley.thumbnail}
-                        alt={valley.name}
-                        borderRadius="lg"
-                        boxSize="140px"
-                        objectFit="cover"
-                      />
-                      <VStack align="start" spacing={1}>
-                        <Text fontWeight="bold" fontSize="lg">
-                          {valley.name}
+              const valleyItem = (
+                <Box
+                  key={index}
+                  p={4}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  w="100%"
+                  h="100%"
+                  boxShadow="md"
+                  as={Link}
+                  to={`/valley/${valley.valley_id}/detail`}
+                  ref={
+                    index === valleys.length - 1 ? lastValleyElementRef : null
+                  }
+                >
+                  <HStack spacing={4}>
+                    <Image
+                      src={valley.thumbnail}
+                      alt={valley.name}
+                      borderRadius="lg"
+                      boxSize="140px"
+                      objectFit="cover"
+                    />
+                    <VStack align="start" spacing={1}>
+                      <Text fontWeight="bold" fontSize="lg">
+                        {valley.name}
+                      </Text>
+                      <Text color="gray.600" fontSize="sm">
+                        {valley.address}
+                      </Text>
+                      <HStack spacing={2}>
+                        <Icon as={Water} color="blue.500" />
+                        <Text fontSize="sm">{valley.max_depth}m</Text>
+                      </HStack>
+                      <HStack spacing={2}>
+                        <Icon as={Star} color="yellow.500" />
+                        <Text fontSize="sm">{valley.rating}</Text>
+                        <Text fontSize="sm" color="gray.500">
+                          리뷰 {valley.post_count}개
                         </Text>
-                        <Text color="gray.600" fontSize="sm">
-                          {valley.address}
-                        </Text>
-                        <HStack spacing={2}>
-                          <Icon as={Water} color="blue.500" />
-                          <Text fontSize="sm">{valley.max_depth}m</Text>
-                        </HStack>
-                        <HStack spacing={2}>
-                          <Icon as={Star} color="yellow.500" />
-                          <Text fontSize="sm">{valley.rating}</Text>
-                          <Text fontSize="sm" color="gray.500">
-                            리뷰 {valley.post_count}개
-                          </Text>
-                        </HStack>
-                      </VStack>
-                    </HStack>
-                  </Box>
-                );
-              } else {
-                return (
-                  <Box
-                    key={index}
-                    p={4}
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    w="100%"
-                    boxShadow="md"
-                  >
-                    <HStack spacing={4}>
-                      <Image
-                        src={valley.thumbnail}
-                        alt={valley.name}
-                        borderRadius="lg"
-                        boxSize="140px"
-                        objectFit="cover"
-                      />
-                      <VStack align="start" spacing={1}>
-                        <Text fontWeight="bold" fontSize="lg">
-                          {valley.name}
-                        </Text>
-                        <Text color="gray.600" fontSize="sm">
-                          {valley.address}
-                        </Text>
-                        <HStack spacing={2}>
-                          <Icon as={Water} color="blue.500" />
-                          <Text fontSize="sm">{valley.max_depth}m</Text>
-                        </HStack>
-                        <HStack spacing={2}>
-                          <Icon as={Star} color="yellow.500" />
-                          <Text fontSize="sm">{valley.rating}</Text>
-                          <Text fontSize="sm" color="gray.500">
-                            리뷰 {valley.post_count}개
-                          </Text>
-                        </HStack>
-                      </VStack>
-                    </HStack>
-                  </Box>
-                );
-              }
+                      </HStack>
+                    </VStack>
+                  </HStack>
+                </Box>
+              );
+
+              return valleyItem;
             })}
           </VStack>
         </Box>
@@ -338,8 +337,10 @@ const SearchPage: React.FC = () => {
         <ModalOverlay />
         <ModalContent
           borderRadius="40px"
-          border="4px solid #306839"
+          border="2px solid #306839"
           boxShadow="inner"
+          maxWidth="400px"
+          mx="auto"
         >
           <ModalHeader
             fontFamily="Gmarket Sans TTF"
@@ -358,7 +359,7 @@ const SearchPage: React.FC = () => {
                 <Input
                   placeholder="지역명을 입력해주세요"
                   value={tempRegion}
-                  onChange={(e) => setTempRegion(e.target.value)}
+                  onChange={(e) => handleRegionInputChange(e.target.value)}
                   size="md"
                   borderRadius="full"
                   boxShadow="md"
@@ -374,8 +375,33 @@ const SearchPage: React.FC = () => {
                   transform="translateY(-50%)"
                 />
               </InputGroup>
+              {filteredRegions.length > 0 && (
+                <List
+                  spacing={2}
+                  mt={2}
+                  maxHeight="150px"
+                  overflowY="auto"
+                  width="100%"
+                  bg="white"
+                  boxShadow="md"
+                  borderRadius="md"
+                >
+                  {filteredRegions.map((region, index) => (
+                    <ListItem
+                      key={index}
+                      cursor="pointer"
+                      p={2}
+                      borderRadius="md"
+                      bg="gray.100"
+                      onClick={() => handleRegionClick(region)}
+                    >
+                      {region}
+                    </ListItem>
+                  ))}
+                </List>
+              )}
               <Collapse in={regionOpen}>
-                <Box maxH="200px" overflowY="auto">
+                <Box maxH="200px" overflowY="auto" w="100%">
                   <SimpleGrid columns={4} spacing={4}>
                     {regions.map((region, index) => (
                       <Tag
@@ -436,7 +462,7 @@ const SearchPage: React.FC = () => {
             <Button variant="ghost" onClick={onClose}>
               취소
             </Button>
-            <Button colorScheme="blue" onClick={applyFilters}>
+            <Button color="black" onClick={applyFilters}>
               적용
             </Button>
           </ModalFooter>

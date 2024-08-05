@@ -25,7 +25,7 @@ import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
 import SearchPage from './pages/SearchPage/index.tsx';
-import { fetchValleys } from './api/ValleyApi/index.ts';
+import { fetchValleysByFilter } from './api/ValleyApi/index.ts';
 import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
 import {
   fetchValleyDetailInfo,
@@ -156,7 +156,7 @@ const router = createBrowserRouter([
     path: '/search',
     element: <SearchPage />,
     loader: async () => {
-      const valleys = await fetchValleys();
+      const valleys = await fetchValleysByFilter();
       return { valleys };
     },
   },
