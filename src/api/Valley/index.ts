@@ -20,11 +20,11 @@ import { ValleyDetailReviewResponseType, ValleysType } from '../../types';
 export const fetchValleys = async (
   latitude: number,
   longitude: number,
-  level: number,
+  radius: number,
 ): Promise<ValleysType[]> => {
   try {
     const response = await basicClient.get(
-      `/api/valley?position=${longitude},${latitude}&radius=${level * 100000}`,
+      `/api/valley?position=${longitude},${latitude}&radius=${radius}`,
       {
         headers: {
           'Content-Type': 'application/json',

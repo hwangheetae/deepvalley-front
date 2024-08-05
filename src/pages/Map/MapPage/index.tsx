@@ -1,5 +1,5 @@
 import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CustomMapMarker from '../CustomMapMarker';
 import Locations from '../Locations';
 import {
@@ -21,113 +21,66 @@ import { MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
 import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-
-interface MapBounds {
-  swLat: number;
-  swLng: number;
-  neLat: number;
-  neLng: number;
-}
+import { useQueryClient } from '@tanstack/react-query';
 
 export const MapPage = () => {
   const location = Locations();
-  const [key, setKey] = useState(0);
-  const theme = useTheme();
-  const [bounds, setBounds] = useState<MapBounds | null>(null);
-  const [visibleValleys, setVisibleValleys] = useState<ValleysType[]>([]);
-  const [map, setMap] = useState<any>(null);
   const [positions, setPositions] = useState<ValleysType[]>([]);
+  const [map, setMap] = useState<any>(null);
   const [level, setLevel] = useState<number>(5); // 기본 레벨 값을 5로 설정
+  const theme = useTheme();
+  const mapRef = useRef<any>(null);
   const queryClient = useQueryClient();
 
-  const {
-    data: valleys = [],
-    isLoading: isLoadingValleys,
-    error: errorValleys,
-    refetch: refetchValleys,
-  } = useQuery<ValleysType[], Error>({
-    queryKey: ['valleys', location?.latitude, location?.longitude, level],
-    queryFn: () => fetchValleys(location!.latitude, location!.longitude, level),
-    enabled: !!location,
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-  });
+  const calculateRadius = (level: number) => {
+    const baseRadius = 50; // 레벨 1일 때의 반경(m)
+    const radius = baseRadius * Math.pow(2, level - 1);
+    return radius;
+  };
 
-  // const {
-  //   data: facilities = [],
-  //   isLoading: isLoadingFacilities,
-  //   error: errorFacilities,
-  //   refetch: refetchFacilities,
-  // } = useQuery<FacilityType[], Error>({
-  //   queryKey: ['facilities', location?.latitude, location?.longitude],
-  //   queryFn: () => fetchfacilities(location!.latitude, location!.longitude),
-  //   enabled: !!location,
-  //   staleTime: 1000 * 60 * 5,
-  //   retry: false,
-  // });
+  const fetchAndSetValleys = async (
+    lat: number,
+    lng: number,
+    radius: number,
+  ) => {
+    try {
+      const data = await fetchValleys(lat, lng, radius);
+      setPositions(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // useEffect(() => {
-  //   if (bounds && valleys.length > 0) {
-  //     const visible = valleys.filter(
-  //       (valley) =>
-  //         valley.latitude >= bounds.swLat &&
-  //         valley.latitude <= bounds.neLat &&
-  //         valley.longitude >= bounds.swLng &&
-  //         valley.longitude <= bounds.neLng,
-  //     );
-  //     setVisibleValleys(visible);
-  //   }
-  // }, [bounds, valleys]);
+  const handleBoundsChanged = () => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      const newLevel = map.getLevel();
+      if (newLevel !== level) {
+        setLevel(newLevel);
+      }
+    }
+  };
+
+  const handleReFetch = async () => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      const center = map.getCenter();
+      const level = map.getLevel();
+      const radius = calculateRadius(level);
+      await fetchAndSetValleys(center.getLat(), center.getLng(), radius);
+      await fetchAndSetValleys(center.getLat(), center.getLng(), radius);
+    }
+  };
 
   useEffect(() => {
-    setPositions(valleys);
-  }, [valleys]);
-
-  const handleBoundsChanged = (map: any) => {
-    setMap(map); // map 객체 상태 저장
-    const level = map.getLevel();
-    setLevel(level);
-
-    // 중심 좌표를 이용해 데이터 다시 가져오기
-    const center = map.getCenter();
-    fetchValleys(center.getLat(), center.getLng(), level)
-      .then((data) => {
-        setPositions(data);
-      })
-      .catch((error) => console.error(error));
-  };
-
-  // 새로 계산된 반경을 사용해 데이터 다시 가져오기
-  const handleRefresh = () => {
-    setKey((prevKey) => prevKey + 1);
-    if (map) {
-      const center = map.getCenter();
-      const level = map.getLevel();
-      queryClient.invalidateQueries({
-        queryKey: ['valleys', center.getLat(), center.getLng(), level],
-      });
-      refetchValleys();
+    if (location) {
+      const radius = calculateRadius(level);
+      fetchAndSetValleys(location.latitude, location.longitude, radius);
     }
-  };
+  }, [location]);
 
-  const handleReFetch = () => {
-    if (map) {
-      const center = map.getCenter();
-      const level = map.getLevel();
-      queryClient.invalidateQueries({
-        queryKey: ['valleys', center.getLat(), center.getLng(), level],
-      });
-      refetchValleys();
-    }
-  };
-
-  if (!location || isLoadingValleys) {
+  if (!location) {
     return <Center h="100vh">Loading...</Center>;
-  }
-
-  if (errorValleys) {
-    return <Center h="100vh">Error loading data</Center>;
   }
 
   return (
@@ -140,11 +93,11 @@ export const MapPage = () => {
     >
       <Box flex="1" position="relative">
         <Map
-          key={key}
           center={{ lat: location.latitude, lng: location.longitude }}
           style={{ width: '100%', height: '100%' }}
           onBoundsChanged={handleBoundsChanged}
-          level={5}
+          level={level}
+          ref={mapRef}
         >
           <VStack
             spacing={4}
@@ -205,18 +158,11 @@ export const MapPage = () => {
               />
             ))}
           </MarkerClusterer>
-          {/* {facilities.map((facility) => (
-            <CustomMapMarker
-              key={facility.facility_id}
-              src={facility.thumbnail}
-              position={{ lat: facility.latitude, lng: facility.longitude }}
-              label={facility.name}
-            />
-          ))}시설들 데이터 아직 X */}
+
           <IconButton
             aria-label="현재 위치로 이동"
             icon={<MyLocation />}
-            onClick={handleRefresh}
+            onClick={handleReFetch}
             isRound={true}
             position="absolute"
             bottom="36"
@@ -228,7 +174,7 @@ export const MapPage = () => {
             zIndex="20"
           />
         </Map>
-        <ListComponent visibleValleys={visibleValleys} />
+        <ListComponent visibleValleys={positions} />
       </Box>
       <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
         <TapBar />
