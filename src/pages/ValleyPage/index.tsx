@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Tabs,
   TabList,
@@ -8,16 +9,31 @@ import {
   Box,
   Button,
   Divider,
-  Flex,
   HStack,
+  VStack,
+  Text,
 } from '@chakra-ui/react';
+import { StarIcon } from '@chakra-ui/icons';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
 import Info from './Info';
 import Review from './Review';
 import Picture from './Picture';
+import { useLoaderData } from 'react-router-dom';
+import { ValleyDetailInfoType, ValleyDetailReviewType } from '../../types';
 
 const ValleyPage: React.FC = () => {
+  const { valley, reviews, images } = useLoaderData() as {
+    valley: ValleyDetailInfoType;
+    reviews: ValleyDetailReviewType[];
+    images: { review_id: string; image_urls: string[] }[];
+  };
+
+  const findRoute = () =>
+    window.open(
+      `https://map.kakao.com/link/to/${valley.name},${valley.latitude},${valley.longitude}`,
+    );
+
   return (
     <Layout>
       <Header
@@ -26,10 +42,39 @@ const ValleyPage: React.FC = () => {
         showBorderBottom={false}
       />
       <Box mt="78px" w="full">
-        <HStack spacing={4} justify="center" mb={4}>
-          <Button colorScheme="green">길 찾기</Button>
-          <Button colorScheme="green">지도 보기</Button>
-        </HStack>
+        <VStack spacing={4} align="flex-start" mb={4} px={4}>
+          <HStack>
+            <Text fontSize="2xl" fontWeight="bold">
+              {valley.name}
+            </Text>
+            <HStack spacing={1} align="center">
+              <StarIcon color="yellow.400" />
+              <Text fontSize="lg" fontWeight="bold">
+                {valley.avg_rating}
+              </Text>
+            </HStack>
+          </HStack>
+          <HStack spacing={4} w="full">
+            <Button
+              colorScheme="green"
+              borderRadius="full"
+              flex="1"
+              maxW="200px"
+              onClick={findRoute}
+            >
+              길 찾기
+            </Button>
+            <Button
+              colorScheme="green"
+              variant="outline"
+              borderRadius="full"
+              flex="1"
+              maxW="200px"
+            >
+              지도 보기
+            </Button>
+          </HStack>
+        </VStack>
         <Divider mb={4} />
         <Box mt="4">
           <Tabs position="relative" variant="unstyled" align="center">
@@ -52,13 +97,17 @@ const ValleyPage: React.FC = () => {
             />
             <TabPanels>
               <TabPanel>
-                <Info />
+                <Info valley={valley} />
               </TabPanel>
               <TabPanel>
-                <Review />
+                <Review
+                  reviews={reviews}
+                  valley_id={valley.valley_id}
+                  thumbnail={valley.thumbnail}
+                />
               </TabPanel>
               <TabPanel>
-                <Picture />
+                <Picture images={images} reviews={reviews} />
               </TabPanel>
             </TabPanels>
           </Tabs>

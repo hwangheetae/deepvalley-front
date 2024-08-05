@@ -1,7 +1,8 @@
+// Layout.tsx
 import { FC } from 'react';
 import { LayoutProps } from '../../../types/ComponentType';
 import { Box } from '@chakra-ui/react';
-
+import MainPageHeader from '../MainPageHeader';
 const Layout: FC<LayoutProps> = ({
   children,
   hasHeader = false,
@@ -12,16 +13,47 @@ const Layout: FC<LayoutProps> = ({
   return (
     <Box
       maxW="430px" // iPhone 14 Pro Max 기준 너비
-      maxH="932px"
-      mx="auto"
-      p={2}
       h="100vh"
-      borderColor="gray.200"
-      pt={hasHeader ? `${headerHeight}px` : 0} // 헤더 높이만큼 패딩
-      pb={hasTapBar ? `${tapBarHeight}px` : 0} // TapBar 높이만큼 패딩
+      mx="auto"
       position="relative"
+      overflow="hidden"
     >
-      {children}
+      {hasHeader && (
+        <Box
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          height={`${headerHeight}px`}
+          zIndex={1000}
+        >
+          <MainPageHeader
+            title="깊은산 골짜기"
+            fontFamily="Cafe24Ssurround"
+            showMenuButton={true}
+          />
+        </Box>
+      )}
+      <Box
+        as="main"
+        position="absolute"
+        top={hasHeader ? `${headerHeight}px` : 0}
+        bottom={hasTapBar ? `${tapBarHeight}px` : 0}
+        left={0}
+        right={0}
+        overflowY="auto"
+      >
+        {children}
+      </Box>
+      {hasTapBar && (
+        <Box
+          position="absolute"
+          bottom={0}
+          left={0}
+          right={0}
+          zIndex={1000}
+        ></Box>
+      )}
     </Box>
   );
 };

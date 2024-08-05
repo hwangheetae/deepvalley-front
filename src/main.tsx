@@ -26,6 +26,12 @@ import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
 import SearchPage from './pages/SearchPage/index.tsx';
 import { fetchValleys } from './api/ValleyApi/index.ts';
+import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
+import {
+  fetchValleyDetailInfo,
+  fetchValleyDetailReview,
+  fetchValleyDetailImage,
+} from './api/Valley/index.ts';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -145,13 +151,32 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-  { path: '/ValleyPage', element: <ValleyPage /> },
+
   {
     path: '/search',
     element: <SearchPage />,
     loader: async () => {
       const valleys = await fetchValleys();
       return { valleys };
+    },
+  },
+  { path: '/LoadingSpinner', element: <LoadingSpinner /> },
+  {
+    path: '/valley/:valleyId/detail',
+    element: <ValleyPage />,
+    loader: async ({ params }) => {
+      const valleyId = params.valleyId as string;
+      const valleyData = await fetchValleyDetailInfo(valleyId);
+      const reviewData = await fetchValleyDetailReview(valleyId);
+      const imageData = await fetchValleyDetailImage(valleyId);
+      queryClient.setQueryData(['valleyDetail', valleyId], valleyData);
+      queryClient.setQueryData(['reviews', valleyId], reviewData);
+      queryClient.setQueryData(['images', valleyId], imageData);
+      return {
+        valley: valleyData,
+        reviews: reviewData.reviews,
+        images: imageData,
+      };
     },
   },
 ]);

@@ -7,7 +7,7 @@ import CustomButton from '../CustomButton';
 import { ReviewType } from '../../../types/ReviewType';
 import { fetchReview } from '../../../api/Review/index';
 import { useMe } from '../../../stores/meStore';
-import PasswordChangeLogo from '../../../assets/images/PasswordChangeLogo.png';
+import 산잉 from '../../../assets/images/산잉.png';
 
 import 'tailwindcss/tailwind.css';
 
@@ -52,7 +52,7 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
           <Box mb={4}>
-            <ProfileImage src={me.profile_image_url || PasswordChangeLogo} />
+            <ProfileImage src={me.profile_image_url || 산잉} />
           </Box>
           <Box ml="4">
             <Text
