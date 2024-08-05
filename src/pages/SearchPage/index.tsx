@@ -203,7 +203,7 @@ const SearchPage: React.FC = () => {
   };
 
   return (
-    <Layout hasHeader>
+    <Layout>
       <Header title="검색" />
       <Box mt={4} px={4}>
         <InputGroup>
