@@ -17,13 +17,11 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTheme } from '@chakra-ui/react';
 import TapBar from '../../../components/Common/TapBar';
-import { WbSunny, MyLocation, LocationOn } from '@mui/icons-material';
+import { MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
-import { ValleysType, FacilityType } from '../../../types';
-import { fetchValleys, fetchfacilities } from '../../../api/Valley';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import config from '../../../config';
+import { ValleysType } from '../../../types';
+import { fetchValleys } from '../../../api/Valley';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface MapBounds {
   swLat: number;
@@ -38,7 +36,10 @@ export const MapPage = () => {
   const theme = useTheme();
   const [bounds, setBounds] = useState<MapBounds | null>(null);
   const [visibleValleys, setVisibleValleys] = useState<ValleysType[]>([]);
+  const [map, setMap] = useState<any>(null);
   const [positions, setPositions] = useState<ValleysType[]>([]);
+  const [level, setLevel] = useState<number>(5); // 기본 레벨 값을 5로 설정
+  const queryClient = useQueryClient();
 
   const {
     data: valleys = [],
@@ -46,116 +47,88 @@ export const MapPage = () => {
     error: errorValleys,
     refetch: refetchValleys,
   } = useQuery<ValleysType[], Error>({
-    queryKey: ['valleys'],
-    queryFn: fetchValleys,
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-  });
-
-  const {
-    data: facilities = [],
-    isLoading: isLoadingFacilities,
-    error: errorFacilities,
-    refetch: refetchFacilities,
-  } = useQuery<FacilityType[], Error>({
-    queryKey: ['facilities', location?.latitude, location?.longitude],
-    queryFn: () => fetchfacilities(location!.latitude, location!.longitude),
+    queryKey: ['valleys', location?.latitude, location?.longitude, level],
+    queryFn: () => fetchValleys(location!.latitude, location!.longitude, level),
     enabled: !!location,
     staleTime: 1000 * 60 * 5,
     retry: false,
   });
 
-  useEffect(() => {
-    if (bounds && valleys.length > 0) {
-      const visible = valleys.filter(
-        (valley) =>
-          valley.latitude >= bounds.swLat &&
-          valley.latitude <= bounds.neLat &&
-          valley.longitude >= bounds.swLng &&
-          valley.longitude <= bounds.neLng,
-      );
-      setVisibleValleys(visible);
-    }
-  }, [bounds, valleys]);
+  // const {
+  //   data: facilities = [],
+  //   isLoading: isLoadingFacilities,
+  //   error: errorFacilities,
+  //   refetch: refetchFacilities,
+  // } = useQuery<FacilityType[], Error>({
+  //   queryKey: ['facilities', location?.latitude, location?.longitude],
+  //   queryFn: () => fetchfacilities(location!.latitude, location!.longitude),
+  //   enabled: !!location,
+  //   staleTime: 1000 * 60 * 5,
+  //   retry: false,
+  // });
+
+  // useEffect(() => {
+  //   if (bounds && valleys.length > 0) {
+  //     const visible = valleys.filter(
+  //       (valley) =>
+  //         valley.latitude >= bounds.swLat &&
+  //         valley.latitude <= bounds.neLat &&
+  //         valley.longitude >= bounds.swLng &&
+  //         valley.longitude <= bounds.neLng,
+  //     );
+  //     setVisibleValleys(visible);
+  //   }
+  // }, [bounds, valleys]);
 
   useEffect(() => {
     setPositions(valleys);
   }, [valleys]);
 
   const handleBoundsChanged = (map: any) => {
-    const bounds = map.getBounds();
-    const sw = bounds.getSouthWest();
-    const ne = bounds.getNorthEast();
-    setBounds({
-      swLat: sw.getLat(),
-      swLng: sw.getLng(),
-      neLat: ne.getLat(),
-      neLng: ne.getLng(),
-    });
+    setMap(map); // map 객체 상태 저장
+    const level = map.getLevel();
+    setLevel(level);
+
+    // 중심 좌표를 이용해 데이터 다시 가져오기
+    const center = map.getCenter();
+    fetchValleys(center.getLat(), center.getLng(), level)
+      .then((data) => {
+        setPositions(data);
+      })
+      .catch((error) => console.error(error));
   };
 
+  // 새로 계산된 반경을 사용해 데이터 다시 가져오기
   const handleRefresh = () => {
     setKey((prevKey) => prevKey + 1);
-    refetchValleys();
-    refetchFacilities();
+    if (map) {
+      const center = map.getCenter();
+      const level = map.getLevel();
+      queryClient.invalidateQueries({
+        queryKey: ['valleys', center.getLat(), center.getLng(), level],
+      });
+      refetchValleys();
+    }
   };
 
-  if (!location || isLoadingValleys || isLoadingFacilities) {
+  const handleReFetch = () => {
+    if (map) {
+      const center = map.getCenter();
+      const level = map.getLevel();
+      queryClient.invalidateQueries({
+        queryKey: ['valleys', center.getLat(), center.getLng(), level],
+      });
+      refetchValleys();
+    }
+  };
+
+  if (!location || isLoadingValleys) {
     return <Center h="100vh">Loading...</Center>;
   }
 
-  if (errorValleys || errorFacilities) {
+  if (errorValleys) {
     return <Center h="100vh">Error loading data</Center>;
   }
-
-  const textEncoder = new TextEncoder();
-  const bytes = textEncoder.encode('SK T타워');
-  console.log(bytes);
-  // const options = {
-  //   method: 'POST',
-  //   headers: {
-  //     accept: 'application/json',
-  //     'content-type': 'application/json',
-  //     appKey: 'cLIOg4SCAc5qylsGdDrvy99oksqozj5h3CkWhCrZ',
-  //   },
-  //   body: JSON.stringify({
-  //     routesInfo: {
-  //       departure: {
-  //         name: 'test1',
-  //         lon: '126.963936',
-  //         lat: '37.536025',
-  //         depSearchFlag: '05',
-  //       },
-  //       destination: {
-  //         name: 'test2',
-  //         lon: '129.222222',
-  //         lat: '35.111111',
-  //         poiId: '1000559885',
-  //         rpFlag: '16',
-  //         destSearchFlag: '03',
-  //       },
-  //       predictionType: 'departure',
-  //       predictionTime: '2013-05-19T18:31:22+0900',
-  //       wayPoints: {
-  //         wayPoint: [
-  //           { lon: '126.814383', lat: '35.157242', poiId: '1000559888' },
-  //           { lon: '128.565503', lat: '35.874493', poiId: '1000559886' },
-  //         ],
-  //       },
-  //       searchOption: '00',
-  //       tollgateCarType: 'car',
-  //       trafficInfo: 'N',
-  //     },
-  //   }),
-  // };
-
-  // fetch(
-  //   'https://apis.openapi.sk.com/tmap/routes/prediction?version=1&resCoordType=WGS84GEO&reqCoordType=WGS84GEO&sort=index&callback=function&totalValue=2',
-  //   options,
-  // )
-  //   .then((response) => response.json())
-  //   .then((response) => console.log(response))
-  //   .catch((err) => console.error(err));
 
   return (
     <Flex
@@ -194,18 +167,6 @@ export const MapPage = () => {
                 boxShadow="md"
                 bg="white"
               />
-              <IconButton
-                aria-label="날씨 확인"
-                icon={<WbSunny />}
-                isRound={true}
-                position="absolute"
-                right="-12"
-                bg="white"
-                border="2px"
-                borderColor="#306839"
-                shadow="inner"
-                zIndex="20"
-              />
             </InputGroup>
             <HStack spacing={2} justify="center" w="100%">
               <Button size="sm" colorScheme="green">
@@ -216,6 +177,9 @@ export const MapPage = () => {
               </Button>
               <Button size="sm" colorScheme="teal">
                 안전시설
+              </Button>
+              <Button size="sm" colorScheme="blue" onClick={handleReFetch}>
+                위치 재검색
               </Button>
             </HStack>
           </VStack>
