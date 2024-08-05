@@ -10,7 +10,7 @@ export const login = async (body: {}) => {
 };
 
 export const logout = () => {
-  localStorage.clear();
+  sessionStorage.clear();
 };
 
 export const register = async (body: {

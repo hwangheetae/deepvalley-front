@@ -36,6 +36,7 @@ export const useMe = create<MeState>()(
     }),
     {
       name: 'RememberMe',
+      getStorage: () => sessionStorage,
     },
   ),
 );

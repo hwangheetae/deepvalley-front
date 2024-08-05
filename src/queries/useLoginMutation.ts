@@ -18,7 +18,7 @@ const useLoginMutation = () => {
   return useMutation({
     mutationFn: login,
     onSuccess: (response) => {
-      localStorage.setItem('token', response.data.access_token);
+      sessionStorage.setItem('token', response.data.access_token);
       navigate('/');
       successToast({
         title: '로그인 성공!',
