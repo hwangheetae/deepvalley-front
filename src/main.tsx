@@ -24,6 +24,8 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
+import SearchPage from './pages/SearchPage/index.tsx';
+import { fetchValleys } from './api/ValleyApi/index.ts';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -144,6 +146,14 @@ const router = createBrowserRouter([
     ),
   },
   { path: '/ValleyPage', element: <ValleyPage /> },
+  {
+    path: '/search',
+    element: <SearchPage />,
+    loader: async () => {
+      const valleys = await fetchValleys();
+      return { valleys };
+    },
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
