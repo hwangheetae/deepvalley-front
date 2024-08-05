@@ -10,78 +10,90 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import PictureDetail from './PictureDetail';
+import { ValleyDetailImageType } from '../../../types';
 
 interface PictureProps {
-  images: { review_id: string; image_urls: string[] }[];
-  reviews: {
-    review_id: string;
-    profile_image_url: string | null;
-    member_id: string;
-    content: string;
-    title: string;
-  }[];
+  images: ValleyDetailImageType[];
 }
 
-const Picture: React.FC<PictureProps> = ({ images, reviews }) => {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+const Picture: React.FC<PictureProps> = ({ images }) => {
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
+    null,
+  );
+  const [selectedReviewIndex, setSelectedReviewIndex] = useState<number | null>(
+    null,
+  );
 
-  const handleClick = (index: number) => {
-    setSelectedIndex(index);
+  const handleClick = (reviewIndex: number, imageIndex: number) => {
+    setSelectedReviewIndex(reviewIndex);
+    setSelectedImageIndex(imageIndex);
   };
 
   const handleClose = () => {
-    setSelectedIndex(null);
+    setSelectedReviewIndex(null);
+    setSelectedImageIndex(null);
   };
 
   const handlePrev = () => {
-    if (selectedIndex !== null) {
-      setSelectedIndex(
-        (selectedIndex - 1 + allImages.length) % allImages.length,
+    if (selectedImageIndex !== null && selectedReviewIndex !== null) {
+      const currentReview = images[selectedReviewIndex];
+      setSelectedImageIndex(
+        (selectedImageIndex - 1 + currentReview.image_urls.length) %
+          currentReview.image_urls.length,
       );
     }
   };
 
   const handleNext = () => {
-    if (selectedIndex !== null) {
-      setSelectedIndex((selectedIndex + 1) % allImages.length);
+    if (selectedImageIndex !== null && selectedReviewIndex !== null) {
+      const currentReview = images[selectedReviewIndex];
+      setSelectedImageIndex(
+        (selectedImageIndex + 1) % currentReview.image_urls.length,
+      );
     }
   };
 
-  const allImages = images.flatMap((imageData) => imageData.image_urls);
-
   return (
     <Box p={4}>
-      {allImages.length === 0 ? (
+      {images.length === 0 ? (
         <Box textAlign="center" mt="20%">
           <Text fontSize="lg" fontWeight="bold">
             사진이 없습니다.
           </Text>
-          <Text mb={4}>첫 번째 사진을 업로드 해보세요!</Text>
         </Box>
       ) : (
         <>
           <SimpleGrid columns={[2, null, 3]} spacing={1}>
-            {allImages.map((src, index) => (
-              <Image
-                key={index}
-                src={src}
-                onClick={() => handleClick(index)}
-                cursor="pointer"
-              />
-            ))}
+            {images.flatMap((imageData, reviewIndex) =>
+              imageData.image_urls.map((src, imageIndex) => (
+                <Image
+                  key={`${reviewIndex}-${imageIndex}`}
+                  src={src}
+                  onClick={() => handleClick(reviewIndex, imageIndex)}
+                  cursor="pointer"
+                />
+              )),
+            )}
           </SimpleGrid>
 
-          <Modal isOpen={selectedIndex !== null} onClose={handleClose}>
-            <ModalOverlay />
+          <Modal
+            isOpen={selectedImageIndex !== null && selectedReviewIndex !== null}
+            onClose={handleClose}
+          >
+            <ModalOverlay mx="auto" />
             <ModalContent>
               <ModalCloseButton />
-              {selectedIndex !== null && (
+              {selectedImageIndex !== null && selectedReviewIndex !== null && (
                 <PictureDetail
-                  src={allImages[selectedIndex]}
-                  profileImage={reviews[selectedIndex]?.profile_image_url ?? ''}
-                  nickname={reviews[selectedIndex]?.member_id ?? ''}
-                  title={reviews[selectedIndex]?.title ?? ''}
-                  content={reviews[selectedIndex]?.content ?? ''}
+                  src={
+                    images[selectedReviewIndex].image_urls[selectedImageIndex]
+                  }
+                  profileImage={
+                    images[selectedReviewIndex].profile_image_url ?? ''
+                  }
+                  nickname={images[selectedReviewIndex].review_id}
+                  title={images[selectedReviewIndex].title}
+                  content={images[selectedReviewIndex].content}
                   onPrev={handlePrev}
                   onNext={handleNext}
                   onClose={handleClose}

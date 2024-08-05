@@ -58,13 +58,29 @@ const PictureDetail: React.FC<PictureDetailProps> = ({
         onClick={onNext}
         aria-label="Next"
       />
-      <VStack mt={4} spacing={2}>
+      <VStack
+        mt={4}
+        spacing={2}
+        align="start"
+        position="absolute"
+        bottom="10px"
+        right="10px"
+        bg="rgba(0, 0, 0, 0.6)"
+        p={4}
+        borderRadius="md"
+      >
         <HStack>
           <Avatar src={profileImage ?? ''} />
-          <Text fontWeight="bold">{nickname}</Text>
+          <Text color="white" fontWeight="bold">
+            {nickname}
+          </Text>
         </HStack>
-        <Text fontWeight="bold">{title}</Text>
-        <Text noOfLines={2}>{content}</Text>
+        <Text color="white" fontWeight="bold">
+          {title}
+        </Text>
+        <Text color="white" noOfLines={2}>
+          {content}
+        </Text>
       </VStack>
     </Box>
   );

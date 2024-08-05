@@ -20,13 +20,17 @@ import Info from './Info';
 import Review from './Review';
 import Picture from './Picture';
 import { useLoaderData } from 'react-router-dom';
-import { ValleyDetailInfoType, ValleyDetailReviewType } from '../../types';
+import {
+  ValleyDetailInfoType,
+  ValleyDetailReviewType,
+  ValleyDetailImageType,
+} from '../../types';
 
 const ValleyPage: React.FC = () => {
   const { valley, reviews, images } = useLoaderData() as {
     valley: ValleyDetailInfoType;
     reviews: ValleyDetailReviewType[];
-    images: { review_id: string; image_urls: string[] }[];
+    images: ValleyDetailImageType[];
   };
 
   const findRoute = () =>
@@ -107,7 +111,7 @@ const ValleyPage: React.FC = () => {
                 />
               </TabPanel>
               <TabPanel>
-                <Picture images={images} reviews={reviews} />
+                <Picture images={images} />
               </TabPanel>
             </TabPanels>
           </Tabs>
