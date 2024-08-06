@@ -2,8 +2,8 @@ import { MapMarker, MapMarkerProps } from 'react-kakao-maps-sdk';
 import { useState, ReactNode } from 'react';
 
 const fixedMarkerSize = {
-  width: 30,
-  height: 39,
+  width: 56,
+  height: 56,
 };
 
 const fixedMarkerOptions = {
@@ -18,6 +18,7 @@ interface CustomMapMarkerProps {
   label: string;
   icon?: ReactNode;
   src?: string;
+  onClick?: () => void;
 }
 
 const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
@@ -25,6 +26,7 @@ const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
   label,
   // icon,
   src,
+  onClick,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,27 +38,20 @@ const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
       }
     : undefined;
 
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
     <MapMarker
       position={position}
       image={markerImage}
       clickable={true}
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      {isOpen && (
-        <div className="relative min-w-[150px] bg-white p-2 rounded shadow-lg">
-          <img
-            alt="close"
-            width="14"
-            height="13"
-            src="https://t1.daumcdn.net/localimg/localimages/07/mapjsapi/2x/bt_close.gif"
-            className="absolute top-1 right-1 cursor-pointer"
-            onClick={() => setIsOpen(false)}
-          />
-          <div className="text-black">{label}</div>
-        </div>
-      )}
-    </MapMarker>
+      onClick={handleClick}
+    ></MapMarker>
   );
 };
 

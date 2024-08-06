@@ -1,4 +1,4 @@
-import { useState, FC } from 'react';
+import { useState, FC, useEffect } from 'react';
 import {
   Box,
   Text,
@@ -15,16 +15,39 @@ import { Link as RouterLink } from 'react-router-dom';
 
 interface ListComponentProps {
   visibleValleys: ValleysType[];
+  selectedValley: ValleysType | null;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+  setHeight: (height: string) => void;
 }
 
-const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [height, setHeight] = useState('13%');
+const ListComponent: FC<ListComponentProps> = ({
+  visibleValleys,
+  selectedValley,
+  isOpen,
+  setIsOpen,
+  setHeight,
+}) => {
+  const [sortedValleys, setSortedValleys] = useState<ValleysType[]>([]);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
     setHeight(isOpen ? '13%' : '80%');
   };
+
+  useEffect(() => {
+    if (selectedValley) {
+      const updatedValleys = [
+        selectedValley,
+        ...visibleValleys.filter(
+          (valley) => valley.valley_id !== selectedValley.valley_id,
+        ),
+      ];
+      setSortedValleys(updatedValleys);
+    } else {
+      setSortedValleys(visibleValleys);
+    }
+  }, [visibleValleys, selectedValley]);
 
   return (
     <Box
@@ -32,7 +55,7 @@ const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
       bottom="0"
       left="0"
       width="100%"
-      height={height}
+      height={isOpen ? '80%' : '13%'}
       bg="white"
       transition="height 0.3s ease-in-out"
       borderTopRadius="lg"
@@ -43,7 +66,7 @@ const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
       <Center>
         <Box
           width="60px"
-          height="5px"
+          height="10px"
           bg="gray.400"
           borderRadius="full"
           mt={2}
@@ -51,7 +74,7 @@ const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
       </Center>
       {isOpen && (
         <VStack p={4} spacing={2}>
-          {visibleValleys.map((valley, index) => (
+          {sortedValleys.map((valley, index) => (
             <ChakraLink
               as={RouterLink}
               to={`/valley/${valley.valley_id}/detail`}
@@ -64,6 +87,12 @@ const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
                 borderRadius="lg"
                 w="100%"
                 boxShadow="md"
+                borderColor={
+                  valley.valley_id === selectedValley?.valley_id
+                    ? 'green.500'
+                    : 'gray.200'
+                }
+                borderStyle="solid"
               >
                 <HStack spacing={4}>
                   <Image
@@ -82,7 +111,7 @@ const ListComponent: FC<ListComponentProps> = ({ visibleValleys }) => {
                     </Text>
                     <HStack spacing={2}>
                       <Icon as={Water} color="blue.500" />
-                      <Text fontSize="sm">{valley.max_depth}m</Text>
+                      <Text fontSize="sm">{valley.avg_depth}m</Text>
                     </HStack>
                     <HStack spacing={2}>
                       <Icon as={Star} color="yellow.500" />

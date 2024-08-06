@@ -18,7 +18,6 @@ import {
   FaParking,
 } from 'react-icons/fa';
 import { ValleyDetailInfoType } from '../../../types';
-import BusyChart from '../../../components/BusyChart';
 
 interface InfoProps {
   valley: ValleyDetailInfoType;
@@ -47,6 +46,11 @@ interface GroupedWeatherData {
 const Info: React.FC<InfoProps> = ({ valley }) => {
   const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
   const [weatherData, setWeatherData] = useState<WeatherData[]>([]);
+  const [showFullContent, setShowFullContent] = useState(false);
+
+  const toggleFullContent = () => {
+    setShowFullContent(!showFullContent);
+  };
 
   const getWeather = async (lat: string, lon: string) => {
     try {
@@ -181,13 +185,24 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
         <Text>
           수심: 평균 {valley.avg_depth}M / 깊은 곳 {valley.max_depth}M
         </Text>
+        <Text>{valley.extra_info}</Text>
+        <Text textAlign="left">
+          {showFullContent
+            ? valley.content
+            : `${valley.content.substring(0, 100)}...`}
+          {valley.content.length > 100 && (
+            <Text
+              as="span"
+              color="gray.500"
+              cursor="pointer"
+              onClick={toggleFullContent}
+            >
+              {showFullContent ? ' 접기' : ' 더보기'}
+            </Text>
+          )}
+        </Text>
       </VStack>
       <Box mt={4}>
-        <Text fontSize="lg" fontWeight="bold">
-          실시간 혼잡도
-        </Text>
-        {/* <BusyChart /> */}
-        <Text>{valley.busy}</Text>
         <Box mt={4} p={4} bg="green.500" borderRadius="md" color="white">
           <Flex align="center">
             <Box flex="4">

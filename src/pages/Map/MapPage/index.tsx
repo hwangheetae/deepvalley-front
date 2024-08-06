@@ -21,16 +21,18 @@ import { MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
 import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
-import { useQueryClient } from '@tanstack/react-query';
 
 export const MapPage = () => {
   const location = Locations();
   const [positions, setPositions] = useState<ValleysType[]>([]);
-  const [map, setMap] = useState<any>(null);
   const [level, setLevel] = useState<number>(5); // 기본 레벨 값을 5로 설정
+  const [selectedValley, setSelectedValley] = useState<ValleysType | null>(
+    null,
+  );
   const theme = useTheme();
   const mapRef = useRef<any>(null);
-  const queryClient = useQueryClient();
+  const [isOpen, setIsOpen] = useState(false);
+  const [height, setHeight] = useState('13%');
 
   const calculateRadius = (level: number) => {
     const baseRadius = 50; // 레벨 1일 때의 반경(m)
@@ -70,6 +72,12 @@ export const MapPage = () => {
       await fetchAndSetValleys(center.getLat(), center.getLng(), radius);
       await fetchAndSetValleys(center.getLat(), center.getLng(), radius);
     }
+  };
+
+  const handleMarkerClick = (valley: ValleysType) => {
+    setSelectedValley(valley);
+    setIsOpen(true);
+    setHeight('80%');
   };
 
   useEffect(() => {
@@ -152,9 +160,10 @@ export const MapPage = () => {
             {positions.map((valley) => (
               <CustomMapMarker
                 key={valley.valley_id}
-                src={valley.thumbnail}
+                src="marker2.png"
                 position={{ lat: valley.latitude, lng: valley.longitude }}
                 label={valley.name}
+                onClick={() => handleMarkerClick(valley)} // 마커 클릭 이벤트 설정
               />
             ))}
           </MarkerClusterer>
@@ -174,7 +183,13 @@ export const MapPage = () => {
             zIndex="20"
           />
         </Map>
-        <ListComponent visibleValleys={positions} />
+        <ListComponent
+          visibleValleys={positions}
+          selectedValley={selectedValley}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          setHeight={setHeight}
+        />{' '}
       </Box>
       <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
         <TapBar />
