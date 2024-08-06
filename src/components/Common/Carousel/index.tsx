@@ -8,7 +8,6 @@ import { fetchBannerImage } from '../../../api/Review';
 const noOfItems = 5;
 const noOfCards = 1;
 const autoPlayDelay = 5000;
-console.log('캐러셀 페이지 렌더링');
 
 const CarouselComponent: React.FC = () => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);

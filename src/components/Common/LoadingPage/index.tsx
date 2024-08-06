@@ -9,7 +9,7 @@ const LoadingPage: React.FC = () => {
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center h-full">
-        <div className="flex items-center space-x-4 mb-4">
+        {/* <div className="flex items-center space-x-4 mb-4">
           <img
             src={바다잉}
             alt="바다잉"
@@ -21,7 +21,7 @@ const LoadingPage: React.FC = () => {
             alt="계곡잉"
             className="dot animate-jump3 w-16 h-16"
           />
-        </div>
+        </div> */}
         <Text className="text-center text-2xl ">로딩중!</Text>
       </div>
     </Layout>

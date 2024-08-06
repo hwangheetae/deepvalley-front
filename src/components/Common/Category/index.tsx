@@ -11,8 +11,6 @@ import swimmer from '../../../assets/icons/Category/swimmer.png';
 import tent from '../../../assets/icons/Category/tent.png';
 
 const Category: FC = () => {
-  console.log('카테고리 페이지 렌더링');
-
   return (
     <Box
       w="full"

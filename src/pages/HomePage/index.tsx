@@ -4,7 +4,7 @@ import Carousel from '../../components/Common/Carousel';
 import Category from '../../components/Common/Category';
 import { InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { FC, useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import { getUser } from '../../api/User';
 import { useMe } from '../../stores/meStore';
 import { 서버오류 } from '../../constant/constant';
@@ -23,13 +23,13 @@ const HomePage: FC = () => {
     staleTime: 5 * 60 * 1000,
   });
   console.log('홈 페이지 렌더링');
-
+  console.log(data);
   useEffect(() => {
-    if (data) {
+    if (data?.data) {
       updateMe(data.data);
       console.log('useEffect 실행됨');
     }
-  }, [data]);
+  }, [data?.data]);
 
   if (isError) {
     errorToast(서버오류);
@@ -56,7 +56,8 @@ const HomePage: FC = () => {
       <Carousel />
       <RecommendReview />
       <TapBar />
+      <div></div>
     </Layout>
   );
 };
-export default HomePage;
+export default React.memo(HomePage);
