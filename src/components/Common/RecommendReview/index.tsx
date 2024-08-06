@@ -4,6 +4,7 @@ import { Flex, Box, Image, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { Spinner } from '@chakra-ui/react';
 import { fetchRecommendReview } from '../../../api/Review';
+import 산잉_슬픈 from '../../../assets/images/산잉_슬픈.png';
 const noOfCards = 1;
 const chevronWidth = 40;
 
@@ -16,7 +17,22 @@ const RecommendReview: React.FC = () => {
   });
 
   if (isError) {
-    return <span>Error: {error.message}</span>;
+    return (
+      <Flex
+        direction="column"
+        align="center"
+        justify="center"
+        height="40vh"
+        p={5}
+      >
+        <Image src={산잉_슬픈} alt="슬픈 이미지" boxSize="100px" />
+        <Box textAlign="center" py={6} px={2}>
+          <Text color={'gray.500'} mb={6}>
+            현재 컨텐츠를 이용할 수 없어요!
+          </Text>
+        </Box>
+      </Flex>
+    );
   }
 
   return (
