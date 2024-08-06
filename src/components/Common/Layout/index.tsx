@@ -1,5 +1,5 @@
 // Layout.tsx
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { LayoutProps } from '../../../types/ComponentType';
 import { Box } from '@chakra-ui/react';
 import MainPageHeader from '../MainPageHeader';
@@ -59,4 +59,4 @@ const Layout: FC<LayoutProps> = ({
   );
 };
 
-export default Layout;
+export default React.memo(Layout);

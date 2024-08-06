@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export const initialMe = {
   created_date: '1970-01-01T00:00:00',
@@ -36,7 +36,7 @@ export const useMe = create<MeState>()(
     }),
     {
       name: 'RememberMe',
-      getStorage: () => sessionStorage,
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

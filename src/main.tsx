@@ -1,5 +1,5 @@
 // main.tsx
-import React, { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import './styles/global.css';
@@ -179,9 +179,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <ChakraProvider theme={theme}>
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <Suspense fallback={<div>test</div>}>
-        <RouterProvider router={router} fallbackElement={<div>hellpo</div>} />
-      </Suspense>
+      <RouterProvider router={router} fallbackElement={<LoadingSpinner />} />
     </QueryClientProvider>
   </ChakraProvider>,
   // </React.StrictMode>,

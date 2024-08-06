@@ -13,8 +13,10 @@ import { RecommendReview } from '../../components/Common';
 import { useQuery } from '@tanstack/react-query';
 import { logout } from '../../api/Auth/AuthService';
 import { useNavigate } from 'react-router-dom';
+import isEqual from 'lodash/isEqual';
+
 const HomePage: FC = () => {
-  const { updateMe } = useMe();
+  const { me, updateMe } = useMe();
   const { errorToast } = useErrorToast();
   const navigate = useNavigate();
   const { isError, data } = useQuery({
@@ -22,12 +24,10 @@ const HomePage: FC = () => {
     queryFn: getUser,
     staleTime: 5 * 60 * 1000,
   });
-  console.log('홈 페이지 렌더링');
-  console.log(data);
+  console.log('homepage');
   useEffect(() => {
-    if (data?.data) {
-      updateMe(data.data);
-      console.log('useEffect 실행됨');
+    if (data?.data && !isEqual(data.data, me)) {
+      updateMe(data?.data);
     }
   }, [data?.data]);
 
