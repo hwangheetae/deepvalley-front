@@ -205,7 +205,7 @@ const SearchPage: React.FC = () => {
   return (
     <Layout>
       <Header title="검색" />
-      <Box mt={4} px={4}>
+      <Box mt={20} px={4}>
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="black" />

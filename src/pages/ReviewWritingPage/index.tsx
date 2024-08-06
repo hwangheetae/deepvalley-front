@@ -1,5 +1,6 @@
 import { useState, forwardRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import useSuccessToast from '../../hooks/useSuccessToast';
 import {
   Box,
   Flex,
@@ -12,7 +13,6 @@ import {
   Tag,
   TagLabel,
   IconButton,
-  useToast,
 } from '@chakra-ui/react';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
@@ -52,7 +52,6 @@ const ReviewWritingPage: React.FC = () => {
     thumbnail: string;
   };
 
-  const toast = useToast();
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
@@ -64,6 +63,7 @@ const ReviewWritingPage: React.FC = () => {
   const [newTag, setNewTag] = useState('');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const { successToast } = useSuccessToast();
 
   const predefinedTags = [
     '캠핑가능',
@@ -163,11 +163,10 @@ const ReviewWritingPage: React.FC = () => {
       imageFiles.forEach((file) => formData.append('imageUrls', file));
 
       await submitReview(formData);
-      toast({
-        title: '리뷰가 성공적으로 업로드 되었습니다!',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+
+      successToast({
+        title: '리뷰 작성 성공!',
+        description: '리뷰가 성공적으로 작성되었습니다.',
       });
 
       navigate(-1);

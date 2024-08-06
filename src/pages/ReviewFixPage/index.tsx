@@ -11,7 +11,6 @@ import {
   Tag,
   TagLabel,
   IconButton,
-  useToast,
 } from '@chakra-ui/react';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
@@ -24,6 +23,7 @@ import { ReviewUpdateType } from '../../types/ReviewUpdateType';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import useSuccessToast from '../../hooks/useSuccessToast';
 
 const CustomDatePickerInput = React.forwardRef(
   ({ value, onClick }: any, ref: any) => (
@@ -63,7 +63,7 @@ const ReviewFixPage: React.FC = () => {
   const [imageUrls, setImageUrls] = useState<string[]>(review.image_urls);
 
   const navigate = useNavigate();
-  const toast = useToast();
+  const { successToast } = useSuccessToast();
 
   const predefinedTags = [
     '캠핑가능',
@@ -163,11 +163,9 @@ const ReviewFixPage: React.FC = () => {
       imageFiles.forEach((file) => formData.append('imageUrls', file));
 
       await updateReview(reviewId, formData);
-      toast({
-        title: '리뷰가 성공적으로 수정되었습니다!',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+      successToast({
+        title: '리뷰 수정 성공!',
+        description: '리뷰가 성공적으로 수정되었습니다.',
       });
 
       navigate('/mypage');

@@ -16,6 +16,7 @@ import { Layout, Header, Review } from '../../components/Common';
 import { ReviewType } from '../../types';
 import ReviewMenuModal from '../../components/Common/ReviewMenuModal';
 import { deleteReview } from '../../api/Review';
+import useSuccessToast from '../../hooks/useSuccessToast';
 
 interface LoaderData {
   reviewId: string;
@@ -32,15 +33,14 @@ const ReviewPage: React.FC = () => {
   } = useDisclosure();
   const toast = useToast();
   const navigate = useNavigate();
+  const { successToast } = useSuccessToast();
 
   const handleDelete = async () => {
     try {
       await deleteReview(reviewId);
-      toast({
-        title: '리뷰가 성공적으로 삭제되었습니다!',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+      successToast({
+        title: '리뷰 삭제 성공!',
+        description: '리뷰가 성공적으로 삭제되었습니다.',
       });
       navigate('/mypage');
     } catch (error) {
