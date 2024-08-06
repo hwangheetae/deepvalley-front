@@ -14,6 +14,8 @@ const RecommendReview: React.FC = () => {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ['recommendReview'],
     queryFn: fetchRecommendReview,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
   });
 
   if (isError) {

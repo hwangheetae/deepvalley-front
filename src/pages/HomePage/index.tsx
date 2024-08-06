@@ -16,9 +16,11 @@ import { useNavigate } from 'react-router-dom';
 const HomePage: FC = () => {
   const { updateMe } = useMe();
   const { errorToast } = useErrorToast();
+  const navigate = useNavigate();
   const { isError, data } = useQuery({
     queryKey: ['RememberMe'],
     queryFn: getUser,
+    staleTime: 5 * 60 * 1000,
   });
 
   useEffect(() => {
@@ -31,6 +33,7 @@ const HomePage: FC = () => {
   if (isError) {
     errorToast(서버오류);
     logout();
+    navigate('/login');
   }
 
   return (

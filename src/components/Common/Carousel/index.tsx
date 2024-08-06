@@ -54,7 +54,7 @@ const CarouselComponent: React.FC = () => {
   );
 };
 
-// export default CarouselComponent;
+export default CarouselComponent;
 // import React, { useState, useEffect } from 'react';
 // import {
 //   ItemsCarousel,

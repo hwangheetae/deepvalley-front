@@ -175,12 +175,12 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <RouterProvider router={router} fallbackElement={<LoadingSpinner />} />
-      </QueryClientProvider>
-    </ChakraProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <ChakraProvider theme={theme}>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <RouterProvider router={router} fallbackElement={<LoadingSpinner />} />
+    </QueryClientProvider>
+  </ChakraProvider>,
+  // </React.StrictMode>,
 );
