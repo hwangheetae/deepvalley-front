@@ -1,5 +1,5 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import CategoryButton from '../CategoryButton';
 import waterfall from '../../../assets/icons/Category/waterfall.png';
 import family from '../../../assets/icons/Category/family.png';
@@ -11,6 +11,8 @@ import swimmer from '../../../assets/icons/Category/swimmer.png';
 import tent from '../../../assets/icons/Category/tent.png';
 
 const Category: FC = () => {
+  console.log('카테고리 페이지 렌더링');
+
   return (
     <Box
       w="full"
@@ -67,4 +69,4 @@ const Category: FC = () => {
   );
 };
 
-export default Category;
+export default React.memo(Category);

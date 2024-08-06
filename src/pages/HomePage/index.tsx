@@ -22,6 +22,7 @@ const HomePage: FC = () => {
     queryFn: getUser,
     staleTime: 5 * 60 * 1000,
   });
+  console.log('홈 페이지 렌더링');
 
   useEffect(() => {
     if (data) {
