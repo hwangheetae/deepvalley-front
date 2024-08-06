@@ -34,3 +34,7 @@ export const fetchRecommendReview = async () => {
   console.log('추천리뷰 실행됨!');
   return basicClient.get('/api/review/recommend');
 };
+
+export const fetchBannerImage = async () => {
+  return basicClient.get('/api/banner');
+};

@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import LoadingSpinner from '../../../../../components/Common/LoadingSpinner';
+import LoadingSpinner from '../../../../../components/Common/LoadingPage';
 import useKakaoLoginMutation from '../../../../../queries/useKakaoLoginMutation';
 
 const SocialKakaoRedirectPage: FC = () => {

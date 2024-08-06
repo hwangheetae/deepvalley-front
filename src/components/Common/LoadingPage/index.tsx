@@ -1,11 +1,11 @@
 import React from 'react';
 import { Layout } from '..';
-import '../../../styles/LoadingSpinner.css';
+import '../../../styles/LoadingPage.css';
 import 산잉 from '../../../assets/images/산잉.png';
 import 바다잉 from '../../../assets/images/바다잉.png';
 import 계곡잉 from '../../../assets/images/계곡잉.png';
 import { Text } from '@chakra-ui/react';
-const LoadingSpinner: React.FC = () => {
+const LoadingPage: React.FC = () => {
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center h-full">
@@ -28,4 +28,4 @@ const LoadingSpinner: React.FC = () => {
   );
 };
 
-export default LoadingSpinner;
+export default LoadingPage;

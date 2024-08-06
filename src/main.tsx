@@ -24,7 +24,7 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
-import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
+import LoadingSpinner from './components/Common/LoadingPage/index.tsx';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
   fetchValleyDetailInfo,
@@ -179,7 +179,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <RouterProvider router={router} />
+        <RouterProvider router={router} fallbackElement={<LoadingSpinner />} />
       </QueryClientProvider>
     </ChakraProvider>
   </React.StrictMode>,
