@@ -39,7 +39,11 @@ const HomePage: FC = () => {
 
   return (
     <Layout hasHeader={true} hasTapBar={true} showMenuButton={true}>
-      <InputGroup>
+      <InputGroup
+        onClick={() => {
+          navigate('/search');
+        }}
+      >
         <InputLeftElement
           pointerEvents="none"
           children={<SearchIcon color="black" />}
