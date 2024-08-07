@@ -114,7 +114,7 @@ const Login: FC = () => {
                 <SocialKakao />
                 <Flex justify="center" align={'center'} w="full" p={4}>
                   <Link href="/id_find" color="teal.500" fontSize="xs" p={1}>
-                    아이디 찾기
+                    이메일 찾기
                   </Link>
                   <Text color={'gray.400'}>|</Text>
                   <Link

@@ -15,7 +15,6 @@ import {
   ModalFooter,
   ModalBody,
   useDisclosure,
-  Spinner,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Layout } from '../../../components/Common';
@@ -37,23 +36,6 @@ const IDFind = () => {
   const handleSubmit = (values: { name: string }) => {
     mutation.mutate(values);
   };
-
-  if (mutation.isPending) {
-    <Flex
-      justifyContent="center"
-      alignItems="center"
-      width="100%"
-      height="20vh"
-    >
-      <Spinner
-        thickness="4px"
-        speed="2s"
-        emptyColor="gray.200"
-        color="teal.500"
-        size="xl"
-      />
-    </Flex>;
-  }
 
   return (
     <Layout>
@@ -116,7 +98,7 @@ const IDFind = () => {
                   borderRadius="full"
                   ButtonStyle={buttonStyle}
                 >
-                  아이디 찾기
+                  이메일 찾기
                 </CustomButton>
                 <Flex justify="center" align={'center'} w="full" p={4}>
                   <Link href="/login" color="teal.500" fontSize="xs" p={1}>
@@ -147,12 +129,12 @@ const IDFind = () => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader textAlign={'center'} color={'teal.500'}>
-            아이디 찾기
+            이메일 찾기
           </ModalHeader>
           <ModalBody textAlign={'center'}>
             {responseData ? (
               <Text fontSize={'sm'} p={2}>
-                회원님의 아이디는 <br />
+                회원님의 이메일는 <br />
                 <b>{responseData.login_email}</b> 입니다.
               </Text>
             ) : (

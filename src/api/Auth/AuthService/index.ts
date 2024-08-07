@@ -34,3 +34,7 @@ export const kakaoLoginSendToken = async (code: string) => {
 export const findId = async (body: {}) => {
   return basicClient.post('/api/member/find-id', body);
 };
+
+export const findPassword = async (body: {}) => {
+  return basicClient.post('/api/member/find-password', body);
+};
