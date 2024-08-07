@@ -7,8 +7,6 @@ import { SearchIcon } from '@chakra-ui/icons';
 import React, { FC, useEffect } from 'react';
 import { getUser } from '../../api/User';
 import { useMe } from '../../stores/meStore';
-import { 서버오류 } from '../../constant/constant';
-import useErrorToast from '../../hooks/useErrorToast';
 import { RecommendReview } from '../../components/Common';
 import { useQuery } from '@tanstack/react-query';
 import { logout } from '../../api/Auth/AuthService';
@@ -18,7 +16,6 @@ import { AxiosError } from 'axios';
 
 const HomePage: FC = () => {
   const { me, updateMe } = useMe();
-  const { errorToast } = useErrorToast();
   const navigate = useNavigate();
   const { isError, data, error } = useQuery({
     queryKey: ['RememberMe'],
