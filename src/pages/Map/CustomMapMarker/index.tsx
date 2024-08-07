@@ -8,8 +8,8 @@ const fixedMarkerSize = {
 
 const fixedMarkerOptions = {
   offset: {
-    x: 10,
-    y: 10,
+    x: 25,
+    y: 15,
   },
 };
 
@@ -19,14 +19,15 @@ interface CustomMapMarkerProps {
   icon?: ReactNode;
   src?: string;
   onClick?: () => void;
+  showLabel?: boolean;
 }
 
 const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
   position,
   label,
-  // icon,
   src,
   onClick,
+  showLabel = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,7 +52,21 @@ const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
       image={markerImage}
       clickable={true}
       onClick={handleClick}
-    ></MapMarker>
+    >
+      {isOpen && showLabel && (
+        <div
+          style={{
+            background: 'white',
+            padding: '5px',
+            borderRadius: '5px',
+            boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {label}
+        </div>
+      )}
+    </MapMarker>
   );
 };
 

@@ -21,6 +21,28 @@ import { MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
 import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
+import 산잉 from '../../../assets/images/산잉.png';
+
+type CategoryCode =
+  | ''
+  | 'MT1'
+  | 'CS2'
+  | 'PS3'
+  | 'SC4'
+  | 'AC5'
+  | 'PK6'
+  | 'OL7'
+  | 'SW8'
+  | 'BK9'
+  | 'CT1'
+  | 'AG2'
+  | 'PO3'
+  | 'AT4'
+  | 'AD5'
+  | 'FD6'
+  | 'CE7'
+  | 'HP8'
+  | 'PM9';
 
 export const MapPage = () => {
   const location = Locations();
@@ -29,10 +51,14 @@ export const MapPage = () => {
   const [selectedValley, setSelectedValley] = useState<ValleysType | null>(
     null,
   );
+  const [categoryMarkers, setCategoryMarkers] = useState<any[]>([]);
   const theme = useTheme();
   const mapRef = useRef<any>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState('13%');
+  const [currentCategory, setCurrentCategory] = useState<CategoryCode | null>(
+    null,
+  );
 
   const calculateRadius = (level: number) => {
     const baseRadius = 50; // 레벨 1일 때의 반경(m)
@@ -78,6 +104,50 @@ export const MapPage = () => {
     setSelectedValley(valley);
     setIsOpen(true);
     setHeight('80%');
+  };
+
+  const removeCategoryMarkers = () => {
+    setCategoryMarkers([]);
+  };
+
+  const handleCategorySearch = (category: CategoryCode, src: string) => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      console.log(map.getBounds);
+
+      if (currentCategory === category) {
+        removeCategoryMarkers();
+        setCurrentCategory(null);
+        return;
+      }
+
+      setCurrentCategory(category);
+
+      const places = new kakao.maps.services.Places();
+      const bounds = map.getBounds();
+      const center = map.getCenter();
+
+      const callback = (result: any[], status: any) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const markers = result.map((place) => (
+            <CustomMapMarker
+              key={place.id}
+              position={{ lat: place.y, lng: place.x }}
+              src={src}
+              label={place.place_name}
+              showLabel={true}
+            />
+          ));
+
+          setCategoryMarkers(markers);
+        }
+      };
+
+      places.categorySearch(category, callback, {
+        location: center,
+        bounds: bounds,
+      });
+    }
   };
 
   useEffect(() => {
@@ -130,14 +200,19 @@ export const MapPage = () => {
               />
             </InputGroup>
             <HStack spacing={2} justify="center" w="100%">
-              <Button size="sm" colorScheme="green">
-                계곡
+              <Button
+                size="sm"
+                colorScheme="gray"
+                onClick={() => handleCategorySearch('PK6', 'parking.png')}
+              >
+                주차장
               </Button>
-              <Button size="sm" colorScheme="gray">
-                편의시설
-              </Button>
-              <Button size="sm" colorScheme="teal">
-                안전시설
+              <Button
+                size="sm"
+                colorScheme="teal"
+                onClick={() => handleCategorySearch('HP8', 'safety.png')}
+              >
+                병원
               </Button>
               <Button size="sm" colorScheme="blue" onClick={handleReFetch}>
                 위치 재검색
@@ -160,13 +235,15 @@ export const MapPage = () => {
             {positions.map((valley) => (
               <CustomMapMarker
                 key={valley.valley_id}
-                src="marker2.png"
+                src={산잉}
                 position={{ lat: valley.latitude, lng: valley.longitude }}
                 label={valley.name}
-                onClick={() => handleMarkerClick(valley)} // 마커 클릭 이벤트 설정
+                onClick={() => handleMarkerClick(valley)}
+                showLabel={false} // 계곡 마커에는 라벨 표시하지 않음
               />
             ))}
           </MarkerClusterer>
+          {categoryMarkers}
 
           <IconButton
             aria-label="현재 위치로 이동"
