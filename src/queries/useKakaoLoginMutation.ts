@@ -17,11 +17,12 @@ const useKakaoLoginMutation = () => {
         title: '로그인 성공!',
         description: '로그인에 성공하였습니다.',
       });
-      navigate('/');
+      // navigate('/');
     },
-    onError: () => {
+    onError: (err: any) => {
       errorToast(서버오류);
-      navigate('/login');
+      console.log(err);
+      // navigate('/login');
     },
   });
 };

@@ -1,45 +1,37 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import LoadingSpinner from '../../../../../components/Common/LoadingPage';
-import useKakaoLoginMutation from '../../../../../queries/useKakaoLoginMutation';
-
+import { useQuery } from '@tanstack/react-query';
+import { kakaoLoginSendToken } from '../../../../../api/Auth/AuthService';
+import useSuccessToast from '../../../../../hooks/useSuccessToast';
+import { useNavigate } from 'react-router-dom';
+import useErrorToast from '../../../../../hooks/useErrorToast';
+import { 서버오류 } from '../../../../../constant/constant';
 const SocialKakaoRedirectPage: FC = () => {
   const code = new URL(window.location.href).searchParams.get('code');
+  const { successToast } = useSuccessToast();
+  const navigate = useNavigate();
+  const { errorToast } = useErrorToast();
+  const { isPending, isError, data } = useQuery({
+    queryKey: ['kakaoLogin', code],
+    queryFn: () => kakaoLoginSendToken(code as string),
+    enabled: !!code,
+  });
 
-  const mutation = useKakaoLoginMutation();
+  if (data) {
+    sessionStorage.setItem('token', data.data.access_token);
+    successToast({
+      title: '로그인 성공!',
+      description: '로그인에 성공하였습니다.',
+    });
+    navigate('/');
+  }
 
-  const fetchData = () => {
-    if (!code) return;
-    mutation.mutate(code);
-  };
+  if (isPending) return <LoadingSpinner />;
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  if (mutation.isPending) return <LoadingSpinner />;
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const code = new URL(window.location.href).searchParams.get('code');
-  //         if (code) {
-  //           const response = await kakaoLoginSendToken(code);
-  //           if (response.status === 200) {
-  //             localStorage.setItem('token', response.data.access_token);
-  //             successToast('로그인 성공!', '로그인에 성공하였습니다.');
-  //             navigate('/');
-  //           }
-  //         }
-  //       } catch (err: any) {
-  //         if (err.response.status === 500) {
-  //           errorToast(서버오류);
-  //           navigate('/login');
-  //         }
-  //       }
-  //     };
-  //     fetchData();
-  //   }, []);
-  //   return <div>로그인 중...</div>;
-  // };
+  if (isError) {
+    errorToast(서버오류);
+    navigate('/login');
+  }
 };
 
 export default SocialKakaoRedirectPage;
