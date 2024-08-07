@@ -146,9 +146,7 @@ const Register: FC = () => {
                     validate={(value: string) => {
                       let error = '';
                       error;
-                      if (!value) {
-                        error = '비밀번호를 다시 입력해주세요';
-                      } else if (value !== values.password)
+                      if (value !== values.password)
                         return (error = '비밀번호가 같은지 확인하세요');
                     }}
                   />

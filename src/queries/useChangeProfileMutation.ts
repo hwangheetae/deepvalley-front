@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { changeProfile } from '../api/User';
 import { useNavigate } from 'react-router-dom';
 import useSuccessToast from '../hooks/useSuccessToast';
@@ -7,6 +7,7 @@ import { 잘못된요청, 에러404, 서버오류 } from '../constant/constant';
 import { useMe } from '../stores/meStore';
 import { logout } from '../api/Auth/AuthService';
 const useChangeProfileMutation = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { errorToast } = useErrorToast();
   const { successToast } = useSuccessToast();
@@ -20,8 +21,8 @@ const useChangeProfileMutation = () => {
         title: '프로필 변경 성공!',
         description: '프로필을 변경하였습니다.',
       });
+      queryClient.invalidateQueries({ queryKey: ['RememberMe'] });
       navigate('/');
-      window.location.reload();
     },
     onError: (err: any) => {
       if (err.response.status === 400) {
