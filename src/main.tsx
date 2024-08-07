@@ -153,13 +153,16 @@ const router = createBrowserRouter([
   },
 
   {
-    path: '/search',
+    path: '/search/:tag?',
     element: <SearchPage />,
-    loader: async () => {
-      const valleys = await fetchValleysByFilter();
-      return { valleys };
+    loader: async ({ params }) => {
+      const { tag } = params;
+      const filters = tag ? { tag_names: [tag] } : {};
+      const valleys = await fetchValleysByFilter(filters);
+      return { valleys, tag };
     },
   },
+
   { path: '/LoadingSpinner', element: <LoadingSpinner /> },
   {
     path: '/valley/:valleyId/detail',

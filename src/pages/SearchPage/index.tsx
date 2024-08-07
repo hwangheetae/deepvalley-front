@@ -32,6 +32,7 @@ import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
 import { useLoaderData, Link } from 'react-router-dom';
 import { Star, Water } from '@mui/icons-material';
+import TapBar from '../../components/Common/TapBar';
 
 import { fetchValleysByFilter, fetchRegions } from '../../api/ValleyApi';
 import { ValleysType } from '../../types';
@@ -45,15 +46,16 @@ const predefinedTags = [
 ];
 
 const SearchPage: React.FC = () => {
-  const { valleys: initialValleys } = useLoaderData() as {
+  const { valleys: initialValleys, tag: initialTag } = useLoaderData() as {
     valleys: ValleysType[];
+    tag: string | null;
   };
   const [valleys, setValleys] = useState<ValleysType[]>(initialValleys);
   const [keyword, setKeyword] = useState<string>('');
   const [filters, setFilters] = useState<any>({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [region, setRegion] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(initialTag ? [initialTag] : []);
   const [regions, setRegions] = useState<string[]>([]);
   const [filteredRegions, setFilteredRegions] = useState<string[]>([]);
   const [offset, setOffset] = useState<number>(0);
@@ -217,7 +219,7 @@ const SearchPage: React.FC = () => {
             onKeyDown={(e) => e.key === 'Enter' && handleSearch(keyword)}
             size="md"
             borderRadius="full"
-            boxShadow="md"
+            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
             bg="white"
           />
         </InputGroup>
@@ -232,10 +234,10 @@ const SearchPage: React.FC = () => {
             fontFamily="Gmarket Sans TTF"
             fontWeight="medium"
             border="1px solid #306839"
-            boxShadow="inner"
             backgroundColor="transparent"
             color="black"
             flexShrink={0}
+            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
           >
             <TagLabel>필터</TagLabel>
           </Tag>
@@ -249,10 +251,10 @@ const SearchPage: React.FC = () => {
             fontFamily="Gmarket Sans TTF"
             fontWeight="medium"
             border="1px solid #306839"
-            boxShadow="inner"
             backgroundColor="transparent"
             color="black"
             flexShrink={0}
+            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
           >
             <TagLabel>초기화</TagLabel>
           </Tag>
@@ -268,7 +270,7 @@ const SearchPage: React.FC = () => {
               fontFamily="Gmarket Sans TTF"
               fontWeight="medium"
               border="1px solid #306839"
-              boxShadow="inner"
+              boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
               backgroundColor={
                 tags.includes(tag) ? 'rgba(0, 69, 11, 0.81)' : 'transparent'
               }
@@ -318,7 +320,7 @@ const SearchPage: React.FC = () => {
                       </HStack>
                       <HStack spacing={2}>
                         <Icon as={Star} color="yellow.500" />
-                        <Text fontSize="sm">{valley.rating}</Text>
+                        <Text fontSize="sm">{valley.avg_rating}</Text>
                         <Text fontSize="sm" color="gray.500">
                           리뷰 {valley.post_count}개
                         </Text>
@@ -362,7 +364,7 @@ const SearchPage: React.FC = () => {
                   onChange={(e) => handleRegionInputChange(e.target.value)}
                   size="md"
                   borderRadius="full"
-                  boxShadow="md"
+                  boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                   bg="white"
                 />
                 <Icon
@@ -378,7 +380,7 @@ const SearchPage: React.FC = () => {
               {filteredRegions.length > 0 && (
                 <List
                   spacing={2}
-                  mt={2}
+                  mt={0}
                   maxHeight="150px"
                   overflowY="auto"
                   width="100%"
@@ -413,7 +415,7 @@ const SearchPage: React.FC = () => {
                         fontFamily="Gmarket Sans TTF"
                         fontWeight="medium"
                         border="1px solid #306839"
-                        boxShadow="inner"
+                        boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                         backgroundColor={
                           tempRegion === region
                             ? 'rgba(0, 69, 11, 0.81)'
@@ -443,7 +445,7 @@ const SearchPage: React.FC = () => {
                     fontFamily="Gmarket Sans TTF"
                     fontWeight="medium"
                     border="1px solid #306839"
-                    boxShadow="inner"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     backgroundColor={
                       tempTags.includes(tag)
                         ? 'rgba(0, 69, 11, 0.81)'
@@ -468,6 +470,7 @@ const SearchPage: React.FC = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <TapBar />
     </Layout>
   );
 };

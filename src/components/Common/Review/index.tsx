@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Flex, Text, useToast, Button } from '@chakra-ui/react';
+import { Box, Flex, Text, useToast, Button, Icon } from '@chakra-ui/react';
 import ProfileImage from '../Image/ProfileImage';
 import ReviewImage from '../Image/ReviewImage';
 import { ReviewType } from '../../../types/ReviewType';
@@ -8,6 +8,7 @@ import { fetchReview } from '../../../api/Review/index';
 import { useMe } from '../../../stores/meStore';
 import 산잉 from '../../../assets/images/산잉.png';
 import { Link } from 'react-router-dom';
+import { MdLocationOn } from 'react-icons/md';
 
 import 'tailwindcss/tailwind.css';
 
@@ -48,15 +49,19 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
   }
 
   return (
-    <Box p="4">
+    <Box>
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
-          <Box mb={4}>
-            <ProfileImage src={me.profile_image_url || 산잉} />
+          <Box>
+            <ProfileImage
+              src={me.profile_image_url || 산잉}
+              width="50px"
+              height="50px"
+            />
           </Box>
-          <Box ml="4">
+          <Box mt={2}>
             <Text
-              fontSize="24px"
+              fontSize="20px"
               fontWeight="bold"
               fontFamily="Gmarket Sans TTF"
               color="black"
@@ -64,17 +69,18 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
               {me.name}
             </Text>
             <Text
+              mt={-2}
+              ml={0.5}
               fontSize="10px"
               fontWeight="light"
               fontFamily="Gmarket Sans TTF"
               color="black"
-              mt="-2"
             >
               {data.visited_date}
             </Text>
           </Box>
         </Flex>
-        <Flex alignItems="center">
+        <Flex alignItems="center" mt={2}>
           <Button
             as={Link}
             to={`/valley/${data.place_id}/detail`}
@@ -82,21 +88,22 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
               background: 'white',
               color: 'black',
               borderRadius: '28px',
-              border: '1px solid black',
+              border: '0.5px solid black',
               fontFamily: 'Gmarket Sans TTF',
               fontWeight: 'medium',
-              width: '100px',
-              height: '30px',
+              width: '80px',
+              height: '20px',
               fontSize: '10px',
             }}
             size="md"
           >
+            <Icon as={MdLocationOn} mr={0.5} color={'black'} />
             {data.valley_name}
           </Button>
         </Flex>
       </Flex>
 
-      <Box mt={4}>
+      <Box mt={4} ml={-4}>
         {data.image_urls && data.image_urls.length > 0 && (
           <Flex overflowX="scroll" gap="4">
             {data.image_urls.map((url: string, index: number) => (
@@ -109,21 +116,27 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
       </Box>
 
       <Box mt="4">
-        <Text fontSize="2xl" fontWeight="bold" fontFamily="Gmarket Sans TTF">
+        <Text fontSize="20px" fontWeight="bold" fontFamily="Gmarket Sans TTF">
           {data.title}
         </Text>
-        <Text mt="2" fontFamily="Gmarket Sans TTF" fontWeight="light">
+        <Text
+          mt="2"
+          fontSize="15px"
+          fontFamily="Gmarket Sans TTF"
+          fontWeight="light"
+        >
           {data.content}
         </Text>
         {data.tag_names && data.tag_names.length > 0 && (
-          <Flex mt="2">
+          <Flex mt="2" wrap="wrap">
             {data.tag_names.map((tag: string, index: number) => (
               <Text
                 key={index}
                 className="mr-2"
                 fontFamily="Gmarket Sans TTF"
                 fontWeight="light"
-                color="#1E4C28"
+                fontSize="15px"
+                color="#00430F"
               >
                 #{tag}
               </Text>
