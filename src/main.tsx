@@ -32,6 +32,7 @@ import {
   fetchValleyDetailReview,
   fetchValleyDetailImage,
 } from './api/Valley/index.ts';
+import SuggestPage from './pages/SuggestPage/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -148,6 +149,14 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <WithdrawalSuccessPage />
+      </PrivateRoute>
+    ),
+  },
+  {
+    path: '/suggest/:valley_id/:name',
+    element: (
+      <PrivateRoute>
+        <SuggestPage />
       </PrivateRoute>
     ),
   },
