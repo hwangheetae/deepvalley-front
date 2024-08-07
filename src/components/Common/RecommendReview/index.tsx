@@ -10,8 +10,7 @@ const chevronWidth = 40;
 
 const RecommendReview: React.FC = () => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
-
-  const { isPending, isError, data } = useQuery({
+  const { isPending, isError, data, error } = useQuery({
     queryKey: ['recommendReview'],
     queryFn: fetchRecommendReview,
     staleTime: 1000 * 60 * 5,

@@ -10,6 +10,7 @@ import {
   서로같은비밀번호설정,
   서버오류,
 } from '../constant/constant';
+import { logout } from '../api/Auth/AuthService';
 
 const useChangePasswordMutation = () => {
   const navigate = useNavigate();
@@ -30,6 +31,10 @@ const useChangePasswordMutation = () => {
       }
       if (err.response.status === 401) {
         errorToast(잘못된비밀번호);
+      }
+      if (err.response.status === 403) {
+        logout();
+        navigate('/errorpage');
       }
       if (err.response.status === 404) {
         errorToast(에러404);

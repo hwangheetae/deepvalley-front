@@ -14,17 +14,18 @@ import { useQuery } from '@tanstack/react-query';
 import { logout } from '../../api/Auth/AuthService';
 import { useNavigate } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
+import { AxiosError } from 'axios';
 
 const HomePage: FC = () => {
   const { me, updateMe } = useMe();
   const { errorToast } = useErrorToast();
   const navigate = useNavigate();
-  const { isError, data } = useQuery({
+  const { isError, data, error } = useQuery({
     queryKey: ['RememberMe'],
     queryFn: getUser,
     staleTime: 5 * 60 * 1000,
+    retry: false,
   });
-  console.log('homepage');
   useEffect(() => {
     if (data?.data && !isEqual(data.data, me)) {
       updateMe(data?.data);
@@ -32,9 +33,11 @@ const HomePage: FC = () => {
   }, [data?.data]);
 
   if (isError) {
-    errorToast(서버오류);
-    logout();
-    navigate('/login');
+    const axiosError = error as AxiosError;
+    if (axiosError.response?.status === 403) {
+      logout();
+      navigate('/errorPage');
+    }
   }
 
   return (

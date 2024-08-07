@@ -16,6 +16,7 @@ const CarouselComponent: React.FC = () => {
     queryKey: ['Banner'],
     queryFn: fetchBannerImage,
     staleTime: 5 * 60 * 1000,
+    retry: false,
   });
 
   useEffect(() => {
