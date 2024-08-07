@@ -38,11 +38,11 @@ import { fetchValleysByFilter, fetchRegions } from '../../api/ValleyApi';
 import { ValleysType } from '../../types';
 
 const predefinedTags = [
-  '수영가능',
-  '캠핑가능',
+  '야영가능',
   '주차가능',
-  '애견동반가능',
-  '가족단위',
+  '물놀이가능',
+  '가족동반',
+  '등산로',
 ];
 
 const SearchPage: React.FC = () => {
@@ -281,7 +281,7 @@ const SearchPage: React.FC = () => {
             </Tag>
           ))}
         </Flex>
-        <Box mt={4}>
+        <Box mt={4} mb={14}>
           <VStack spacing={4}>
             {valleys.map((valley, index) => {
               const valleyItem = (
