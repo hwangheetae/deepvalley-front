@@ -1,3 +1,4 @@
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import './styles/global.css';
@@ -29,6 +30,7 @@ import {
   fetchValleyDetailReview,
   fetchValleyDetailImage,
 } from './api/Valley/index.ts';
+import ErrorBoundary from './components/Common/ErrorBoundary/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -173,12 +175,18 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  // <React.StrictMode>
-  <ChakraProvider theme={theme}>
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={router} fallbackElement={<LoadingSpinner />} />
-    </QueryClientProvider>
-  </ChakraProvider>,
-  // </React.StrictMode>,
+  <React.StrictMode>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <ErrorBoundary>
+          <RouterProvider
+            router={router}
+            fallbackElement={<LoadingSpinner />}
+          />
+        </ErrorBoundary>
+      </QueryClientProvider>
+    </ChakraProvider>
+    ,
+  </React.StrictMode>,
 );
