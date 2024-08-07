@@ -4,3 +4,4 @@ export * from './FacilityType';
 // export * from './ListType/types';
 export * from './ReviewUpdateType';
 export * from './ReviewWritingType';
+export * from './SuggestType';
