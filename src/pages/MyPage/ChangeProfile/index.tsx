@@ -31,7 +31,7 @@ const ChangeProfile: FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const finalRef = useRef(null);
-  const mutation = useChangeProfileMutation(imgFile);
+  const mutation = useChangeProfileMutation();
 
   const imgUpload = () => {
     if (upload.current?.files) {

@@ -27,7 +27,7 @@ const HomePage: FC = () => {
     if (data?.data && !isEqual(data.data, me)) {
       updateMe(data?.data);
     }
-  }, [data?.data]);
+  }, [data?.data, me, updateMe]);
 
   if (isError) {
     const axiosError = error as AxiosError;

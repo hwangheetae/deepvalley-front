@@ -7,6 +7,7 @@ export const initialMe = {
   login_email: 'user@unknown.com',
   name: 'user',
   profile_image_url: '',
+  oauth: null,
 };
 
 interface MeState {
@@ -16,6 +17,7 @@ interface MeState {
     login_email: string;
     name: string;
     profile_image_url: string;
+    oauth: string | null;
   };
   updateMe: (data: Partial<MeState['me']>) => void;
   reset: () => void;
@@ -25,13 +27,10 @@ export const useMe = create<MeState>()(
   persist(
     (set) => ({
       me: initialMe,
-      updateMe: (data) =>
-        set((state) => ({
-          me: {
-            ...state.me,
-            ...data,
-          },
-        })),
+      updateMe: (data) => {
+        const newMe = { ...initialMe, ...data };
+        set({ me: newMe });
+      },
       reset: () => set({ me: initialMe }),
     }),
     {
