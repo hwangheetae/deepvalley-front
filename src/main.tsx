@@ -153,7 +153,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/suggest/:valley_id/:name',
+    path: '/suggest/:place_id/:name',
     element: (
       <PrivateRoute>
         <SuggestPage />

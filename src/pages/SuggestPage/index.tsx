@@ -7,24 +7,25 @@ import {
   Textarea,
   Button,
   IconButton,
-  useToast,
   Image,
 } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
 import { submitSuggest } from '../../api/Suggest';
 import { Header } from '../../components/Common';
 import Logo2 from '../../assets/images/Logo2.png';
 import Layout from '../../components/Common/Layout';
 import CustomButton from '../../components/Common/CustomButton';
+import useSuccessToast from '../../hooks/useSuccessToast';
 
 const SuggestPage: React.FC = () => {
-  const { valley_id, name } = useParams<{ valley_id: string; name: string }>();
-  const toast = useToast();
+  const { place_id, name } = useParams<{ place_id: string; name: string }>();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [images, setImages] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const { successToast } = useSuccessToast();
+  const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -49,7 +50,7 @@ const SuggestPage: React.FC = () => {
           JSON.stringify({
             title,
             content,
-            valley_id,
+            place_id,
           }),
         ],
         { type: 'application/json' },
@@ -60,21 +61,13 @@ const SuggestPage: React.FC = () => {
 
     try {
       await submitSuggest(formData);
-      toast({
-        title: '제안이 성공적으로 제출되었습니다.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+      successToast({
+        title: '정보 변경 제안 성공!',
+        description: '제안이 성공적으로 작성되었습니다.',
       });
-    } catch (error) {
-      toast({
-        title: '제안 제출 실패',
-        description: '제출하는 도중 오류가 발생했습니다.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+
+      navigate(-1);
+    } catch (error) {}
   };
 
   return (
