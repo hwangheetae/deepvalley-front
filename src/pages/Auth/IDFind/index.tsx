@@ -8,7 +8,16 @@ import {
   Link,
   FormErrorMessage,
   Image,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  useDisclosure,
+  Spinner,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 import { Layout } from '../../../components/Common';
 import { CustomButton } from '../../../components/Common';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
@@ -16,10 +25,35 @@ import Logo from '../../../assets/images/Logo.png';
 import useFindIdMutation from '../../../queries/useFindIdMutation.ts';
 
 const IDFind = () => {
-  const mutation = useFindIdMutation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [responseData, setResponseData] = useState<any>(null);
+
+  const handleSuccess = (data: any) => {
+    setResponseData(data);
+    onOpen();
+  };
+
+  const mutation = useFindIdMutation(handleSuccess);
   const handleSubmit = (values: { name: string }) => {
     mutation.mutate(values);
   };
+
+  if (mutation.isPending) {
+    <Flex
+      justifyContent="center"
+      alignItems="center"
+      width="100%"
+      height="20vh"
+    >
+      <Spinner
+        thickness="4px"
+        speed="2s"
+        emptyColor="gray.200"
+        color="teal.500"
+        size="xl"
+      />
+    </Flex>;
+  }
 
   return (
     <Layout>
@@ -103,6 +137,31 @@ const IDFind = () => {
           )}
         </Formik>
       </Flex>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={'xs'}
+        motionPreset="slideInBottom"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader textAlign={'center'} color={'teal.500'}>
+            아이디 찾기
+          </ModalHeader>
+          <ModalBody textAlign={'center'}>
+            {responseData ? (
+              <Text fontSize={'sm'} p={2}>
+                회원님의 아이디는 <br />
+                <b>{responseData.login_email}</b> 입니다.
+              </Text>
+            ) : (
+              ''
+            )}
+          </ModalBody>
+          <ModalFooter />
+        </ModalContent>
+      </Modal>
     </Layout>
   );
 };
