@@ -13,6 +13,7 @@ export interface ValleysType {
   rating: string;
   busy: string;
   opened: boolean;
+  avg_rating: number;
 }
 
 export interface ValleyDetailInfoType {

@@ -1,21 +1,21 @@
 import { useToast } from '@chakra-ui/react';
 
-interface SuccessToastProps {
+interface useRatingErrorToastProps {
   title: string;
   description: string;
 }
-const useSuccessToast = () => {
+const useRatingErrorToast = () => {
   const toast = useToast();
-  const successToast = ({ title, description }: SuccessToastProps) =>
+  const ratingErrorToast = ({ title, description }: useRatingErrorToastProps) =>
     toast({
       title: title,
       description: description,
-      status: 'success',
+      status: 'error',
       position: 'top-right',
       isClosable: true,
       duration: 5000,
     });
-  return { successToast };
+  return { ratingErrorToast };
 };
 
-export default useSuccessToast;
+export default useRatingErrorToast;

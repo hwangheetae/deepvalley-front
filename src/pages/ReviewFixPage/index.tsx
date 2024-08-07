@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import useSuccessToast from '../../hooks/useSuccessToast';
+import useRatingErrorToast from '../../hooks/useRatingErrorToast';
 import {
   Box,
   Flex,
@@ -11,7 +14,8 @@ import {
   Tag,
   TagLabel,
   IconButton,
-  useToast,
+  FormControl,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
@@ -19,13 +23,12 @@ import CustomButton from '../../components/Common/CustomButton';
 import CustomInput from '../../components/Common/CustomInput';
 import InstaImage from '../../components/Common/Image/InstaImage';
 import { updateReview } from '../../api/Review/index';
-import { useLoaderData, useNavigate } from 'react-router-dom';
 import { ReviewUpdateType } from '../../types/ReviewUpdateType';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 
-const CustomDatePickerInput = React.forwardRef(
+const CustomDatePickerInput = forwardRef(
   ({ value, onClick }: any, ref: any) => (
     <Button
       onClick={onClick}
@@ -51,6 +54,7 @@ const ReviewFixPage: React.FC = () => {
   };
 
   const [title, setTitle] = useState(review.title);
+  const [titleError, setTitleError] = useState('');
   const [rating, setRating] = useState(review.rating);
   const [content, setContent] = useState(review.content);
   const [visitedDate, setVisitedDate] = useState<Date | null>(
@@ -63,7 +67,8 @@ const ReviewFixPage: React.FC = () => {
   const [imageUrls, setImageUrls] = useState<string[]>(review.image_urls);
 
   const navigate = useNavigate();
-  const toast = useToast();
+  const { successToast } = useSuccessToast();
+  const { ratingErrorToast } = useRatingErrorToast();
 
   const predefinedTags = [
     '캠핑가능',
@@ -72,6 +77,15 @@ const ReviewFixPage: React.FC = () => {
     '애견동반가능',
     '가족단위',
   ];
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length <= 10) {
+      setTitle(e.target.value);
+      setTitleError('');
+    } else {
+      setTitleError('제목은 10자 이하로 입력해 주세요.');
+    }
+  };
 
   const handleRatingClick = (rate: string) => {
     const ratingMap: { [key: string]: string } = {
@@ -163,16 +177,17 @@ const ReviewFixPage: React.FC = () => {
       imageFiles.forEach((file) => formData.append('imageUrls', file));
 
       await updateReview(reviewId, formData);
-      toast({
-        title: '리뷰가 성공적으로 수정되었습니다!',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+      successToast({
+        title: '리뷰 수정 성공!',
+        description: '리뷰가 성공적으로 수정되었습니다.',
       });
 
       navigate('/mypage');
     } catch (error) {
-      console.error('Error updating review:', error);
+      ratingErrorToast({
+        title: '리뷰 수정 실패!',
+        description: '평점을 입력해 주세요.',
+      });
     }
   };
 
@@ -201,22 +216,28 @@ const ReviewFixPage: React.FC = () => {
             bottom="0"
             zIndex="-1"
           />
-          <CustomInput
-            placeholder="리뷰 제목을 입력해 주세요"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            inputStyle={{
-              fontFamily: 'Gmarket Sans TTF',
-              border: 'none',
-              background: 'transparent',
-              fontWeight: 'bold',
-              fontSize: '24px',
-              position: 'relative',
-              zIndex: '1',
-              color: 'white',
-            }}
-            _placeholder={{ color: 'white' }}
-          />
+          <FormControl isInvalid={!!titleError}>
+            <CustomInput
+              placeholder="리뷰 제목을 입력해 주세요"
+              value={title}
+              onChange={handleTitleChange}
+              inputStyle={{
+                fontFamily: 'Gmarket Sans TTF',
+                border: 'none',
+                background: 'transparent',
+                fontWeight: 'bold',
+                fontSize: '24px',
+                position: 'relative',
+                zIndex: '1',
+                color: 'white',
+                borderRadius: '100',
+              }}
+              _placeholder={{ color: 'white' }}
+            />
+            <FormErrorMessage ml={2} color="red.500">
+              {titleError}
+            </FormErrorMessage>
+          </FormControl>
           <Box p="4">
             <Text
               fontFamily="Gmarket Sans TTF"
