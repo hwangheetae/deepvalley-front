@@ -60,7 +60,6 @@ const HomePage: FC = () => {
       <Carousel />
       <RecommendReview />
       <TapBar />
-      <div></div>
     </Layout>
   );
 };

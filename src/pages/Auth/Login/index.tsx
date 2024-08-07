@@ -54,7 +54,6 @@ const Login: FC = () => {
           initialValues={{
             login_email: '',
             password: '',
-            // rememberMe: false,
           }}
           onSubmit={handleSubmit}
         >
@@ -85,7 +84,6 @@ const Login: FC = () => {
                   />
                   <FormErrorMessage>{errors.login_email}</FormErrorMessage>
                 </FormControl>
-
                 <FormControl isInvalid={!!errors.password && touched.password}>
                   <Field
                     as={Input}
@@ -104,13 +102,7 @@ const Login: FC = () => {
                     }}
                   />
                   <FormErrorMessage>{errors.password}</FormErrorMessage>
-                  <Flex justify="flex-end" w="full">
-                    <Link href="#" color="teal.500" fontSize="sm" p={2}>
-                      비밀번호를 잊으셨나요?
-                    </Link>
-                  </Flex>
                 </FormControl>
-
                 <CustomButton
                   type="submit"
                   width="full"
@@ -119,16 +111,32 @@ const Login: FC = () => {
                 >
                   로그인
                 </CustomButton>
-
                 <SocialKakao />
-
-                <Flex w="full" justify="center">
-                  <Text fontSize="sm">계정이 없으신가요?</Text>
-                  <Link href="/register" color="teal.500" ml={1} fontSize="sm">
+                <Flex justify="center" align={'center'} w="full" p={4}>
+                  <Link href="/id_find" color="teal.500" fontSize="xs" p={1}>
+                    아이디 찾기
+                  </Link>
+                  <Text color={'gray.400'}>|</Text>
+                  <Link
+                    href="/password_find"
+                    color="teal.500"
+                    fontSize="xs"
+                    p={1}
+                  >
+                    비밀번호 찾기
+                  </Link>
+                  <Text color={'gray.400'}>|</Text>
+                  <Link href="/register" color="teal.500" fontSize="xs" p={1}>
                     회원가입
                   </Link>
                 </Flex>
               </VStack>
+              {/* <Flex w="full" justify="center" align={'center'} p={8}>
+                <Text fontSize="sm">계정이 없으신가요?</Text>
+                <Link href="/register" color="teal.500" ml={1} fontSize="sm">
+                  회원가입
+                </Link>
+              </Flex> */}
             </form>
           )}
         </Formik>

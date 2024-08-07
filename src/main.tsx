@@ -31,6 +31,7 @@ import {
   fetchValleyDetailImage,
 } from './api/Valley/index.ts';
 import ErrorBoundary from './components/Common/ErrorBoundary/index.tsx';
+import { IDFind, PasswordFind } from './pages/Auth/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -56,7 +57,8 @@ const router = createBrowserRouter([
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
   { path: '/register', element: <Register /> },
   { path: '/logout', element: <Logout /> },
-
+  { path: '/id_find', element: <IDFind /> },
+  { path: '/password_find', element: <PasswordFind /> },
   {
     path: '/ChangePassword',
     element: (
