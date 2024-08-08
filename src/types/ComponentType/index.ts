@@ -31,6 +31,7 @@ export interface LayoutProps {
   children: ReactNode;
   hasHeader?: boolean;
   hasTapBar?: boolean;
+  showMenuButton?: boolean;
 }
 
 export interface MainPageHeaderProps {
@@ -47,6 +48,8 @@ export interface InstaImageProps {
 
 export interface ProfileImageProps {
   src?: string;
+  width?: string;
+  height?: string;
 }
 
 export interface ReviewImageProps {

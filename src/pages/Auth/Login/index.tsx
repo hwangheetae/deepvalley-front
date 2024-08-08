@@ -1,13 +1,11 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import Layout from '../../../components/Common/Layout';
 import CustomButton from '../../../components/Common/CustomButton';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
 import Logo from '../../../assets/images/Logo.png';
-import { login } from '../../../api/Auth/AuthService';
-import { useMutation } from '@tanstack/react-query';
+import useLoginMutation from '../../../queries/useLoginMutation';
 import {
   Flex,
   FormControl,
@@ -18,42 +16,9 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
-import {
-  잘못된요청,
-  잘못된비밀번호,
-  에러404,
-  서버오류,
-} from '../../../constant/constant';
-import useHandleError from '../../../hooks/useErrorToast';
-import useSuccessToast from '../../../hooks/useSuccessToast';
 
 const Login: FC = () => {
-  const navigate = useNavigate();
-  const { errorToast } = useHandleError();
-  const { successToast } = useSuccessToast();
-
-  const mutation = useMutation({
-    mutationFn: login,
-    onSuccess: (response) => {
-      localStorage.setItem('token', response.data.access_token);
-      navigate('/');
-      successToast('로그인 성공!', '로그인에 성공하였습니다.');
-    },
-    onError: (err: any) => {
-      if (err.response.status === 400) {
-        errorToast(잘못된요청);
-      }
-      if (err.response.status === 401) {
-        errorToast(잘못된비밀번호);
-      }
-      if (err.response.status === 404) {
-        errorToast(에러404);
-      }
-      if (err.response.status === 500) {
-        errorToast(서버오류);
-      }
-    },
-  });
+  const mutation = useLoginMutation();
 
   const handleSubmit = (values: { login_email: string; password: string }) => {
     mutation.mutate(values);
@@ -89,7 +54,6 @@ const Login: FC = () => {
           initialValues={{
             login_email: '',
             password: '',
-            // rememberMe: false,
           }}
           onSubmit={handleSubmit}
         >
@@ -120,7 +84,6 @@ const Login: FC = () => {
                   />
                   <FormErrorMessage>{errors.login_email}</FormErrorMessage>
                 </FormControl>
-
                 <FormControl isInvalid={!!errors.password && touched.password}>
                   <Field
                     as={Input}
@@ -139,13 +102,7 @@ const Login: FC = () => {
                     }}
                   />
                   <FormErrorMessage>{errors.password}</FormErrorMessage>
-                  <Flex justify="flex-end" w="full">
-                    <Link href="#" color="teal.500" fontSize="sm" p={2}>
-                      비밀번호를 잊으셨나요?
-                    </Link>
-                  </Flex>
                 </FormControl>
-
                 <CustomButton
                   type="submit"
                   width="full"
@@ -154,16 +111,32 @@ const Login: FC = () => {
                 >
                   로그인
                 </CustomButton>
-
                 <SocialKakao />
-
-                <Flex w="full" justify="center">
-                  <Text fontSize="sm">계정이 없으신가요?</Text>
-                  <Link href="/register" color="teal.500" ml={1} fontSize="sm">
+                <Flex justify="center" align={'center'} w="full" p={4}>
+                  <Link href="/id_find" color="teal.500" fontSize="xs" p={1}>
+                    이메일 찾기
+                  </Link>
+                  <Text color={'gray.400'}>|</Text>
+                  <Link
+                    href="/password_find"
+                    color="teal.500"
+                    fontSize="xs"
+                    p={1}
+                  >
+                    비밀번호 찾기
+                  </Link>
+                  <Text color={'gray.400'}>|</Text>
+                  <Link href="/register" color="teal.500" fontSize="xs" p={1}>
                     회원가입
                   </Link>
                 </Flex>
               </VStack>
+              {/* <Flex w="full" justify="center" align={'center'} p={8}>
+                <Text fontSize="sm">계정이 없으신가요?</Text>
+                <Link href="/register" color="teal.500" ml={1} fontSize="sm">
+                  회원가입
+                </Link>
+              </Flex> */}
             </form>
           )}
         </Formik>

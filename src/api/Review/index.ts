@@ -29,3 +29,11 @@ export const submitReview = async (formData: FormData) => {
 export const deleteReview = async (reviewid: string) => {
   return basicClient.delete(`api/review/${reviewid}`);
 };
+
+export const fetchRecommendReview = async () => {
+  return basicClient.get('/api/review/recommend');
+};
+
+export const fetchBannerImage = async () => {
+  return basicClient.get('/api/banner');
+};

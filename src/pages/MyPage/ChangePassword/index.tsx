@@ -1,10 +1,8 @@
 import { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
 import 산잉 from '../../../assets/images/산잉.png';
-import { changePassword } from '../../../api/User';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import {
   Flex,
@@ -15,49 +13,18 @@ import {
   Image,
   Text,
 } from '@chakra-ui/react';
-import {
-  잘못된요청,
-  잘못된비밀번호,
-  에러404,
-  서로같은비밀번호설정,
-  서버오류,
-} from '../../../constant/constant';
+
 import { passwordRegEx } from '../../../utils/Regex';
 import { Header } from '../../../components/Common';
-import useErrorToast from '../../../hooks/useErrorToast';
-import useSuccessToast from '../../../hooks/useSuccessToast';
+import useChangePasswordMutation from '../../../queries/useChangePasswordMutation';
 
 const ChangePassword: FC = () => {
-  const navigate = useNavigate();
-  const { errorToast } = useErrorToast();
-  const { successToast } = useSuccessToast();
+  const mutation = useChangePasswordMutation();
   const handleSubmit = async (values: {
     old_password: string;
     new_password: string;
   }) => {
-    try {
-      const response = await changePassword(values);
-      if (response.status === 200) {
-        successToast('비밀번호 변경 성공!', `비밀번호를 변경하였습니다.`);
-        navigate('/');
-      }
-    } catch (err: any) {
-      if (err.response.status === 400) {
-        errorToast(잘못된요청);
-      }
-      if (err.response.status === 401) {
-        errorToast(잘못된비밀번호);
-      }
-      if (err.response.status === 404) {
-        errorToast(에러404);
-      }
-      if (err.response.status === 422) {
-        errorToast(서로같은비밀번호설정);
-      }
-      if (err.response.status === 500) {
-        errorToast(서버오류);
-      }
-    }
+    mutation.mutate(values);
   };
 
   return (

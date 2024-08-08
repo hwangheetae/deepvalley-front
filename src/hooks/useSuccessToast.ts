@@ -1,8 +1,12 @@
 import { useToast } from '@chakra-ui/react';
 
+interface SuccessToastProps {
+  title: string;
+  description: string;
+}
 const useSuccessToast = () => {
   const toast = useToast();
-  const successToast = (title: string, description: string) =>
+  const successToast = ({ title, description }: SuccessToastProps) =>
     toast({
       title: title,
       description: description,
