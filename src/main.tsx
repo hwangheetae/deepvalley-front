@@ -1,4 +1,3 @@
-// main.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -7,7 +6,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './pages/HomePage/index.tsx';
-import { ChangePassword, ReviewPage } from './pages/index.tsx';
+import { ChangePassword, ErrorPage, ReviewPage } from './pages/index.tsx';
 import { fetchReview } from './api/Review/index.ts';
 import { fetchReviews } from './api/Review/index.ts';
 import MyPage from './pages/MyPage/index.tsx';
@@ -26,12 +25,15 @@ import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
 import SearchPage from './pages/SearchPage/index.tsx';
 import { fetchValleysByFilter } from './api/ValleyApi/index.ts';
-import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
+import LoadingPage from './components/Common/LoadingPage/index.tsx';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
   fetchValleyDetailInfo,
   fetchValleyDetailReview,
   fetchValleyDetailImage,
 } from './api/Valley/index.ts';
+import ErrorBoundary from './components/Common/ErrorBoundary/index.tsx';
+import { IDFind, PasswordFind } from './pages/Auth/index.tsx';
 import SuggestPage from './pages/SuggestPage/index.tsx';
 
 const queryClient = new QueryClient();
@@ -58,7 +60,8 @@ const router = createBrowserRouter([
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
   { path: '/register', element: <Register /> },
   { path: '/logout', element: <Logout /> },
-
+  { path: '/id_find', element: <IDFind /> },
+  { path: '/password_find', element: <PasswordFind /> },
   {
     path: '/ChangePassword',
     element: (
@@ -84,7 +87,6 @@ const router = createBrowserRouter([
     ),
   },
   { path: '/mappage', element: <MapPage /> },
-
   {
     path: 'review/:reviewId',
     element: <ReviewPage />,
@@ -172,7 +174,7 @@ const router = createBrowserRouter([
     },
   },
 
-  { path: '/LoadingSpinner', element: <LoadingSpinner /> },
+  { path: '/LoadingPage', element: <LoadingPage /> },
   {
     path: '/valley/:valleyId/detail',
     element: <ValleyPage />,
@@ -191,14 +193,22 @@ const router = createBrowserRouter([
       };
     },
   },
+  {
+    path: '*',
+    element: <ErrorPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
+        <ErrorBoundary>
+          <RouterProvider router={router} fallbackElement={<LoadingPage />} />
+        </ErrorBoundary>
       </QueryClientProvider>
     </ChakraProvider>
+    ,
   </React.StrictMode>,
 );

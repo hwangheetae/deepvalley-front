@@ -1,5 +1,5 @@
 // Layout.tsx
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { LayoutProps } from '../../../types/ComponentType';
 import { Box } from '@chakra-ui/react';
 import MainPageHeader from '../MainPageHeader';
@@ -7,6 +7,7 @@ const Layout: FC<LayoutProps> = ({
   children,
   hasHeader = false,
   hasTapBar = false,
+  showMenuButton = false,
 }: LayoutProps) => {
   const headerHeight = 73; // 헤더의 높이
   const tapBarHeight = 73; // TapBar의 높이
@@ -30,7 +31,7 @@ const Layout: FC<LayoutProps> = ({
           <MainPageHeader
             title="깊은산 골짜기"
             fontFamily="Cafe24Ssurround"
-            showMenuButton={true}
+            showMenuButton={showMenuButton}
           />
         </Box>
       )}
@@ -58,4 +59,4 @@ const Layout: FC<LayoutProps> = ({
   );
 };
 
-export default Layout;
+export default React.memo(Layout);

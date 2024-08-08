@@ -16,10 +16,7 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react';
 import { useMe } from '../../../stores/meStore';
-import { membershipWithdrawal } from '../../../api/User';
-import { useNavigate } from 'react-router-dom';
-import { 잘못된요청, 에러404, 서버오류 } from '../../../constant/constant';
-import useErrorToast from '../../../hooks/useErrorToast';
+import useMembershipWithdrawalMutation from '../../../queries/useMembershipWithdrawalMutation';
 interface WithdrawalModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -34,29 +31,12 @@ const WithdrawalModal: FC<WithdrawalModalProps> = ({
   finalRef,
 }) => {
   const { me } = useMe();
-  const navigate = useNavigate();
-  const { errorToast } = useErrorToast();
+  const mutation = useMembershipWithdrawalMutation();
   const handleSubmit = async (values: {
     login_email: string;
     password: string;
   }) => {
-    try {
-      const response = await membershipWithdrawal(values);
-      if (response.status === 200) {
-        onClose();
-        navigate('/WithdrawalSuccessPage');
-      }
-    } catch (err: any) {
-      if (err.response.status === 400) {
-        errorToast(잘못된요청);
-      }
-      if (err.response.status === 404) {
-        errorToast(에러404);
-      }
-      if (err.response.status === 500) {
-        errorToast(서버오류);
-      }
-    }
+    mutation.mutate(values);
   };
 
   return (
