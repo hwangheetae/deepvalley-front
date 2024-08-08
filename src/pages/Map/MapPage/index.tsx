@@ -1,9 +1,4 @@
-import {
-  Map,
-  MarkerClusterer,
-  CustomOverlayMap,
-  MapMarker,
-} from 'react-kakao-maps-sdk';
+import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
 import { useState, useEffect, useRef } from 'react';
 import CustomMapMarker from '../CustomMapMarker';
 import Locations from '../Locations';
@@ -142,7 +137,7 @@ export const MapPage = () => {
       );
 
       map.setCenter(center);
-      map.setLevel(5); // 레벨을 5로 설정
+      map.setLevel(5);
     }
   };
 
