@@ -13,6 +13,7 @@ export interface ValleysType {
   rating: string;
   busy: string;
   opened: boolean;
+  avg_rating: number;
 }
 
 export interface ValleyDetailInfoType {
@@ -55,4 +56,12 @@ export interface ValleyDetailReviewType {
 
 export interface ValleyDetailReviewResponseType {
   reviews: ValleyDetailReviewType[];
+}
+
+export interface ValleyDetailImageType {
+  review_id: string;
+  title: string;
+  content: string;
+  image_urls: string[];
+  profile_image_url: string;
 }

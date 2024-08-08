@@ -23,7 +23,9 @@ import ReviewFixpage from './pages/ReviewFixPage/index.tsx';
 import { useMe } from './stores/meStore.ts';
 import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
-import LoadingSpinner from './components/Common/LoadingPage/index.tsx';
+import SearchPage from './pages/SearchPage/index.tsx';
+import { fetchValleysByFilter } from './api/ValleyApi/index.ts';
+import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
   fetchValleyDetailInfo,
@@ -32,6 +34,7 @@ import {
 } from './api/Valley/index.ts';
 import ErrorBoundary from './components/Common/ErrorBoundary/index.tsx';
 import { IDFind, PasswordFind } from './pages/Auth/index.tsx';
+import SuggestPage from './pages/SuggestPage/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -151,6 +154,26 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  {
+    path: '/suggest/:place_id/:name',
+    element: (
+      <PrivateRoute>
+        <SuggestPage />
+      </PrivateRoute>
+    ),
+  },
+
+  {
+    path: '/search/:tag?',
+    element: <SearchPage />,
+    loader: async ({ params }) => {
+      const { tag } = params;
+      const filters = tag ? { tag_names: [tag] } : {};
+      const valleys = await fetchValleysByFilter(filters);
+      return { valleys, tag };
+    },
+  },
+
   { path: '/LoadingSpinner', element: <LoadingSpinner /> },
   {
     path: '/valley/:valleyId/detail',

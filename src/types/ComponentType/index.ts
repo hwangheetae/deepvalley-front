@@ -48,6 +48,8 @@ export interface InstaImageProps {
 
 export interface ProfileImageProps {
   src?: string;
+  width?: string;
+  height?: string;
 }
 
 export interface ReviewImageProps {
