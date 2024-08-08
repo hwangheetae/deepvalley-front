@@ -25,7 +25,7 @@ import WithdrawalSuccessPage from './pages/MyPage/WithdrawalSuccessPage';
 import ValleyPage from './pages/ValleyPage';
 import SearchPage from './pages/SearchPage/index.tsx';
 import { fetchValleysByFilter } from './api/ValleyApi/index.ts';
-import LoadingSpinner from './components/Common/LoadingSpinner/index.tsx';
+import LoadingPage from './components/Common/LoadingPage/index.tsx';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
   fetchValleyDetailInfo,
@@ -174,7 +174,7 @@ const router = createBrowserRouter([
     },
   },
 
-  { path: '/LoadingSpinner', element: <LoadingSpinner /> },
+  { path: '/LoadingPage', element: <LoadingPage /> },
   {
     path: '/valley/:valleyId/detail',
     element: <ValleyPage />,
@@ -205,10 +205,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <ErrorBoundary>
-          <RouterProvider
-            router={router}
-            fallbackElement={<LoadingSpinner />}
-          />
+          <RouterProvider router={router} fallbackElement={<LoadingPage />} />
         </ErrorBoundary>
       </QueryClientProvider>
     </ChakraProvider>
