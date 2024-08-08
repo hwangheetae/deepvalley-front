@@ -10,7 +10,7 @@ interface PrivateRouteProps {
 
 const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   const toast = useToast();
-  const accessToken = localStorage.getItem('token');
+  const accessToken = sessionStorage.getItem('token');
   const isLoggedOut = useAuthStore((state) => state.isLoggedOut);
 
   useEffect(() => {

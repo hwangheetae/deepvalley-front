@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
-import { useLoaderData, Link } from 'react-router-dom';
-import { Box, useDisclosure, useToast, Button, Text } from '@chakra-ui/react';
+import React from 'react';
+import { useLoaderData, useNavigate } from 'react-router-dom';
+import {
+  Box,
+  useDisclosure,
+  useToast,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from '@chakra-ui/react';
 import { Layout, Header, Review } from '../../components/Common';
 import { ReviewType } from '../../types';
 import ReviewMenuModal from '../../components/Common/ReviewMenuModal';
 import { deleteReview } from '../../api/Review';
+import useSuccessToast from '../../hooks/useSuccessToast';
 
 interface LoaderData {
   reviewId: string;
@@ -14,13 +26,23 @@ interface LoaderData {
 const ReviewPage: React.FC = () => {
   const { reviewId, initialData } = useLoaderData() as LoaderData;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isConfirmOpen,
+    onOpen: onConfirmOpen,
+    onClose: onConfirmClose,
+  } = useDisclosure();
   const toast = useToast();
-  const [isDeleted, setIsDeleted] = useState(false); // 삭제 상태를 관리하는 상태 추가
+  const navigate = useNavigate();
+  const { successToast } = useSuccessToast();
 
   const handleDelete = async () => {
     try {
       await deleteReview(reviewId);
-      setIsDeleted(true);
+      successToast({
+        title: '리뷰 삭제 성공!',
+        description: '리뷰가 성공적으로 삭제되었습니다.',
+      });
+      navigate('/mypage');
     } catch (error) {
       toast({
         title: '삭제 실패',
@@ -31,21 +53,6 @@ const ReviewPage: React.FC = () => {
       });
     }
   };
-
-  if (isDeleted) {
-    return (
-      <Layout>
-        <Header title="" showMenuButton={false} showBorderBottom={false} />
-        <Box p="4" pt="20">
-          <Text>리뷰가 성공적으로 삭제되었습니다!</Text>
-          <Link to="/">
-            <Button mt="4">메인 페이지로 이동</Button>
-          </Link>
-        </Box>
-      </Layout>
-    );
-  }
-
   return (
     <Layout>
       <Header
@@ -61,10 +68,44 @@ const ReviewPage: React.FC = () => {
         isOpen={isOpen}
         onClose={onClose}
         reviewId={reviewId}
-        onDelete={handleDelete}
+        onDelete={onConfirmOpen}
+      />
+      <ConfirmDeleteModal
+        isOpen={isConfirmOpen}
+        onClose={onConfirmClose}
+        onConfirm={() => {
+          onConfirmClose();
+          handleDelete();
+        }}
       />
     </Layout>
   );
 };
+
+const ConfirmDeleteModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}) => (
+  <Modal isOpen={isOpen} onClose={onClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>삭제 확인</ModalHeader>
+      <ModalBody>정말 삭제하시겠습니까?</ModalBody>
+      <ModalFooter>
+        <Button colorScheme="red" mr={3} onClick={onConfirm}>
+          삭제
+        </Button>
+        <Button variant="ghost" onClick={onClose}>
+          취소
+        </Button>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>
+);
 
 export default ReviewPage;

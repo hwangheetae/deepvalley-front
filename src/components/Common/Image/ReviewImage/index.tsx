@@ -10,7 +10,8 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ src }) => (
     backgroundSize="cover"
     backgroundPosition="center"
     backgroundRepeat="no-repeat"
-    filter="drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25))"
+    boxShadow="2px 2px 4px rgba(0, 0, 0, 0.25)"
+    mb="10px"
   />
 );
 

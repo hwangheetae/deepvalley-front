@@ -7,6 +7,7 @@ import {
   useToast,
   SimpleGrid,
   Divider,
+  Icon,
 } from '@chakra-ui/react';
 import { useMe } from '../../stores/meStore';
 import Layout from '../../components/Common/Layout';
@@ -18,6 +19,7 @@ import ProfileImage from '../../components/Common/Image/ProfileImage';
 import TapBar from '../../components/Common/TapBar';
 import Header from '../../components/Common/Header';
 import 산잉 from '../../assets/images/산잉.png';
+import { MdLocationOn } from 'react-icons/md';
 
 const DEFAULT_IMAGE_URL =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvQNXE66kR9nlnWK3Lv_ZBsMYJYDpiqs7eyVw_tZFY2OZpaNU0vTSpLVhNfTGNdoOxOVk&usqp=CAU';
@@ -38,8 +40,8 @@ const MyPage: React.FC = () => {
     initialData: reviewsData,
   });
 
-  console.log('data:', data); // 데이터를 확인하기 위해 추가
-  console.log('error:', error); // 에러를 확인하기 위해 추가
+  console.log('data:', data);
+  console.log('error:', error);
 
   if (isLoading) {
     return <Box>Loading...</Box>;
@@ -68,10 +70,14 @@ const MyPage: React.FC = () => {
       />
       <Box p="4" pt="20" pb="20">
         <Flex alignItems="center" mb="4">
-          <Box mb={4} marginBottom={4}>
-            <ProfileImage src={profile_image_url || 산잉} />
+          <Box>
+            <ProfileImage
+              src={profile_image_url || 산잉}
+              width="80px"
+              height="80px"
+            />
           </Box>
-          <Box ml="4">
+          <Box mt={2}>
             <Text
               fontSize="24px"
               fontWeight="medium"
@@ -81,7 +87,9 @@ const MyPage: React.FC = () => {
               {nickname}님
             </Text>
             <Text
-              fontSize="16px"
+              mt={-2}
+              ml={0.5}
+              fontSize="15px"
               fontWeight="light"
               fontFamily="Gmarket Sans TTF"
               color="black"
@@ -90,17 +98,24 @@ const MyPage: React.FC = () => {
             </Text>
           </Box>
         </Flex>
-        <Divider borderColor="#EFEFEF" my="4" borderWidth="1px" />
+        <Divider
+          borderColor="#EFEFEF"
+          my="4"
+          borderWidth="1px"
+          width="107.5%"
+          ml={-4}
+        />
         <Text
-          fontSize="20px"
+          fontSize="15px"
           fontWeight="medium"
           fontFamily="Gmarket Sans TTF"
           color="black"
-          mb="4"
+          mb="2"
+          mt={5}
         >
           최근 리뷰들
         </Text>
-        <Box>
+        <Box width="108%" ml={-4}>
           <SimpleGrid columns={3} spacing={1}>
             {sortedReviews.map((review) => (
               <Link to={`/review/${review.review_id}`} key={review.review_id}>
@@ -109,7 +124,7 @@ const MyPage: React.FC = () => {
                     width="100%"
                     position="relative"
                     mb="4"
-                    boxShadow="inset 0px 0px 10px rgba(0, 0, 0, 0.25)"
+                    boxShadow="inset 0px 0px 50px rgba(0, 0, 0, 0.25)"
                   >
                     <InstaImage
                       src={
@@ -118,11 +133,18 @@ const MyPage: React.FC = () => {
                           : DEFAULT_IMAGE_URL
                       }
                     />
-                    <Box position="absolute" top="4px" left="4px" color="white">
+                    <Box
+                      position="absolute"
+                      top="5px"
+                      left="10px"
+                      right="10px"
+                      color="white"
+                    >
                       <Text
-                        fontSize="20px"
+                        fontSize="15px"
                         fontWeight="bold"
                         fontFamily="Gmarket Sans TTF"
+                        style={{ WebkitTextStroke: '0.5px black' }}
                       >
                         {review.title}
                       </Text>
@@ -130,14 +152,21 @@ const MyPage: React.FC = () => {
                     <Box
                       position="absolute"
                       bottom="4px"
-                      left="4px"
+                      left="5px"
                       color="white"
                     >
                       <Text
-                        fontSize="10px"
-                        fontWeight="light"
+                        fontSize="11px"
+                        fontWeight="bold"
                         fontFamily="Gmarket Sans TTF"
+                        style={{ WebkitTextStroke: '0.5px black' }}
                       >
+                        <Icon
+                          as={MdLocationOn}
+                          mb={0.5}
+                          mr={0.5}
+                          color={'black'}
+                        />
                         {review.valley_name}
                       </Text>
                     </Box>

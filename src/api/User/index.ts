@@ -21,3 +21,7 @@ export const membershipWithdrawal = async (body: {
 }) => {
   return basicClient.delete('/api/member', { data: body });
 };
+
+export const socalLoginWithdrawal = async () => {
+  return basicClient.delete('/api/oauth/kakao');
+};

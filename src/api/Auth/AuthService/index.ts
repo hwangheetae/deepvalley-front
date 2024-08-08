@@ -10,7 +10,7 @@ export const login = async (body: {}) => {
 };
 
 export const logout = () => {
-  localStorage.clear();
+  sessionStorage.clear();
 };
 
 export const register = async (body: {
@@ -29,4 +29,12 @@ export const kakaoLoginSendToken = async (code: string) => {
   return await basicClient.get('/api/oauth/kakao', {
     params: { code },
   });
+};
+
+export const findId = async (body: {}) => {
+  return basicClient.post('/api/member/find-id', body);
+};
+
+export const findPassword = async (body: {}) => {
+  return basicClient.post('/api/member/find-password', body);
 };

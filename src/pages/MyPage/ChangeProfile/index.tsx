@@ -1,9 +1,7 @@
 import { FC, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
-import { changeProfile } from '../../../api/User';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import { Header } from '../../../components/Common';
 import { useMe } from '../../../stores/meStore';
@@ -22,23 +20,20 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
-import { 잘못된요청, 에러404, 서버오류 } from '../../../constant/constant';
 import WithdrawalModal from '../WithdrawalModal';
-import useErrorToast from '../../../hooks/useErrorToast';
-import useSuccessToast from '../../../hooks/useSuccessToast';
+import useChangeProfileMutation from '../../../queries/useChangeProfileMutation';
+import SocialLoginWithdrawalModal from '../SocialLoginWithdrawalModal';
 
 const ChangeProfile: FC = () => {
-  const navigate = useNavigate();
-  const { me, updateMe } = useMe();
+  const { me } = useMe();
   const [imgFile, setImgFile] = useState<string>(me.profile_image_url);
   const upload = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const finalRef = useRef(null);
-  const { errorToast } = useErrorToast();
-  const { successToast } = useSuccessToast();
+  const mutation = useChangeProfileMutation();
+
   const imgUpload = () => {
     if (upload.current?.files) {
       const file = upload.current.files[0];
@@ -70,28 +65,7 @@ const ChangeProfile: FC = () => {
     if (file) {
       formData.append('profileImage', file);
     }
-
-    try {
-      const response = await changeProfile(formData);
-      if (response.status === 200) {
-        updateMe({
-          ...values,
-          profile_image_url: imgFile,
-        });
-        successToast('프로필 변경 성공!', `프로필을 변경하였습니다.`);
-        navigate('/');
-      }
-    } catch (err: any) {
-      if (err.response.status === 400) {
-        errorToast(잘못된요청);
-      }
-      if (err.response.status === 404) {
-        errorToast(에러404);
-      }
-      if (err.response.status === 500) {
-        errorToast(서버오류);
-      }
-    }
+    mutation.mutate(formData);
   };
 
   return (
@@ -219,12 +193,21 @@ const ChangeProfile: FC = () => {
         >
           회원탈퇴
         </Button>
-        <WithdrawalModal
-          isOpen={isOpen}
-          onClose={onClose}
-          initialRef={initialRef}
-          finalRef={finalRef}
-        />
+        {me.oauth === 'KAKAO' ? (
+          <SocialLoginWithdrawalModal
+            isOpen={isOpen}
+            onClose={onClose}
+            initialRef={initialRef}
+            finalRef={finalRef}
+          />
+        ) : (
+          <WithdrawalModal
+            isOpen={isOpen}
+            onClose={onClose}
+            initialRef={initialRef}
+            finalRef={finalRef}
+          />
+        )}
       </Flex>
     </Layout>
   );
