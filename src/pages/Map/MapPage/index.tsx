@@ -23,27 +23,6 @@ import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
 import 산잉 from '../../../assets/images/산잉.png';
 
-type CategoryCode =
-  | ''
-  | 'MT1'
-  | 'CS2'
-  | 'PS3'
-  | 'SC4'
-  | 'AC5'
-  | 'PK6'
-  | 'OL7'
-  | 'SW8'
-  | 'BK9'
-  | 'CT1'
-  | 'AG2'
-  | 'PO3'
-  | 'AT4'
-  | 'AD5'
-  | 'FD6'
-  | 'CE7'
-  | 'HP8'
-  | 'PM9';
-
 export const MapPage = () => {
   const location = Locations();
   const [positions, setPositions] = useState<ValleysType[]>([]);
@@ -56,9 +35,7 @@ export const MapPage = () => {
   const mapRef = useRef<any>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState('13%');
-  const [currentCategory, setCurrentCategory] = useState<CategoryCode | null>(
-    null,
-  );
+  const [currentCategory, setCurrentCategory] = useState<null>(null);
 
   const calculateRadius = (level: number) => {
     const baseRadius = 50; // 레벨 1일 때의 반경(m)
@@ -110,7 +87,7 @@ export const MapPage = () => {
     setCategoryMarkers([]);
   };
 
-  const handleCategorySearch = (category: CategoryCode, src: string) => {
+  const handleCategorySearch = (category: any, src: string) => {
     if (mapRef.current) {
       const map = mapRef.current;
       console.log(map.getBounds);
@@ -147,6 +124,18 @@ export const MapPage = () => {
         location: center,
         bounds: bounds,
       });
+    }
+  };
+
+  const handleMoveToCurrentLocation = () => {
+    if (mapRef.current && location) {
+      const map = mapRef.current;
+      const center = new kakao.maps.LatLng(
+        location.latitude,
+        location.longitude,
+      );
+      map.setCenter(center);
+      map.setLevel(5); // 레벨을 5로 설정
     }
   };
 
@@ -248,7 +237,7 @@ export const MapPage = () => {
           <IconButton
             aria-label="현재 위치로 이동"
             icon={<MyLocation />}
-            onClick={handleReFetch}
+            onClick={handleMoveToCurrentLocation}
             isRound={true}
             position="absolute"
             bottom="36"
