@@ -1,4 +1,8 @@
-import { MapMarker, MapMarkerProps } from 'react-kakao-maps-sdk';
+import {
+  MapMarker,
+  MapMarkerProps,
+  CustomOverlayMap,
+} from 'react-kakao-maps-sdk';
 import { useState, ReactNode } from 'react';
 
 const fixedMarkerSize = {
@@ -8,14 +12,14 @@ const fixedMarkerSize = {
 
 const fixedMarkerOptions = {
   offset: {
-    x: 25,
-    y: 15,
+    x: 90,
+    y: 40,
   },
 };
 
 interface CustomMapMarkerProps {
   position: { lat: number; lng: number };
-  label: string;
+  label?: string;
   icon?: ReactNode;
   src?: string;
   onClick?: () => void;
@@ -47,26 +51,32 @@ const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
   };
 
   return (
-    <MapMarker
-      position={position}
-      image={markerImage}
-      clickable={true}
-      onClick={handleClick}
-    >
+    <>
+      <MapMarker
+        position={position}
+        image={markerImage}
+        clickable={true}
+        onClick={handleClick}
+      />
       {isOpen && showLabel && (
-        <div
-          style={{
-            background: 'white',
-            padding: '5px',
-            borderRadius: '5px',
-            boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {label}
-        </div>
+        <CustomOverlayMap position={position} xAnchor={0.5} yAnchor={1.2}>
+          <div
+            onClick={handleClick}
+            style={{
+              background: 'white',
+              padding: '5px',
+              borderRadius: '5px',
+              boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
+              whiteSpace: 'nowrap',
+              transform: 'translate(-50%, -100%)',
+              cursor: 'pointer',
+            }}
+          >
+            {label}
+          </div>
+        </CustomOverlayMap>
       )}
-    </MapMarker>
+    </>
   );
 };
 

@@ -1,4 +1,9 @@
-import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
+import {
+  Map,
+  MarkerClusterer,
+  CustomOverlayMap,
+  MapMarker,
+} from 'react-kakao-maps-sdk';
 import { useState, useEffect, useRef } from 'react';
 import CustomMapMarker from '../CustomMapMarker';
 import Locations from '../Locations';
@@ -22,6 +27,7 @@ import ListComponent from '../ListComponent';
 import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
 import 산잉 from '../../../assets/images/산잉.png';
+import { Link } from 'react-router-dom';
 
 export const MapPage = () => {
   const location = Locations();
@@ -51,6 +57,7 @@ export const MapPage = () => {
     try {
       const data = await fetchValleys(lat, lng, radius);
       setPositions(data);
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -90,7 +97,6 @@ export const MapPage = () => {
   const handleCategorySearch = (category: any, src: string) => {
     if (mapRef.current) {
       const map = mapRef.current;
-      console.log(map.getBounds);
 
       if (currentCategory === category) {
         removeCategoryMarkers();
@@ -134,6 +140,7 @@ export const MapPage = () => {
         location.latitude,
         location.longitude,
       );
+
       map.setCenter(center);
       map.setLevel(5); // 레벨을 5로 설정
     }
@@ -175,7 +182,7 @@ export const MapPage = () => {
             zIndex="20"
             w="70%"
           >
-            <InputGroup>
+            <InputGroup as={Link} to="/search">
               <InputLeftElement
                 pointerEvents="none"
                 children={<SearchIcon color="black" />}
@@ -192,7 +199,7 @@ export const MapPage = () => {
               <Button
                 size="sm"
                 colorScheme="gray"
-                onClick={() => handleCategorySearch('PK6', 'parking.png')}
+                onClick={() => handleCategorySearch('PK6', 'parking2.png')}
               >
                 주차장
               </Button>

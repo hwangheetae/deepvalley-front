@@ -1,4 +1,4 @@
-import { useState, FC, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import {
   Box,
   Text,
@@ -52,7 +52,7 @@ const ListComponent: FC<ListComponentProps> = ({
   return (
     <Box
       position="absolute"
-      bottom="0"
+      bottom="3"
       left="0"
       width="100%"
       height={isOpen ? '80%' : '13%'}
@@ -60,20 +60,20 @@ const ListComponent: FC<ListComponentProps> = ({
       transition="height 0.3s ease-in-out"
       borderTopRadius="lg"
       boxShadow="0 -2px 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2)"
-      onClick={handleToggle}
       zIndex="20"
     >
       <Center>
         <Box
-          width="60px"
+          width="180px"
           height="10px"
           bg="gray.400"
           borderRadius="full"
           mt={2}
+          onClick={handleToggle}
         />
       </Center>
       {isOpen && (
-        <VStack p={4} spacing={2}>
+        <VStack p={4} spacing={2} overflowY="auto" maxHeight="calc(90% - 30px)">
           {sortedValleys.map((valley, index) => (
             <ChakraLink
               as={RouterLink}
