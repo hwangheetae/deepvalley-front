@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { changeProfile } from '../api/User';
 import { useNavigate } from 'react-router-dom';
 import useSuccessToast from '../hooks/useSuccessToast';

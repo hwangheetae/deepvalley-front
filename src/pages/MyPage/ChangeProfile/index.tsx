@@ -22,6 +22,7 @@ import {
 } from '@chakra-ui/react';
 import WithdrawalModal from '../WithdrawalModal';
 import useChangeProfileMutation from '../../../queries/useChangeProfileMutation';
+import SocialLoginWithdrawalModal from '../SocialLoginWithdrawalModal';
 
 const ChangeProfile: FC = () => {
   const { me } = useMe();
@@ -192,12 +193,21 @@ const ChangeProfile: FC = () => {
         >
           회원탈퇴
         </Button>
-        <WithdrawalModal
-          isOpen={isOpen}
-          onClose={onClose}
-          initialRef={initialRef}
-          finalRef={finalRef}
-        />
+        {me.oauth === 'KAKAO' ? (
+          <SocialLoginWithdrawalModal
+            isOpen={isOpen}
+            onClose={onClose}
+            initialRef={initialRef}
+            finalRef={finalRef}
+          />
+        ) : (
+          <WithdrawalModal
+            isOpen={isOpen}
+            onClose={onClose}
+            initialRef={initialRef}
+            finalRef={finalRef}
+          />
+        )}
       </Flex>
     </Layout>
   );
