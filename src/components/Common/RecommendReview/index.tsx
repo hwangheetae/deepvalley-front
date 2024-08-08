@@ -37,7 +37,7 @@ const RecommendReview: React.FC = () => {
   }
 
   return (
-    <VStack align="start" spacing={4} p={4} m={2}>
+    <VStack align="start" spacing={4} p={2} m={2}>
       <Text fontSize="xl" fontWeight="bold">
         오늘의 추천 계곡
       </Text>
@@ -78,7 +78,7 @@ const RecommendReview: React.FC = () => {
                 boxShadow=""
                 borderRadius="lg"
                 overflow="hidden"
-                height="34vh"
+                height="30vh"
                 backgroundColor={'white'}
                 p={2}
               >
@@ -103,7 +103,7 @@ const RecommendReview: React.FC = () => {
                   <Text fontSize="sm">{item.address}</Text>
                 </Box>
                 <Text p={3} fontSize="sm" color="teal.500">
-                  {item.tag_names.join(' ')}
+                  {item.tag_names.slice(0, 4).join(' #')}
                 </Text>
                 <Box p={4}></Box>
               </Box>
