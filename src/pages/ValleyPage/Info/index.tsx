@@ -12,10 +12,13 @@ import {
 } from '@chakra-ui/react';
 import { PhoneIcon } from '@chakra-ui/icons';
 import {
-  FaSwimmingPool,
+  FaSwimmer,
   FaTimesCircle,
   FaCheckCircle,
   FaParking,
+  FaCampground,
+  FaQuestionCircle,
+  FaCheck,
 } from 'react-icons/fa';
 import { ValleyDetailInfoType } from '../../../types';
 
@@ -122,48 +125,79 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
   const nextFiveDays = getNextFiveDays(groupedWeatherData);
 
   return (
-    <Box p={1}>
-      <Box border="2px" borderColor="green.500" borderRadius="md" p={3} mb={4}>
+    <Box p={3}>
+      <Box
+        border="2px"
+        borderColor="green.500"
+        borderRadius="lg"
+        p={4}
+        mb={4}
+        borderWidth="4px"
+      >
         <HStack spacing={5} justifyContent="space-around">
           <Flex direction="column" align="center">
             <Box position="relative">
-              <Icon as={FaSwimmingPool} boxSize={12} />
+              <Icon as={FaSwimmer} boxSize={12} />
               <Icon
-                as={FaTimesCircle}
+                as={
+                  valley.tag_names.includes('물놀이가능')
+                    ? FaCheckCircle
+                    : FaQuestionCircle
+                }
                 boxSize={6}
-                color="red.500"
+                color={
+                  valley.tag_names.includes('물놀이가능')
+                    ? 'green.500'
+                    : 'blue.500'
+                }
                 position="absolute"
                 bottom="0"
                 right="0"
               />
             </Box>
             <Text mt={2} fontSize="lg">
-              수영
+              물놀이
             </Text>
           </Flex>
           <Flex direction="column" align="center">
             <Box position="relative">
               <Icon
-                as={FaCheckCircle}
+                as={
+                  valley.tag_names.includes('야영가능')
+                    ? FaCheckCircle
+                    : FaQuestionCircle
+                }
                 boxSize={6}
-                color="green.500"
+                color={
+                  valley.tag_names.includes('야영가능')
+                    ? 'green.500'
+                    : 'blue.500'
+                }
                 position="absolute"
                 bottom="0"
                 right="0"
               />
-              <Icon as={FaCheckCircle} boxSize={12} />
+              <Icon as={FaCampground} boxSize={12} />
             </Box>
             <Text mt={2} fontSize="lg">
-              취사 가능
+              야영
             </Text>
           </Flex>
           <Flex direction="column" align="center">
             <Box position="relative">
               <Icon as={FaParking} boxSize={12} />
               <Icon
-                as={FaCheckCircle}
+                as={
+                  valley.tag_names.includes('주차가능')
+                    ? FaCheckCircle
+                    : FaQuestionCircle
+                }
                 boxSize={6}
-                color="green.500"
+                color={
+                  valley.tag_names.includes('주차가능')
+                    ? 'green.500'
+                    : 'blue.500'
+                }
                 position="absolute"
                 bottom="0"
                 right="0"
@@ -177,10 +211,10 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
       </Box>
       <VStack align="start" spacing={2}>
         <Text>주소: {valley.address}</Text>
-        <Text>영업시간: {valley.opened ? '지금 영업 중' : '영업 종료'}</Text>
+        <Text>영업시간: {valley.opening_hours}</Text>
         <HStack spacing={2}>
           <PhoneIcon />
-          <Text>전화번호: {valley.contact}</Text>
+          <Text>전화번호: {valley.tel}</Text>
         </HStack>
         <Text>
           수심: 평균 {valley.avg_depth}M / 깊은 곳 {valley.max_depth}M
