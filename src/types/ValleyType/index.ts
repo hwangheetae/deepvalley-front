@@ -17,6 +17,8 @@ export interface ValleysType {
 }
 
 export interface ValleyDetailInfoType {
+  extra_info: string[];
+  content: string;
   name: string;
   valley_id: string;
   thumbnail: string;

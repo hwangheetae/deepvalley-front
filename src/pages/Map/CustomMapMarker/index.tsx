@@ -1,30 +1,37 @@
-import { MapMarker, MapMarkerProps } from 'react-kakao-maps-sdk';
+import {
+  MapMarker,
+  MapMarkerProps,
+  CustomOverlayMap,
+} from 'react-kakao-maps-sdk';
 import { useState, ReactNode } from 'react';
 
 const fixedMarkerSize = {
-  width: 30,
-  height: 39,
+  width: 56,
+  height: 56,
 };
 
 const fixedMarkerOptions = {
   offset: {
-    x: 10,
-    y: 10,
+    x: 90,
+    y: 40,
   },
 };
 
 interface CustomMapMarkerProps {
   position: { lat: number; lng: number };
-  label: string;
+  label?: string;
   icon?: ReactNode;
   src?: string;
+  onClick?: () => void;
+  showLabel?: boolean;
 }
 
 const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
   position,
   label,
-  // icon,
   src,
+  onClick,
+  showLabel = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,27 +43,40 @@ const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
       }
     : undefined;
 
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+    if (onClick) {
+      onClick();
+    }
+  };
+
   return (
-    <MapMarker
-      position={position}
-      image={markerImage}
-      clickable={true}
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      {isOpen && (
-        <div className="relative min-w-[150px] bg-white p-2 rounded shadow-lg">
-          <img
-            alt="close"
-            width="14"
-            height="13"
-            src="https://t1.daumcdn.net/localimg/localimages/07/mapjsapi/2x/bt_close.gif"
-            className="absolute top-1 right-1 cursor-pointer"
-            onClick={() => setIsOpen(false)}
-          />
-          <div className="text-black">{label}</div>
-        </div>
+    <>
+      <MapMarker
+        position={position}
+        image={markerImage}
+        clickable={true}
+        onClick={handleClick}
+      />
+      {isOpen && showLabel && (
+        <CustomOverlayMap position={position} xAnchor={0.5} yAnchor={1.2}>
+          <div
+            onClick={handleClick}
+            style={{
+              background: 'white',
+              padding: '5px',
+              borderRadius: '5px',
+              boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
+              whiteSpace: 'nowrap',
+              transform: 'translate(-50%, -100%)',
+              cursor: 'pointer',
+            }}
+          >
+            {label}
+          </div>
+        </CustomOverlayMap>
       )}
-    </MapMarker>
+    </>
   );
 };
 

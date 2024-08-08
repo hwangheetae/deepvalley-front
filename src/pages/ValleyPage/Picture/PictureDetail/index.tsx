@@ -41,6 +41,7 @@ const PictureDetail: React.FC<PictureDetailProps> = ({
         transform="translateY(-50%)"
         onClick={onPrev}
         aria-label="Previous"
+        bg="transparent"
       />
       <Image
         src={src}
@@ -57,21 +58,23 @@ const PictureDetail: React.FC<PictureDetailProps> = ({
         transform="translateY(-50%)"
         onClick={onNext}
         aria-label="Next"
+        bg="transparent"
       />
       <VStack
-        mt={4}
+        mt={2}
         spacing={2}
         align="start"
         position="absolute"
         bottom="10px"
         right="10px"
+        left="10px"
         bg="rgba(0, 0, 0, 0.6)"
-        p={4}
+        p={5}
         borderRadius="md"
       >
         <HStack>
           <Avatar src={profileImage ?? ''} />
-          <Text color="white" fontWeight="bold">
+          <Text color="white" fontWeight="bold" align="start">
             {nickname}
           </Text>
         </HStack>

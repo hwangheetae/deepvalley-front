@@ -1,5 +1,5 @@
 import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CustomMapMarker from '../CustomMapMarker';
 import Locations from '../Locations';
 import {
@@ -17,145 +17,140 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTheme } from '@chakra-ui/react';
 import TapBar from '../../../components/Common/TapBar';
-import { WbSunny, MyLocation, LocationOn } from '@mui/icons-material';
+import { MyLocation, LocationOn } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
-import { ValleysType, FacilityType } from '../../../types';
-import { fetchValleys, fetchfacilities } from '../../../api/Valley';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import config from '../../../config';
-
-interface MapBounds {
-  swLat: number;
-  swLng: number;
-  neLat: number;
-  neLng: number;
-}
+import { ValleysType } from '../../../types';
+import { fetchValleys } from '../../../api/Valley';
+import 산잉 from '../../../assets/images/산잉.png';
+import { Link } from 'react-router-dom';
 
 export const MapPage = () => {
   const location = Locations();
-  const [key, setKey] = useState(0);
-  const theme = useTheme();
-  const [bounds, setBounds] = useState<MapBounds | null>(null);
-  const [visibleValleys, setVisibleValleys] = useState<ValleysType[]>([]);
   const [positions, setPositions] = useState<ValleysType[]>([]);
+  const [level, setLevel] = useState<number>(5); // 기본 레벨 값을 5로 설정
+  const [selectedValley, setSelectedValley] = useState<ValleysType | null>(
+    null,
+  );
+  const [categoryMarkers, setCategoryMarkers] = useState<any[]>([]);
+  const theme = useTheme();
+  const mapRef = useRef<any>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [height, setHeight] = useState('13%');
+  const [currentCategory, setCurrentCategory] = useState<null>(null);
 
-  const {
-    data: valleys = [],
-    isLoading: isLoadingValleys,
-    error: errorValleys,
-    refetch: refetchValleys,
-  } = useQuery<ValleysType[], Error>({
-    queryKey: ['valleys'],
-    queryFn: fetchValleys,
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-  });
+  const calculateRadius = (level: number) => {
+    const baseRadius = 50; // 레벨 1일 때의 반경(m)
+    const radius = baseRadius * Math.pow(2, level - 1);
+    return radius;
+  };
 
-  const {
-    data: facilities = [],
-    isLoading: isLoadingFacilities,
-    error: errorFacilities,
-    refetch: refetchFacilities,
-  } = useQuery<FacilityType[], Error>({
-    queryKey: ['facilities', location?.latitude, location?.longitude],
-    queryFn: () => fetchfacilities(location!.latitude, location!.longitude),
-    enabled: !!location,
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-  });
-
-  useEffect(() => {
-    if (bounds && valleys.length > 0) {
-      const visible = valleys.filter(
-        (valley) =>
-          valley.latitude >= bounds.swLat &&
-          valley.latitude <= bounds.neLat &&
-          valley.longitude >= bounds.swLng &&
-          valley.longitude <= bounds.neLng,
-      );
-      setVisibleValleys(visible);
+  const fetchAndSetValleys = async (
+    lat: number,
+    lng: number,
+    radius: number,
+  ) => {
+    try {
+      const data = await fetchValleys(lat, lng, radius);
+      setPositions(data);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
     }
-  }, [bounds, valleys]);
+  };
+
+  const handleBoundsChanged = () => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      const newLevel = map.getLevel();
+      if (newLevel !== level) {
+        setLevel(newLevel);
+      }
+    }
+  };
+
+  const handleReFetch = async () => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      const center = map.getCenter();
+      const level = map.getLevel();
+      const radius = calculateRadius(level);
+      await fetchAndSetValleys(center.getLat(), center.getLng(), radius);
+      await fetchAndSetValleys(center.getLat(), center.getLng(), radius);
+    }
+  };
+
+  const handleMarkerClick = (valley: ValleysType) => {
+    setSelectedValley(valley);
+    setIsOpen(true);
+    setHeight('80%');
+  };
+
+  const removeCategoryMarkers = () => {
+    setCategoryMarkers([]);
+  };
+
+  const handleCategorySearch = (category: any, src: string) => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+
+      if (currentCategory === category) {
+        removeCategoryMarkers();
+        setCurrentCategory(null);
+        return;
+      }
+
+      setCurrentCategory(category);
+
+      const places = new kakao.maps.services.Places();
+      const bounds = map.getBounds();
+      const center = map.getCenter();
+
+      const callback = (result: any[], status: any) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const markers = result.map((place) => (
+            <CustomMapMarker
+              key={place.id}
+              position={{ lat: place.y, lng: place.x }}
+              src={src}
+              label={place.place_name}
+              showLabel={true}
+            />
+          ));
+
+          setCategoryMarkers(markers);
+        }
+      };
+
+      places.categorySearch(category, callback, {
+        location: center,
+        bounds: bounds,
+      });
+    }
+  };
+
+  const handleMoveToCurrentLocation = () => {
+    if (mapRef.current && location) {
+      const map = mapRef.current;
+      const center = new kakao.maps.LatLng(
+        location.latitude,
+        location.longitude,
+      );
+
+      map.setCenter(center);
+      map.setLevel(5);
+    }
+  };
 
   useEffect(() => {
-    setPositions(valleys);
-  }, [valleys]);
+    if (location) {
+      const radius = calculateRadius(level);
+      fetchAndSetValleys(location.latitude, location.longitude, radius);
+    }
+  }, [location]);
 
-  const handleBoundsChanged = (map: any) => {
-    const bounds = map.getBounds();
-    const sw = bounds.getSouthWest();
-    const ne = bounds.getNorthEast();
-    setBounds({
-      swLat: sw.getLat(),
-      swLng: sw.getLng(),
-      neLat: ne.getLat(),
-      neLng: ne.getLng(),
-    });
-  };
-
-  const handleRefresh = () => {
-    setKey((prevKey) => prevKey + 1);
-    refetchValleys();
-    refetchFacilities();
-  };
-
-  if (!location || isLoadingValleys || isLoadingFacilities) {
+  if (!location) {
     return <Center h="100vh">Loading...</Center>;
   }
-
-  if (errorValleys || errorFacilities) {
-    return <Center h="100vh">Error loading data</Center>;
-  }
-
-  const textEncoder = new TextEncoder();
-  const bytes = textEncoder.encode('SK T타워');
-  console.log(bytes);
-  // const options = {
-  //   method: 'POST',
-  //   headers: {
-  //     accept: 'application/json',
-  //     'content-type': 'application/json',
-  //     appKey: 'cLIOg4SCAc5qylsGdDrvy99oksqozj5h3CkWhCrZ',
-  //   },
-  //   body: JSON.stringify({
-  //     routesInfo: {
-  //       departure: {
-  //         name: 'test1',
-  //         lon: '126.963936',
-  //         lat: '37.536025',
-  //         depSearchFlag: '05',
-  //       },
-  //       destination: {
-  //         name: 'test2',
-  //         lon: '129.222222',
-  //         lat: '35.111111',
-  //         poiId: '1000559885',
-  //         rpFlag: '16',
-  //         destSearchFlag: '03',
-  //       },
-  //       predictionType: 'departure',
-  //       predictionTime: '2013-05-19T18:31:22+0900',
-  //       wayPoints: {
-  //         wayPoint: [
-  //           { lon: '126.814383', lat: '35.157242', poiId: '1000559888' },
-  //           { lon: '128.565503', lat: '35.874493', poiId: '1000559886' },
-  //         ],
-  //       },
-  //       searchOption: '00',
-  //       tollgateCarType: 'car',
-  //       trafficInfo: 'N',
-  //     },
-  //   }),
-  // };
-
-  // fetch(
-  //   'https://apis.openapi.sk.com/tmap/routes/prediction?version=1&resCoordType=WGS84GEO&reqCoordType=WGS84GEO&sort=index&callback=function&totalValue=2',
-  //   options,
-  // )
-  //   .then((response) => response.json())
-  //   .then((response) => console.log(response))
-  //   .catch((err) => console.error(err));
 
   return (
     <Flex
@@ -167,11 +162,11 @@ export const MapPage = () => {
     >
       <Box flex="1" position="relative">
         <Map
-          key={key}
           center={{ lat: location.latitude, lng: location.longitude }}
           style={{ width: '100%', height: '100%' }}
           onBoundsChanged={handleBoundsChanged}
-          level={5}
+          level={level}
+          ref={mapRef}
         >
           <VStack
             spacing={4}
@@ -182,7 +177,7 @@ export const MapPage = () => {
             zIndex="20"
             w="70%"
           >
-            <InputGroup>
+            <InputGroup as={Link} to="/search">
               <InputLeftElement
                 pointerEvents="none"
                 children={<SearchIcon color="black" />}
@@ -194,28 +189,24 @@ export const MapPage = () => {
                 boxShadow="md"
                 bg="white"
               />
-              <IconButton
-                aria-label="날씨 확인"
-                icon={<WbSunny />}
-                isRound={true}
-                position="absolute"
-                right="-12"
-                bg="white"
-                border="2px"
-                borderColor="#306839"
-                shadow="inner"
-                zIndex="20"
-              />
             </InputGroup>
             <HStack spacing={2} justify="center" w="100%">
-              <Button size="sm" colorScheme="green">
-                계곡
+              <Button
+                size="sm"
+                colorScheme="gray"
+                onClick={() => handleCategorySearch('PK6', 'parking2.png')}
+              >
+                주차장
               </Button>
-              <Button size="sm" colorScheme="gray">
-                편의시설
+              <Button
+                size="sm"
+                colorScheme="teal"
+                onClick={() => handleCategorySearch('HP8', 'safety.png')}
+              >
+                병원
               </Button>
-              <Button size="sm" colorScheme="teal">
-                안전시설
+              <Button size="sm" colorScheme="blue" onClick={handleReFetch}>
+                위치 재검색
               </Button>
             </HStack>
           </VStack>
@@ -235,24 +226,20 @@ export const MapPage = () => {
             {positions.map((valley) => (
               <CustomMapMarker
                 key={valley.valley_id}
-                src={valley.thumbnail}
+                src={산잉}
                 position={{ lat: valley.latitude, lng: valley.longitude }}
                 label={valley.name}
+                onClick={() => handleMarkerClick(valley)}
+                showLabel={false} // 계곡 마커에는 라벨 표시하지 않음
               />
             ))}
           </MarkerClusterer>
-          {/* {facilities.map((facility) => (
-            <CustomMapMarker
-              key={facility.facility_id}
-              src={facility.thumbnail}
-              position={{ lat: facility.latitude, lng: facility.longitude }}
-              label={facility.name}
-            />
-          ))}시설들 데이터 아직 X */}
+          {categoryMarkers}
+
           <IconButton
             aria-label="현재 위치로 이동"
             icon={<MyLocation />}
-            onClick={handleRefresh}
+            onClick={handleMoveToCurrentLocation}
             isRound={true}
             position="absolute"
             bottom="36"
@@ -264,7 +251,13 @@ export const MapPage = () => {
             zIndex="20"
           />
         </Map>
-        <ListComponent visibleValleys={visibleValleys} />
+        <ListComponent
+          visibleValleys={positions}
+          selectedValley={selectedValley}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          setHeight={setHeight}
+        />{' '}
       </Box>
       <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
         <TapBar />

@@ -78,7 +78,7 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
                 </Text>
               </HStack>
 
-              <Flex mb={4}>
+              <Flex mb={4} overflowX="auto">
                 {review.image_urls.map((url, index) => (
                   <Image
                     key={index}
