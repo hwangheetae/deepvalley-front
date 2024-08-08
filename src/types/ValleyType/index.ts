@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface ValleysType {
   name: string;
   valley_id: string;
@@ -17,6 +19,7 @@ export interface ValleysType {
 }
 
 export interface ValleyDetailInfoType {
+  tel: string;
   extra_info: string[];
   content: string;
   name: string;
@@ -36,7 +39,9 @@ export interface ValleyDetailInfoType {
   opened: boolean;
   opening_time: string;
   closing_time: string;
+  opening_hours: ReactNode;
   avg_rating: string;
+  tell: string;
 }
 
 export interface ValleyDetailReviewType {

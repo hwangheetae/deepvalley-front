@@ -52,7 +52,6 @@ export const MapPage = () => {
     try {
       const data = await fetchValleys(lat, lng, radius);
       setPositions(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
