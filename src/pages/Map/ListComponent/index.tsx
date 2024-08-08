@@ -52,26 +52,28 @@ const ListComponent: FC<ListComponentProps> = ({
   return (
     <Box
       position="absolute"
-      bottom="3"
+      bottom="1"
       left="0"
       width="100%"
-      height={isOpen ? '80%' : '13%'}
+      height={isOpen ? '80%' : '12%'}
       bg="white"
       transition="height 0.3s ease-in-out"
       borderTopRadius="lg"
       boxShadow="0 -2px 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2)"
       zIndex="20"
     >
-      <Center>
-        <Box
-          width="180px"
-          height="10px"
-          bg="gray.400"
-          borderRadius="full"
-          mt={2}
-          onClick={handleToggle}
-        />
-      </Center>
+      <Box onClick={handleToggle} mt={2} alignContent="center">
+        <Center>
+          <Box
+            width="30%"
+            height="10px"
+            bg="gray.400"
+            borderRadius="full"
+            mt={2}
+            mb={4}
+          />
+        </Center>
+      </Box>
       {isOpen && (
         <VStack p={4} spacing={2} overflowY="auto" maxHeight="calc(90% - 30px)">
           {sortedValleys.map((valley, index) => (
