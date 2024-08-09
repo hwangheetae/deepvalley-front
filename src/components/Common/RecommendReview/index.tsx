@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchRecommendReview } from '../../../api/Review';
 import ErrorComponent from '../ErrorComponent';
 import LoadingComponent from '../LoadingComponent';
+import { Link } from 'react-router-dom';
 const noOfCards = 1;
 const chevronWidth = 40;
 
@@ -20,7 +21,6 @@ const RecommendReview: React.FC = () => {
   if (isError) {
     return <ErrorComponent />;
   }
-
   return (
     <VStack align="start" spacing={4} p={2} m={2}>
       <Text fontSize="xl" fontWeight="bold">
@@ -54,30 +54,32 @@ const RecommendReview: React.FC = () => {
                 backgroundColor={'white'}
                 p={2}
               >
-                <Image
-                  src={item.image_url}
-                  alt={item.valley_name}
-                  style={{ height: '90%', width: '100%', objectFit: 'cover' }}
-                />
-                <Box
-                  position="absolute"
-                  bottom="40px"
-                  width={'95%'}
-                  height={'20%'}
-                  bg="rgba(0, 0, 0, 0.6)"
-                  color="white"
-                  p={2}
-                  borderRadius="md"
-                >
-                  <Text fontSize="lg" fontWeight="bold">
-                    {item.valley_name}
+                <Link to={`/valley/${item.place_id}/detail`}>
+                  <Image
+                    src={item.image_url}
+                    alt={item.valley_name}
+                    style={{ height: '90%', width: '100%', objectFit: 'cover' }}
+                  />
+                  <Box
+                    position="absolute"
+                    bottom="40px"
+                    width={'95%'}
+                    height={'20%'}
+                    bg="rgba(0, 0, 0, 0.6)"
+                    color="white"
+                    p={2}
+                    borderRadius="md"
+                  >
+                    <Text fontSize="lg" fontWeight="bold">
+                      {item.valley_name}
+                    </Text>
+                    <Text fontSize="sm">{item.address}</Text>
+                  </Box>
+                  <Text p={3} fontSize="sm" color="teal.500">
+                    {item.tag_names.slice(0, 3).join(' #')}
                   </Text>
-                  <Text fontSize="sm">{item.address}</Text>
-                </Box>
-                <Text p={3} fontSize="sm" color="teal.500">
-                  {item.tag_names.slice(0, 4).join(' #')}
-                </Text>
-                <Box p={4}></Box>
+                  <Box p={4}></Box>
+                </Link>
               </Box>
             ))}
           </ItemsCarousel>
