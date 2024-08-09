@@ -13,12 +13,10 @@ import {
 import { PhoneIcon } from '@chakra-ui/icons';
 import {
   FaSwimmer,
-  FaTimesCircle,
   FaCheckCircle,
   FaParking,
   FaCampground,
   FaQuestionCircle,
-  FaCheck,
 } from 'react-icons/fa';
 import { ValleyDetailInfoType } from '../../../types';
 
@@ -219,7 +217,7 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
         <Text>
           수심: 평균 {valley.avg_depth}M / 깊은 곳 {valley.max_depth}M
         </Text>
-        <Text>{valley.extra_info}</Text>
+        {/* <Text>{valley.extra_info}</Text> */}
         <Text textAlign="left">
           {showFullContent
             ? valley.content
