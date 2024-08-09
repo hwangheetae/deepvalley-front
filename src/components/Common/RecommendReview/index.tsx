@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import ItemsCarousel from 'react-items-carousel';
-import { Flex, Box, Image, Text, VStack } from '@chakra-ui/react';
+import { Box, Image, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { Spinner } from '@chakra-ui/react';
 import { fetchRecommendReview } from '../../../api/Review';
-import 산잉_슬픈 from '../../../assets/images/산잉_슬픈.png';
+import ErrorComponent from '../ErrorComponent';
+import LoadingComponent from '../LoadingComponent';
 const noOfCards = 1;
 const chevronWidth = 40;
 
@@ -18,22 +18,7 @@ const RecommendReview: React.FC = () => {
   });
 
   if (isError) {
-    return (
-      <Flex
-        direction="column"
-        align="center"
-        justify="center"
-        height="40vh"
-        p={5}
-      >
-        <Image src={산잉_슬픈} alt="슬픈 이미지" boxSize="100px" />
-        <Box textAlign="center" py={6} px={2}>
-          <Text color={'gray.500'} mb={6}>
-            현재 컨텐츠를 이용할 수 없어요!
-          </Text>
-        </Box>
-      </Flex>
-    );
+    return <ErrorComponent />;
   }
 
   return (
@@ -42,20 +27,7 @@ const RecommendReview: React.FC = () => {
         오늘의 추천 계곡
       </Text>
       {isPending ? (
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          width="100%"
-          height="20vh"
-        >
-          <Spinner
-            thickness="4px"
-            speed="2s"
-            emptyColor="gray.200"
-            color="teal.500"
-            size="xl"
-          />
-        </Flex>
+        <LoadingComponent />
       ) : (
         <Box position="relative" width="100%">
           <ItemsCarousel

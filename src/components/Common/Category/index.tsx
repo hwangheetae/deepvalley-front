@@ -22,7 +22,6 @@ const Category: FC = () => {
       boxShadow="md"
     >
       <SimpleGrid columns={4} spacing={0}>
-        {' '}
         <CategoryButton
           iconSrc={tent}
           label="야영가능"
@@ -33,16 +32,19 @@ const Category: FC = () => {
           label="물놀이가능"
           alt={'Swimming icons created by Freepik - Flaticon'}
         ></CategoryButton>
+
         <CategoryButton
           iconSrc={parkinglot}
           label="주차가능"
           alt={'Park icons created by Freepik - Flaticon'}
         />
+
         <CategoryButton
           iconSrc={family}
           label="가족동반"
           alt={'Family icons created by Flat Icons - Flaticon'}
         />
+
         <CategoryButton
           iconSrc={mountain}
           label="등산로"
@@ -53,11 +55,13 @@ const Category: FC = () => {
           label="애견동반"
           alt={'Dog icons created by AomAm - Flaticon'}
         />
+
         <CategoryButton
           iconSrc={sea}
           label="바다"
           alt={'Sea icons created by Yobany_MTOM - Flaticon'}
         />
+
         <CategoryButton
           iconSrc={waterfall}
           label="폭포"

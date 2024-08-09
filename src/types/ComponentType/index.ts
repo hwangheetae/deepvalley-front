@@ -55,3 +55,8 @@ export interface ProfileImageProps {
 export interface ReviewImageProps {
   src: string;
 }
+
+export interface DrawerComponentProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
