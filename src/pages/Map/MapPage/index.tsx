@@ -113,6 +113,7 @@ export const MapPage = () => {
               src={src}
               label={place.place_name}
               showLabel={true}
+              place={place}
             />
           ));
 
