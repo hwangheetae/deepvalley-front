@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import CategoryButton from '../CategoryButton';
 import waterfall from '../../../assets/icons/Category/waterfall.png';
 import family from '../../../assets/icons/Category/family.png';
-import happy from '../../../assets/icons/Category/happy.png';
+import dog from '../../../assets/icons/Category/dog.png';
 import mountain from '../../../assets/icons/Category/mountain.png';
 import parkinglot from '../../../assets/icons/Category/parkinglot.png';
 import sea from '../../../assets/icons/Category/sea.png';
@@ -51,7 +51,7 @@ const Category: FC = () => {
           alt={'Mountain icons created by Freepik - Flaticon'}
         />
         <CategoryButton
-          iconSrc={happy}
+          iconSrc={dog}
           label="애견동반"
           alt={'Dog icons created by AomAm - Flaticon'}
         />

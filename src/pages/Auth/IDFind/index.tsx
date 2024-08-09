@@ -81,6 +81,7 @@ const IDFind = () => {
                     name="name"
                     variant="outline"
                     placeholder="닉네임"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error;

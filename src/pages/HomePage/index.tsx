@@ -52,7 +52,7 @@ const HomePage: FC = () => {
           placeholder="지역을 입력하세요"
           size="md"
           borderRadius="full"
-          boxShadow="md"
+          boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
           bg="white"
         />
       </InputGroup>

@@ -86,6 +86,7 @@ const PasswordFind = () => {
                     variant="outline"
                     placeholder="이메일"
                     borderRadius="full"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     validate={(value: string) => {
                       let error;
                       if (!value) {
