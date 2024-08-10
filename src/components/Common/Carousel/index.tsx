@@ -10,6 +10,7 @@ import LoadingComponent from '../LoadingComponent';
 const noOfItems = 5;
 const noOfCards = 1;
 const autoPlayDelay = 5000;
+const chevronWidth = 40;
 
 const CarouselComponent: React.FC = () => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
@@ -62,6 +63,9 @@ const CarouselComponent: React.FC = () => {
         outsideChevron={false}
         activeItemIndex={activeItemIndex}
         requestToChangeActive={onChange}
+        chevronWidth={chevronWidth}
+        rightChevron
+        leftChevron
       >
         {carouselItems}
       </ItemsCarousel>

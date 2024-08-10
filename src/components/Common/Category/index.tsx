@@ -15,7 +15,7 @@ const Category: FC = () => {
     <Box
       w="full"
       maxW="428px"
-      my={8}
+      my={4}
       p={4}
       bg="white"
       borderRadius="md"

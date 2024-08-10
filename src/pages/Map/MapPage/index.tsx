@@ -23,7 +23,7 @@ import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
 import 산잉 from '../../../assets/images/산잉.png';
 import { Link } from 'react-router-dom';
-
+import { Layout } from '../../../components/Common';
 export const MapPage = () => {
   const location = Locations();
   const [positions, setPositions] = useState<ValleysType[]>([]);
@@ -153,116 +153,118 @@ export const MapPage = () => {
   }
 
   return (
-    <Flex
-      direction="column"
-      h="100vh"
-      maxW="430px"
-      mx="auto"
-      position="relative"
-    >
-      <Box flex="1" position="relative">
-        <Map
-          center={{ lat: location.latitude, lng: location.longitude }}
-          style={{ width: '100%', height: '100%' }}
-          onBoundsChanged={handleBoundsChanged}
-          level={level}
-          ref={mapRef}
-        >
-          <VStack
-            spacing={4}
-            position="absolute"
-            top="4"
-            left="50%"
-            transform="translateX(-50%)"
-            zIndex="20"
-            w="70%"
+    <Layout hasTapBar={true}>
+      <Flex
+        direction="column"
+        h="100vh"
+        maxW="430px"
+        mx="auto"
+        position="relative"
+      >
+        <Box flex="1" position="relative">
+          <Map
+            center={{ lat: location.latitude, lng: location.longitude }}
+            style={{ width: '100%', height: '100%' }}
+            onBoundsChanged={handleBoundsChanged}
+            level={level}
+            ref={mapRef}
           >
-            <InputGroup as={Link} to="/search">
-              <InputLeftElement
-                pointerEvents="none"
-                children={<SearchIcon color="black" />}
-              />
-              <Input
-                placeholder="지역을 입력하세요"
-                size="md"
-                borderRadius="full"
-                boxShadow="md"
-                bg="white"
-              />
-            </InputGroup>
-            <HStack spacing={2} justify="center" w="100%">
-              <Button
-                size="sm"
-                colorScheme="gray"
-                onClick={() => handleCategorySearch('PK6', 'parking2.png')}
-              >
-                주차장
-              </Button>
-              <Button
-                size="sm"
-                colorScheme="teal"
-                onClick={() => handleCategorySearch('HP8', 'safety.png')}
-              >
-                병원
-              </Button>
-              <Button size="sm" colorScheme="blue" onClick={handleReFetch}>
-                위치 재검색
-              </Button>
-            </HStack>
-          </VStack>
-          <CustomMapMarker
-            icon={
-              <LocationOn
-                style={{
-                  color: theme.colors.secondary[500],
-                  fontSize: '34px',
-                }}
-              />
-            }
-            position={{ lat: location.latitude, lng: location.longitude }}
-            label="현재위치"
-          />
-          <MarkerClusterer averageCenter={true} minLevel={10}>
-            {positions.map((valley) => (
-              <CustomMapMarker
-                key={valley.valley_id}
-                src={산잉}
-                position={{ lat: valley.latitude, lng: valley.longitude }}
-                label={valley.name}
-                onClick={() => handleMarkerClick(valley)}
-                showLabel={false} // 계곡 마커에는 라벨 표시하지 않음
-              />
-            ))}
-          </MarkerClusterer>
-          {categoryMarkers}
+            <VStack
+              spacing={4}
+              position="absolute"
+              top="4"
+              left="50%"
+              transform="translateX(-50%)"
+              zIndex="20"
+              w="70%"
+            >
+              <InputGroup as={Link} to="/search">
+                <InputLeftElement
+                  pointerEvents="none"
+                  children={<SearchIcon color="black" />}
+                />
+                <Input
+                  placeholder="지역을 입력하세요"
+                  size="md"
+                  borderRadius="full"
+                  boxShadow="md"
+                  bg="white"
+                />
+              </InputGroup>
+              <HStack spacing={2} justify="center" w="100%">
+                <Button
+                  size="sm"
+                  colorScheme="gray"
+                  onClick={() => handleCategorySearch('PK6', 'parking2.png')}
+                >
+                  주차장
+                </Button>
+                <Button
+                  size="sm"
+                  colorScheme="teal"
+                  onClick={() => handleCategorySearch('HP8', 'safety.png')}
+                >
+                  병원
+                </Button>
+                <Button size="sm" colorScheme="blue" onClick={handleReFetch}>
+                  위치 재검색
+                </Button>
+              </HStack>
+            </VStack>
+            <CustomMapMarker
+              icon={
+                <LocationOn
+                  style={{
+                    color: theme.colors.secondary[500],
+                    fontSize: '34px',
+                  }}
+                />
+              }
+              position={{ lat: location.latitude, lng: location.longitude }}
+              label="현재위치"
+            />
+            <MarkerClusterer averageCenter={true} minLevel={10}>
+              {positions.map((valley) => (
+                <CustomMapMarker
+                  key={valley.valley_id}
+                  src={산잉}
+                  position={{ lat: valley.latitude, lng: valley.longitude }}
+                  label={valley.name}
+                  onClick={() => handleMarkerClick(valley)}
+                  showLabel={false} // 계곡 마커에는 라벨 표시하지 않음
+                />
+              ))}
+            </MarkerClusterer>
+            {categoryMarkers}
 
-          <IconButton
-            aria-label="현재 위치로 이동"
-            icon={<MyLocation />}
-            onClick={handleMoveToCurrentLocation}
-            isRound={true}
-            position="absolute"
-            bottom="36"
-            right="4"
-            bg="white"
-            border="2px"
-            borderColor="#306839"
-            shadow="inner"
-            zIndex="20"
-          />
-        </Map>
-        <ListComponent
-          visibleValleys={positions}
-          selectedValley={selectedValley}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          setHeight={setHeight}
-        />{' '}
-      </Box>
-      <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
-        <TapBar />
-      </Box>
-    </Flex>
+            <IconButton
+              aria-label="현재 위치로 이동"
+              icon={<MyLocation />}
+              onClick={handleMoveToCurrentLocation}
+              isRound={true}
+              position="absolute"
+              bottom="36"
+              right="4"
+              bg="white"
+              border="2px"
+              borderColor="#306839"
+              shadow="inner"
+              zIndex="20"
+            />
+          </Map>
+          <ListComponent
+            visibleValleys={positions}
+            selectedValley={selectedValley}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            setHeight={setHeight}
+          />{' '}
+        </Box>
+        <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
+          <TapBar />
+        </Box>
+      </Flex>
+    </Layout>
   );
 };
 

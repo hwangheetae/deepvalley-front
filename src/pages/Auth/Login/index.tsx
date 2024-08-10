@@ -25,7 +25,7 @@ const Login: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex
         direction="column"
         bg="white"

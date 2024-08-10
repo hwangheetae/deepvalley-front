@@ -38,7 +38,7 @@ const HomePage: FC = () => {
   }
 
   return (
-    <Layout hasHeader={true} hasTapBar={false} showMenuButton={true}>
+    <Layout hasHeader={true} showMenuButton={true}>
       <MainPageHeader
         title="깊은산 골짜기"
         fontFamily="Cafe24Ssurround"

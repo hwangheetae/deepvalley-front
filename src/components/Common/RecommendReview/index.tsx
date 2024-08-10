@@ -42,6 +42,8 @@ const RecommendReview: React.FC = () => {
             showSlither={true}
             requestToChangeActive={setActiveItemIndex}
             chevronWidth={chevronWidth}
+            rightChevron
+            leftChevron
           >
             {data.data.map((item: any, index: any) => (
               <Box
@@ -62,8 +64,8 @@ const RecommendReview: React.FC = () => {
                   />
                   <Box
                     position="absolute"
-                    bottom="40px"
-                    width={'95%'}
+                    bottom="35px"
+                    width={'96%'}
                     height={'20%'}
                     bg="rgba(0, 0, 0, 0.6)"
                     color="white"

@@ -39,7 +39,7 @@ const PasswordFind = () => {
   };
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex
         direction="column"
         bg="white"

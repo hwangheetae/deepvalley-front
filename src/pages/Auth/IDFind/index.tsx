@@ -38,7 +38,7 @@ const IDFind = () => {
   };
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex
         direction="column"
         bg="white"

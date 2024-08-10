@@ -12,7 +12,7 @@ const Layout: FC<LayoutProps> = ({
   return (
     <Box
       maxW="430px" // iPhone 14 Pro Max 기준 너비
-      h="100vh"
+      h="97vh"
       mx="auto"
       position="relative"
       overflow="hidden"
@@ -21,7 +21,7 @@ const Layout: FC<LayoutProps> = ({
         as="main"
         position="absolute"
         top={hasHeader ? `${headerHeight}px` : 0}
-        bottom={hasTapBar ? `${tapBarHeight}px` : 0}
+        bottom={hasTapBar ? undefined : 0}
         left={0}
         right={0}
         overflowY="auto"
