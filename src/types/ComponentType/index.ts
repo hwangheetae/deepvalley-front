@@ -26,6 +26,7 @@ export interface HeaderProps {
   bg?: string;
   MenuColor?: string;
   onMenuClick?: () => void;
+  isReview?: boolean;
 }
 export interface LayoutProps {
   children: ReactNode;

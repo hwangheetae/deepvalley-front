@@ -10,6 +10,8 @@ const Header: FC<HeaderProps> = ({
   showBorderBottom = false,
   bg = 'white',
   MenuColor = 'black',
+  onMenuClick,
+  isReview,
 }) => {
   const navigate = useNavigate();
   const handleBackClick = () => {
@@ -45,7 +47,7 @@ const Header: FC<HeaderProps> = ({
             aria-label="Open menu"
             icon={<HamburgerIcon />}
             variant="ghost"
-            onClick={onOpen}
+            onClick={isReview ? onMenuClick : onOpen}
           />
         ) : (
           <Box w="40px" />

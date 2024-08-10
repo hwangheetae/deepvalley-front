@@ -13,7 +13,7 @@ import { logout } from '../../api/Auth/AuthService';
 import { useNavigate } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import { AxiosError } from 'axios';
-
+import { MainPageHeader } from '../../components/Common';
 const HomePage: FC = () => {
   const { me, updateMe } = useMe();
   const navigate = useNavigate();
@@ -39,6 +39,11 @@ const HomePage: FC = () => {
 
   return (
     <Layout hasHeader={true} hasTapBar={false} showMenuButton={true}>
+      <MainPageHeader
+        title="깊은산 골짜기"
+        fontFamily="Cafe24Ssurround"
+        showMenuButton={true}
+      />
       <InputGroup
         onClick={() => {
           navigate('/search');
