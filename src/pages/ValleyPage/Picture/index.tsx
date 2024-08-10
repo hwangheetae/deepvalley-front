@@ -8,6 +8,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalCloseButton,
+  Link,
 } from '@chakra-ui/react';
 import PictureDetail from './PictureDetail';
 import { ValleyDetailImageType } from '../../../types';
@@ -60,45 +61,57 @@ const Picture: React.FC<PictureProps> = ({ images }) => {
           </Text>
         </Box>
       ) : (
-        <>
-          <SimpleGrid columns={[2, null, 3]} spacing={1}>
+        <Box width="100%" ml={-4}>
+          <SimpleGrid columns={3} spacing={1}>
             {allImages.map((imageData, index) => (
-              <Image
-                key={index}
-                src={imageData.src}
-                onClick={() => handleClick(index)}
-                cursor="pointer"
-                boxShadow="inset 0px 1px 3px rgba(0, 0, 0, 0.12), inset 0px -1px 3px rgba(0, 0, 0, 0.06)"
-                borderRadius="md"
-                overflow="hidden"
-              />
+              <Link key={index} onClick={() => handleClick(index)}>
+                <Box mb="0">
+                  <Box
+                    width="100%"
+                    paddingBottom="100%"
+                    position="relative"
+                    boxShadow="inset 0px 0px 50px rgba(0, 0, 0, 0.25)"
+                  >
+                    <Image
+                      src={imageData.src}
+                      alt={imageData.title}
+                      objectFit="cover"
+                      width="100%"
+                      height="100%"
+                      position="absolute"
+                      top="0"
+                      left="0"
+                    />
+                  </Box>
+                </Box>
+              </Link>
             ))}
           </SimpleGrid>
-
-          <Modal isOpen={selectedIndex !== null} onClose={handleClose}>
-            <ModalOverlay mx="auto" />
-            <ModalContent bg="transparent" mx="auto" my="auto">
-              <ModalCloseButton
-                zIndex={4}
-                bg="transparent"
-                _hover={{ bg: 'rgba(0, 0, 0, 0.1)' }}
-              />
-              {selectedIndex !== null && (
-                <PictureDetail
-                  src={allImages[selectedIndex].src}
-                  profileImage={allImages[selectedIndex].profileImage ?? ''}
-                  nickname={allImages[selectedIndex].nickname}
-                  title={allImages[selectedIndex].title}
-                  content={allImages[selectedIndex].content}
-                  onPrev={handlePrev}
-                  onNext={handleNext}
-                  onClose={handleClose}
-                />
-              )}
-            </ModalContent>
-          </Modal>
-        </>
+        </Box>
       )}
+
+      <Modal isOpen={selectedIndex !== null} onClose={handleClose}>
+        <ModalOverlay mx="auto" />
+        <ModalContent bg="transparent" mx="auto" my="auto">
+          <ModalCloseButton
+            zIndex={4}
+            bg="transparent"
+            _hover={{ bg: 'rgba(0, 0, 0, 0.1)' }}
+          />
+          {selectedIndex !== null && (
+            <PictureDetail
+              src={allImages[selectedIndex].src}
+              profileImage={allImages[selectedIndex].profileImage ?? ''}
+              nickname={allImages[selectedIndex].nickname}
+              title={allImages[selectedIndex].title}
+              content={allImages[selectedIndex].content}
+              onPrev={handlePrev}
+              onNext={handleNext}
+              onClose={handleClose}
+            />
+          )}
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

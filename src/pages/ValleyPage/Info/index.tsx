@@ -9,6 +9,7 @@ import {
   Image,
   SimpleGrid,
   Divider,
+  Button,
 } from '@chakra-ui/react';
 import { PhoneIcon } from '@chakra-ui/icons';
 import {
@@ -214,14 +215,35 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
         </HStack>
       </Box>
       <VStack align="start" spacing={2}>
-        <Text>주소: {valley.address}</Text>
-        <Text>영업시간: {valley.opening_hours}</Text>
+        <Text>
+          주소:{' '}
+          <Box as="span" color="green.500">
+            {valley.address}
+          </Box>
+        </Text>
+        <Text>
+          영업시간:{' '}
+          <Box as="span" color="green.500">
+            {valley.opening_hours}
+          </Box>
+        </Text>
         <HStack spacing={2}>
-          <PhoneIcon />
-          <Text>전화번호: {valley.tel}</Text>
+          <Text>
+            전화번호:{' '}
+            <Box as="span" color="green.500">
+              {valley.tel}
+            </Box>
+          </Text>
         </HStack>
         <Text>
-          수심: 평균 {valley.avg_depth}M / 깊은 곳 {valley.max_depth}M
+          수심: 평균{' '}
+          <Box as="span" color="green.500">
+            {valley.avg_depth}M
+          </Box>{' '}
+          / 깊은 곳{' '}
+          <Box as="span" color="green.500">
+            {valley.max_depth}M
+          </Box>
         </Text>
         <Text textAlign="left">
           {extraInfoArray.map((info, index) => (
@@ -244,6 +266,9 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
             </Text>
           )}
         </Text>
+        <Button colorScheme="green" width="45%">
+          정보변경 제안하기
+        </Button>
       </VStack>
       <Box mt={4}>
         <Box mt={4} p={4} bg="green.500" borderRadius="md" color="white">

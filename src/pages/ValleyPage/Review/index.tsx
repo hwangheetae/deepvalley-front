@@ -80,8 +80,8 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
                     cursor="pointer"
                     transition="border-color 0.3s ease, transform 0.3s ease"
                     _hover={{
-                      transform: 'scale(1.05)', // Hover 시 확대 애니메이션
-                      borderColor: 'green.500', // Hover 시 녹색 테두리
+                      transform: 'scale(1.05)',
+                      borderColor: 'green.500',
                     }}
                     boxShadow="inset 0 0 10px rgba(0, 0, 0, 0.2)"
                   />
@@ -89,6 +89,9 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               ))}
             </HStack>
           </Box>
+          <Button colorScheme="green" width="100%" onClick={handleWriteReview}>
+            리뷰작성하기
+          </Button>
 
           {reviews.map((review) => (
             <Box
@@ -113,7 +116,7 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
                 {review.image_urls.map((url, index) => (
                   <Image
                     key={index}
-                    boxSize="150px"
+                    boxSize="250px"
                     src={url}
                     alt={`image${index + 1}`}
                     borderRadius="md"
@@ -130,9 +133,6 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               </VStack>
             </Box>
           ))}
-          <Button colorScheme="green" width="100%" onClick={handleWriteReview}>
-            리뷰작성하기
-          </Button>
         </>
       )}
     </Box>

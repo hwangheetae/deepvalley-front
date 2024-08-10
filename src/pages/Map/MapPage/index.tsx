@@ -6,7 +6,6 @@ import {
   IconButton,
   Box,
   Flex,
-  Center,
   Input,
   VStack,
   InputGroup,
@@ -17,12 +16,13 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTheme } from '@chakra-ui/react';
 import TapBar from '../../../components/Common/TapBar';
-import { MyLocation, LocationOn } from '@mui/icons-material';
+import { MyLocation, LocationOn, Loop } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
 import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
 import 산잉 from '../../../assets/images/산잉.png';
 import { Link } from 'react-router-dom';
+import LoadingPage from '../../../components/Common/LoadingPage';
 
 export const MapPage = () => {
   const location = Locations();
@@ -37,6 +37,8 @@ export const MapPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState('13%');
   const [currentCategory, setCurrentCategory] = useState<null>(null);
+
+  height;
 
   const calculateRadius = (level: number) => {
     const baseRadius = 50; // 레벨 1일 때의 반경(m)
@@ -148,7 +150,7 @@ export const MapPage = () => {
   }, [location]);
 
   if (!location) {
-    return <Center h="100vh">Loading...</Center>;
+    return <LoadingPage />;
   }
 
   return (
@@ -190,6 +192,9 @@ export const MapPage = () => {
               />
             </InputGroup>
             <HStack spacing={2} justify="center" w="100%">
+              <Button size="sm" colorScheme="green">
+                계곡
+              </Button>
               <Button
                 size="sm"
                 colorScheme="gray"
@@ -203,9 +208,6 @@ export const MapPage = () => {
                 onClick={() => handleCategorySearch('HP8', 'safety.png')}
               >
                 병원
-              </Button>
-              <Button size="sm" colorScheme="blue" onClick={handleReFetch}>
-                위치 재검색
               </Button>
             </HStack>
           </VStack>
@@ -242,6 +244,20 @@ export const MapPage = () => {
             isRound={true}
             position="absolute"
             bottom="36"
+            right="4"
+            bg="white"
+            border="2px"
+            borderColor="#306839"
+            shadow="inner"
+            zIndex="20"
+          />
+          <IconButton
+            aria-label="현재 위치로 이동"
+            icon={<Loop />}
+            onClick={handleReFetch}
+            isRound={true}
+            position="absolute"
+            top="690"
             right="4"
             bg="white"
             border="2px"
