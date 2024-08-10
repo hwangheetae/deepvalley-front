@@ -21,6 +21,9 @@ import ListComponent from '../ListComponent';
 import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
 import 산잉 from '../../../assets/images/산잉.png';
+import parking2 from '../../../assets/images/parking2.png';
+import safety from '../../../assets/images/safety.png';
+
 import { Link } from 'react-router-dom';
 import LoadingPage from '../../../components/Common/LoadingPage';
 
@@ -198,14 +201,14 @@ export const MapPage = () => {
               <Button
                 size="sm"
                 colorScheme="gray"
-                onClick={() => handleCategorySearch('PK6', 'parking2.png')}
+                onClick={() => handleCategorySearch('PK6', parking2)}
               >
                 주차장
               </Button>
               <Button
                 size="sm"
                 colorScheme="teal"
-                onClick={() => handleCategorySearch('HP8', 'safety.png')}
+                onClick={() => handleCategorySearch('HP8', safety)}
               >
                 병원
               </Button>
@@ -252,7 +255,7 @@ export const MapPage = () => {
             zIndex="20"
           />
           <IconButton
-            aria-label="현재 위치로 이동"
+            aria-label="계곡 재검색"
             icon={<Loop />}
             onClick={handleReFetch}
             isRound={true}
