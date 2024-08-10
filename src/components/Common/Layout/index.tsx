@@ -1,4 +1,3 @@
-// Layout.tsx
 import React, { FC } from 'react';
 import { LayoutProps } from '../../../types/ComponentType';
 import { Box } from '@chakra-ui/react';
@@ -8,7 +7,6 @@ const Layout: FC<LayoutProps> = ({
   hasTapBar = false,
 }: LayoutProps) => {
   const headerHeight = 73; // 헤더의 높이
-  const tapBarHeight = 73; // TapBar의 높이
   return (
     <Box
       maxW="430px" // iPhone 14 Pro Max 기준 너비

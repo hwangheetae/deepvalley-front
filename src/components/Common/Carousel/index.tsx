@@ -6,6 +6,7 @@ import { fetchBannerImage } from '../../../api/Review';
 import { wrapperStyle, slideItemStyle } from '../../../styles/carouselStyle';
 import ErrorComponent from '../ErrorComponent';
 import LoadingComponent from '../LoadingComponent';
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 
 const noOfItems = 5;
 const noOfCards = 1;
@@ -64,8 +65,8 @@ const CarouselComponent: React.FC = () => {
         activeItemIndex={activeItemIndex}
         requestToChangeActive={onChange}
         chevronWidth={chevronWidth}
-        rightChevron
-        leftChevron
+        rightChevron={<ChevronRightIcon />}
+        leftChevron={<ChevronLeftIcon />}
       >
         {carouselItems}
       </ItemsCarousel>

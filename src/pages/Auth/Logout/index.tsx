@@ -3,13 +3,15 @@ import { useEffect } from 'react';
 import { logout } from '../../../api/Auth/AuthService';
 import { useAuthStore } from '../../../stores/authStore';
 import useSuccessToast from '../../../hooks/useSuccessToast';
-
+import { useMe } from '../../../stores/meStore';
 const Logout = () => {
   const navigate = useNavigate();
   const setIsLoggedOut = useAuthStore((state) => state.setIsLoggedOut);
   const { successToast } = useSuccessToast();
+  const { reset } = useMe.getState();
   useEffect(() => {
     logout();
+    reset();
     setIsLoggedOut(true);
     successToast({
       title: '로그아웃 성공!',

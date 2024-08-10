@@ -6,6 +6,8 @@ import { fetchRecommendReview } from '../../../api/Review';
 import ErrorComponent from '../ErrorComponent';
 import LoadingComponent from '../LoadingComponent';
 import { Link } from 'react-router-dom';
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+
 const noOfCards = 1;
 const chevronWidth = 40;
 
@@ -42,8 +44,8 @@ const RecommendReview: React.FC = () => {
             showSlither={true}
             requestToChangeActive={setActiveItemIndex}
             chevronWidth={chevronWidth}
-            rightChevron
-            leftChevron
+            rightChevron={<ChevronRightIcon />}
+            leftChevron={<ChevronLeftIcon />}
           >
             {data.data.map((item: any, index: any) => (
               <Box
