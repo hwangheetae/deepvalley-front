@@ -65,6 +65,12 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
     }
   };
 
+  const extraInfoObject = JSON.parse(valley.extra_info);
+  const extraInfoString: string = Object.entries(extraInfoObject)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(', ');
+  const extraInfoArray = extraInfoString.split(', ');
+
   useEffect(() => {
     getWeather(valley.latitude.toString(), valley.longitude.toString());
   }, [valley.latitude, valley.longitude]);
@@ -217,7 +223,12 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
         <Text>
           수심: 평균 {valley.avg_depth}M / 깊은 곳 {valley.max_depth}M
         </Text>
-        {/* <Text>{valley.extra_info}</Text> */}
+        <Text textAlign="left">
+          {extraInfoArray.map((info, index) => (
+            <Text key={index}>{info}</Text>
+          ))}
+        </Text>
+        ;
         <Text textAlign="left">
           {showFullContent
             ? valley.content

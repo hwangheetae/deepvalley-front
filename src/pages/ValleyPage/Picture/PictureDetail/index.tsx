@@ -32,43 +32,41 @@ const PictureDetail: React.FC<PictureDetailProps> = ({
   onClose,
 }) => {
   return (
-    <Box position="relative" p={4} textAlign="center">
+    <Box position="relative" p={10} textAlign="center">
       <IconButton
         icon={<ArrowLeftIcon />}
         position="absolute"
-        left="10px"
+        left="1px"
         top="50%"
         transform="translateY(-50%)"
         onClick={onPrev}
         aria-label="Previous"
         bg="transparent"
+        _hover={{ bg: 'rgba(0, 0, 0, 0.1)' }}
       />
       <Image
         src={src}
         mx="auto"
-        maxH="80vh"
+        maxH="50vh"
         onClick={onClose}
         cursor="pointer"
       />
       <IconButton
         icon={<ArrowRightIcon />}
         position="absolute"
-        right="10px"
+        right="1px"
         top="50%"
         transform="translateY(-50%)"
         onClick={onNext}
         aria-label="Next"
         bg="transparent"
+        _hover={{ bg: 'rgba(0, 0, 0, 0.1)' }}
       />
       <VStack
-        mt={2}
-        spacing={2}
+        mt={3}
+        spacing={0}
         align="start"
-        position="absolute"
-        bottom="10px"
-        right="10px"
-        left="10px"
-        bg="rgba(0, 0, 0, 0.6)"
+        bg="rgba(0, 0, 0, 0.5)"
         p={5}
         borderRadius="md"
       >

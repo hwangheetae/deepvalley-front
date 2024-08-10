@@ -17,45 +17,43 @@ interface PictureProps {
 }
 
 const Picture: React.FC<PictureProps> = ({ images }) => {
-  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
-    null,
-  );
-  const [selectedReviewIndex, setSelectedReviewIndex] = useState<number | null>(
-    null,
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const allImages = images.flatMap((imageData) =>
+    imageData.image_urls.map((src) => ({
+      src,
+      profileImage: imageData.profile_image_url,
+      nickname: imageData.review_id,
+      title: imageData.title,
+      content: imageData.content,
+    })),
   );
 
-  const handleClick = (reviewIndex: number, imageIndex: number) => {
-    setSelectedReviewIndex(reviewIndex);
-    setSelectedImageIndex(imageIndex);
+  const handleClick = (index: number) => {
+    setSelectedIndex(index);
   };
 
   const handleClose = () => {
-    setSelectedReviewIndex(null);
-    setSelectedImageIndex(null);
+    setSelectedIndex(null);
   };
 
   const handlePrev = () => {
-    if (selectedImageIndex !== null && selectedReviewIndex !== null) {
-      const currentReview = images[selectedReviewIndex];
-      setSelectedImageIndex(
-        (selectedImageIndex - 1 + currentReview.image_urls.length) %
-          currentReview.image_urls.length,
+    if (selectedIndex !== null) {
+      setSelectedIndex(
+        (selectedIndex - 1 + allImages.length) % allImages.length,
       );
     }
   };
 
   const handleNext = () => {
-    if (selectedImageIndex !== null && selectedReviewIndex !== null) {
-      const currentReview = images[selectedReviewIndex];
-      setSelectedImageIndex(
-        (selectedImageIndex + 1) % currentReview.image_urls.length,
-      );
+    if (selectedIndex !== null) {
+      setSelectedIndex((selectedIndex + 1) % allImages.length);
     }
   };
 
   return (
     <Box p={4}>
-      {images.length === 0 ? (
+      {allImages.length === 0 ? (
         <Box textAlign="center" mt="20%">
           <Text fontSize="lg" fontWeight="bold">
             사진이 없습니다.
@@ -64,36 +62,34 @@ const Picture: React.FC<PictureProps> = ({ images }) => {
       ) : (
         <>
           <SimpleGrid columns={[2, null, 3]} spacing={1}>
-            {images.flatMap((imageData, reviewIndex) =>
-              imageData.image_urls.map((src, imageIndex) => (
-                <Image
-                  key={`${reviewIndex}-${imageIndex}`}
-                  src={src}
-                  onClick={() => handleClick(reviewIndex, imageIndex)}
-                  cursor="pointer"
-                />
-              )),
-            )}
+            {allImages.map((imageData, index) => (
+              <Image
+                key={index}
+                src={imageData.src}
+                onClick={() => handleClick(index)}
+                cursor="pointer"
+                boxShadow="inset 0px 1px 3px rgba(0, 0, 0, 0.12), inset 0px -1px 3px rgba(0, 0, 0, 0.06)"
+                borderRadius="md"
+                overflow="hidden"
+              />
+            ))}
           </SimpleGrid>
 
-          <Modal
-            isOpen={selectedImageIndex !== null && selectedReviewIndex !== null}
-            onClose={handleClose}
-          >
+          <Modal isOpen={selectedIndex !== null} onClose={handleClose}>
             <ModalOverlay mx="auto" />
-            <ModalContent>
-              <ModalCloseButton />
-              {selectedImageIndex !== null && selectedReviewIndex !== null && (
+            <ModalContent bg="transparent" mx="auto" my="auto">
+              <ModalCloseButton
+                zIndex={4}
+                bg="transparent"
+                _hover={{ bg: 'rgba(0, 0, 0, 0.1)' }}
+              />
+              {selectedIndex !== null && (
                 <PictureDetail
-                  src={
-                    images[selectedReviewIndex].image_urls[selectedImageIndex]
-                  }
-                  profileImage={
-                    images[selectedReviewIndex].profile_image_url ?? ''
-                  }
-                  nickname={images[selectedReviewIndex].review_id}
-                  title={images[selectedReviewIndex].title}
-                  content={images[selectedReviewIndex].content}
+                  src={allImages[selectedIndex].src}
+                  profileImage={allImages[selectedIndex].profileImage ?? ''}
+                  nickname={allImages[selectedIndex].nickname}
+                  title={allImages[selectedIndex].title}
+                  content={allImages[selectedIndex].content}
                   onPrev={handlePrev}
                   onNext={handleNext}
                   onClose={handleClose}
