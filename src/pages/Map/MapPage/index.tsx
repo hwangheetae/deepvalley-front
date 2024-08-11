@@ -42,6 +42,8 @@ export const MapPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState('13%');
   const [currentCategory, setCurrentCategory] = useState<null>(null);
+  const [clickedParking, setClickedParking] = useState(false);
+  const [clickedHospital, setClickedHospital] = useState(false);
   const navigate = useNavigate();
 
   height;
@@ -199,7 +201,7 @@ export const MapPage = () => {
                 placeholder="지역을 입력하세요"
                 size="md"
                 borderRadius="full"
-                boxShadow="md"
+                boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                 bg="white"
               />
             </InputGroup>
@@ -208,11 +210,22 @@ export const MapPage = () => {
                 size="sm"
                 variant="outline"
                 borderRadius="full"
-                bg="white"
-                onClick={() => handleCategorySearch('PK6', parking2)}
+                onClick={() => {
+                  handleCategorySearch('PK6', parking2);
+                  if (clickedHospital) {
+                    setClickedParking(!clickedParking);
+                    setClickedHospital(!clickedHospital);
+                  } else {
+                    setClickedParking(!clickedParking);
+                  }
+                }}
+                boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
+                backgroundColor={
+                  clickedParking ? 'rgba(0, 69, 11, 0.81)' : 'white'
+                }
+                color={clickedParking ? 'white' : 'black'}
                 leftIcon={<Icon as={FaParking} />}
                 borderColor="green.500"
-                color="black"
               >
                 주차장
               </Button>
@@ -220,11 +233,22 @@ export const MapPage = () => {
                 size="sm"
                 variant="outline"
                 borderRadius="full"
-                bg="white"
-                onClick={() => handleCategorySearch('HP8', aid)}
+                backgroundColor={
+                  clickedHospital ? 'rgba(0, 69, 11, 0.81)' : 'white'
+                }
+                color={clickedHospital ? 'white' : 'black'}
+                onClick={() => {
+                  handleCategorySearch('HP8', aid);
+                  if (clickedParking) {
+                    setClickedParking(!clickedParking);
+                    setClickedHospital(!clickedHospital);
+                  } else {
+                    setClickedHospital(!clickedHospital);
+                  }
+                }}
                 leftIcon={<Icon as={MdLocalHospital} />}
                 borderColor="green.500"
-                color="black"
+                boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
               >
                 병원
               </Button>
@@ -267,8 +291,8 @@ export const MapPage = () => {
             bg="white"
             border="2px"
             borderColor="#306839"
-            shadow="inner"
             zIndex="20"
+            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
           />
           <IconButton
             aria-label="계곡 재검색"
@@ -281,8 +305,8 @@ export const MapPage = () => {
             bg="white"
             border="2px"
             borderColor="#306839"
-            shadow="inner"
             zIndex="20"
+            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
           />
         </Map>
         <ListComponent
