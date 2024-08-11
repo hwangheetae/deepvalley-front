@@ -20,7 +20,7 @@ export interface ValleysType {
 
 export interface ValleyDetailInfoType {
   tel: string;
-  extra_info: string[];
+  extra_info: string;
   content: string;
   name: string;
   valley_id: string;

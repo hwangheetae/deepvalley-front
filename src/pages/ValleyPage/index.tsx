@@ -20,6 +20,8 @@ import Info from './Info';
 import Review from './Review';
 import Picture from './Picture';
 import { useLoaderData } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import {
   ValleyDetailInfoType,
   ValleyDetailReviewType,
@@ -38,6 +40,12 @@ const ValleyPage: React.FC = () => {
       `https://map.kakao.com/link/to/${valley.name},${valley.latitude},${valley.longitude}`,
     );
 
+  const navigate = useNavigate();
+
+  const handleMapView = () => {
+    navigate('/mappage');
+  };
+
   return (
     <Layout>
       <Header
@@ -47,11 +55,18 @@ const ValleyPage: React.FC = () => {
       />
       <Box mt="78px" w="full">
         <VStack spacing={4} align="flex-start" mb={4} px={4}>
-          <HStack>
-            <Text fontSize="2xl" fontWeight="bold">
+          <HStack w="100%">
+            <Text
+              fontSize="2xl"
+              fontWeight="bold"
+              maxW="70%"
+              whiteSpace="normal"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
               {valley.name}
             </Text>
-            <HStack spacing={1} align="center">
+            <HStack spacing={1} align="center" flexShrink={0}>
               <StarIcon color="yellow.400" />
               <Text fontSize="lg" fontWeight="bold">
                 {valley.avg_rating}
@@ -74,6 +89,7 @@ const ValleyPage: React.FC = () => {
               borderRadius="full"
               flex="1"
               maxW="200px"
+              onClick={handleMapView}
             >
               지도 보기
             </Button>
