@@ -119,13 +119,8 @@ const MyPage: React.FC = () => {
           <SimpleGrid columns={3} spacing={1}>
             {sortedReviews.map((review) => (
               <Link to={`/review/${review.review_id}`} key={review.review_id}>
-                <Box mb="4">
-                  <Box
-                    width="100%"
-                    position="relative"
-                    mb="4"
-                    boxShadow="inset 0px 0px 50px rgba(0, 0, 0, 0.25)"
-                  >
+                <Box mb="0.2">
+                  <Box width="100%" position="relative">
                     <InstaImage
                       src={
                         review.image_urls.length > 0
@@ -133,6 +128,35 @@ const MyPage: React.FC = () => {
                           : DEFAULT_IMAGE_URL
                       }
                     />
+                    <Box
+                      position="absolute"
+                      top="0"
+                      left="0"
+                      width="100%"
+                      height="100%"
+                      boxShadow="inset 0px 0px 10px 5px rgba(0, 0, 0, 0.25)"
+                    />
+
+                    {/* <Box
+                    width="140.61px"
+                    height="140.61px"
+                    position="relative"
+                    boxShadow="inset 0px 0px 50px rgba(0, 0, 0, 0.25)"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    overflow="hidden"
+                  >
+                    <Image
+                      src={
+                        review.image_urls.length > 0
+                          ? review.image_urls[0]
+                          : DEFAULT_IMAGE_URL
+                      }
+                      objectFit="contain"
+                      width="100%"
+                      height="100%"
+                    /> */}
                     <Box
                       position="absolute"
                       top="5px"
