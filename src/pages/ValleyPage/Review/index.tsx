@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Flex,
@@ -21,6 +21,7 @@ interface ReviewProps {
 
 const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
   const navigate = useNavigate();
+  const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
 
   const handleWriteReview = () => {
     navigate('/reviewWriting', { state: { valley_id, thumbnail } });
@@ -51,16 +52,51 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               '&::-webkit-scrollbar': {
                 display: 'none',
               },
+              position: 'sticky',
+              top: 0,
+              backgroundColor: 'white',
+              zIndex: 10,
             }}
           >
-            <HStack spacing={6} display="inline-flex" justifyContent="center">
+            <HStack spacing={6} justifyContent="center">
               {reviews.map((review) => (
-                <Link key={review.review_id} href={`#${review.review_id}`}>
-                  <Avatar size="md" src={review.profile_image_url ?? ''} />
+                <Link
+                  key={review.review_id}
+                  href={`#${review.review_id}`}
+                  onClick={() => setSelectedReviewId(review.review_id)}
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <Avatar
+                    size="md"
+                    src={review.profile_image_url ?? ''}
+                    borderWidth={
+                      selectedReviewId === review.review_id ? '4px' : '0'
+                    }
+                    borderColor={
+                      selectedReviewId === review.review_id
+                        ? 'green.500'
+                        : 'transparent'
+                    }
+                    cursor="pointer"
+                    transition="border-color 0.3s ease, transform 0.3s ease"
+                    _hover={{
+                      transform: 'scale(1.05)',
+                      borderColor: 'green.500',
+                    }}
+                    boxShadow="inset 0 0 10px rgba(0, 0, 0, 0.2)"
+                  />
                 </Link>
               ))}
             </HStack>
           </Box>
+          <Button
+            colorScheme="green"
+            width="100%"
+            onClick={handleWriteReview}
+            mb={4}
+          >
+            리뷰작성하기
+          </Button>
 
           {reviews.map((review) => (
             <Box
@@ -70,6 +106,9 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               borderRadius="lg"
               mb={4}
               id={review.review_id}
+              css={{
+                scrollMarginTop: '140px',
+              }}
             >
               <HStack spacing={4} mb={4}>
                 <Avatar size="md" src={review.profile_image_url ?? ''} />
@@ -82,10 +121,10 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
                 {review.image_urls.map((url, index) => (
                   <Image
                     key={index}
-                    boxSize="150px"
+                    boxSize="250px"
+                    height="280px"
                     src={url}
                     alt={`image${index + 1}`}
-                    borderRadius="md"
                     mr={2}
                   />
                 ))}
@@ -99,9 +138,6 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               </VStack>
             </Box>
           ))}
-          <Button colorScheme="green" width="100%" onClick={handleWriteReview}>
-            리뷰작성하기
-          </Button>
         </>
       )}
     </Box>
