@@ -13,7 +13,7 @@ import { logout } from '../../api/Auth/AuthService';
 import { useNavigate } from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
 import { AxiosError } from 'axios';
-
+import { MainPageHeader } from '../../components/Common';
 const HomePage: FC = () => {
   const { me, updateMe } = useMe();
   const navigate = useNavigate();
@@ -38,7 +38,12 @@ const HomePage: FC = () => {
   }
 
   return (
-    <Layout hasHeader={true} hasTapBar={false} showMenuButton={true}>
+    <Layout hasHeader={true} showMenuButton={true}>
+      <MainPageHeader
+        title="깊은산 골짜기"
+        fontFamily="Cafe24Ssurround"
+        showMenuButton={true}
+      />
       <InputGroup
         onClick={() => {
           navigate('/search');
@@ -52,7 +57,7 @@ const HomePage: FC = () => {
           placeholder="지역을 입력하세요"
           size="md"
           borderRadius="full"
-          boxShadow="md"
+          boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
           bg="white"
         />
       </InputGroup>
