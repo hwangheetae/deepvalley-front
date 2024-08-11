@@ -12,6 +12,7 @@ import {
   InputLeftElement,
   HStack,
   Button,
+  Icon,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTheme } from '@chakra-ui/react';
@@ -22,12 +23,12 @@ import { ValleysType } from '../../../types';
 import { fetchValleys } from '../../../api/Valley';
 import 산잉 from '../../../assets/images/산잉.png';
 import parking2 from '../../../assets/images/parking2.png';
-import safety from '../../../assets/images/safety.png';
-
+import aid from '../../../assets/images/aid.png';
 import { Link } from 'react-router-dom';
 import LoadingPage from '../../../components/Common/LoadingPage';
+import { MdLocalHospital } from 'react-icons/md';
+import { FaParking } from 'react-icons/fa';
 
-import { Layout } from '../../../components/Common';
 export const MapPage = () => {
   const location = Locations();
   const [positions, setPositions] = useState<ValleysType[]>([]);
@@ -197,20 +198,27 @@ export const MapPage = () => {
               />
             </InputGroup>
             <HStack spacing={2} justify="center" w="100%">
-              <Button size="sm" colorScheme="green">
-                계곡
-              </Button>
               <Button
                 size="sm"
-                colorScheme="gray"
+                variant="outline"
+                borderRadius="full"
+                bg="white"
                 onClick={() => handleCategorySearch('PK6', parking2)}
+                leftIcon={<Icon as={FaParking} />}
+                borderColor="green.500"
+                color="black"
               >
                 주차장
               </Button>
               <Button
                 size="sm"
-                colorScheme="teal"
-                onClick={() => handleCategorySearch('HP8', safety)}
+                variant="outline"
+                borderRadius="full"
+                bg="white"
+                onClick={() => handleCategorySearch('HP8', aid)}
+                leftIcon={<Icon as={MdLocalHospital} />}
+                borderColor="green.500"
+                color="black"
               >
                 병원
               </Button>

@@ -11,7 +11,7 @@ import {
   Divider,
   Button,
 } from '@chakra-ui/react';
-import { PhoneIcon } from '@chakra-ui/icons';
+// import { PhoneIcon } from '@chakra-ui/icons';
 import {
   FaSwimmer,
   FaCheckCircle,
@@ -20,6 +20,7 @@ import {
   FaQuestionCircle,
 } from 'react-icons/fa';
 import { ValleyDetailInfoType } from '../../../types';
+import { useNavigate } from 'react-router-dom';
 
 interface InfoProps {
   valley: ValleyDetailInfoType;
@@ -49,9 +50,19 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
   const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
   const [weatherData, setWeatherData] = useState<WeatherData[]>([]);
   const [showFullContent, setShowFullContent] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
 
   const toggleFullContent = () => {
     setShowFullContent(!showFullContent);
+  };
+
+  const toggleInfo = () => {
+    setShowInfo(!showInfo);
+  };
+
+  const navigate = useNavigate();
+  const handleChangeInfo = () => {
+    navigate(`/suggest/${valley.valley_id}/${valley.name}`);
   };
 
   const getWeather = async (lat: string, lon: string) => {
@@ -66,11 +77,17 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
     }
   };
 
-  const extraInfoObject = JSON.parse(valley.extra_info);
+  const sanitizedExtraInfo = valley.extra_info.replace(/\n/g, '\\n');
+  const extraInfoObject = JSON.parse(sanitizedExtraInfo);
   const extraInfoString: string = Object.entries(extraInfoObject)
-    .map(([key, value]) => `${key}: ${value}`)
-    .join(', ');
-  const extraInfoArray = extraInfoString.split(', ');
+    .map(([key, value]) => {
+      const sanitizedValue = (value as string)
+        .replace(/<br\s*\/?>/gi, '')
+        .replace(/\\n/g, '\n')
+        .trim();
+      return `${key}: ${sanitizedValue}`;
+    })
+    .join('\n\n');
 
   useEffect(() => {
     getWeather(valley.latitude.toString(), valley.longitude.toString());
@@ -228,10 +245,10 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
           </Box>
         </Text>
         <HStack spacing={2}>
-          <Text>
+          <Text whiteSpace="pre-wrap" align="start">
             전화번호:{' '}
             <Box as="span" color="green.500">
-              {valley.tel}
+              {valley.tel.replace(/<br\s*\/?>/gi, '')}
             </Box>
           </Text>
         </HStack>
@@ -245,12 +262,7 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
             {valley.max_depth}M
           </Box>
         </Text>
-        <Text textAlign="left">
-          {extraInfoArray.map((info, index) => (
-            <Text key={index}>{info}</Text>
-          ))}
-        </Text>
-        ;
+
         <Text textAlign="left">
           {showFullContent
             ? valley.content
@@ -266,9 +278,18 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
             </Text>
           )}
         </Text>
-        <Button colorScheme="green" width="45%">
-          정보변경 제안하기
+
+        <Text color="blue.500" onClick={handleChangeInfo}>
+          정보변경 제안
+        </Text>
+        <Button onClick={toggleInfo} mb={2}>
+          추가정보
         </Button>
+        {showInfo && (
+          <Text textAlign="left" whiteSpace="pre-wrap">
+            {extraInfoString}
+          </Text>
+        )}
       </VStack>
       <Box mt={4}>
         <Box mt={4} p={4} bg="green.500" borderRadius="md" color="white">

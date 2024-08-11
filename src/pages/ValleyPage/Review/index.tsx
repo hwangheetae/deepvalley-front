@@ -89,7 +89,12 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               ))}
             </HStack>
           </Box>
-          <Button colorScheme="green" width="100%" onClick={handleWriteReview}>
+          <Button
+            colorScheme="green"
+            width="100%"
+            onClick={handleWriteReview}
+            mb={4}
+          >
             리뷰작성하기
           </Button>
 
@@ -117,9 +122,9 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
                   <Image
                     key={index}
                     boxSize="250px"
+                    height="280px"
                     src={url}
                     alt={`image${index + 1}`}
-                    borderRadius="md"
                     mr={2}
                   />
                 ))}
