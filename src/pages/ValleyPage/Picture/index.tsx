@@ -66,12 +66,7 @@ const Picture: React.FC<PictureProps> = ({ images }) => {
             {allImages.map((imageData, index) => (
               <Link key={index} onClick={() => handleClick(index)}>
                 <Box mb="0">
-                  <Box
-                    width="100%"
-                    paddingBottom="100%"
-                    position="relative"
-                    boxShadow="inset 0px 0px 50px rgba(0, 0, 0, 0.25)"
-                  >
+                  <Box width="100%" paddingBottom="100%" position="relative">
                     <Image
                       src={imageData.src}
                       alt={imageData.title}
@@ -82,6 +77,21 @@ const Picture: React.FC<PictureProps> = ({ images }) => {
                       top="0"
                       left="0"
                     />
+                    <Box
+                      position="absolute"
+                      top="0"
+                      left="0"
+                      width="100%"
+                      height="100%"
+                      boxShadow="inset 0px 0px 10px 5px rgba(0, 0, 0, 0.1)"
+                    />
+                    <Box
+                      position="absolute"
+                      top="5px"
+                      left="10px"
+                      right="10px"
+                      color="white"
+                    ></Box>
                   </Box>
                 </Box>
               </Link>
