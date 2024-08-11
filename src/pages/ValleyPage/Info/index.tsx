@@ -101,7 +101,6 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
       });
       const time = new Date(item.dt * 1000).getHours();
       const period = time < 12 ? '오전' : '오후';
-
       if (!acc[date]) {
         acc[date] = { 오전: [], 오후: [] };
       }
@@ -140,12 +139,12 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
     });
     const days = Object.keys(data);
     const startIndex = days.indexOf(today);
-    const endIndex = startIndex + 5;
-    return days.slice(startIndex, endIndex);
+    const validStartIndex = startIndex >= 0 ? startIndex : 0;
+    const endIndex = validStartIndex + 5;
+    return days.slice(validStartIndex, endIndex);
   };
 
   const nextFiveDays = getNextFiveDays(groupedWeatherData);
-
   return (
     <Box p={3}>
       <Box
