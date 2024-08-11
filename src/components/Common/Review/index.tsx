@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Flex, Text, useToast, Button, Icon } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Text,
+  useToast,
+  Button,
+  Icon,
+  Image,
+} from '@chakra-ui/react';
+import { useNavigate, Link } from 'react-router-dom';
 import ProfileImage from '../Image/ProfileImage';
-import ReviewImage from '../Image/ReviewImage';
 import { ReviewType } from '../../../types/ReviewType';
 import { fetchReview } from '../../../api/Review/index';
 import { useMe } from '../../../stores/meStore';
 import 산잉 from '../../../assets/images/산잉.png';
-import { Link } from 'react-router-dom';
 import { MdLocationOn } from 'react-icons/md';
+import useErrorToast from '../../../hooks/useErrorToast';
+import axios from 'axios';
+import { 잘못된요청, 에러404, 서버오류 } from '../../../constant/constant';
+import { logout } from '../../../api/Auth/AuthService';
 
 import 'tailwindcss/tailwind.css';
 
@@ -20,6 +31,8 @@ interface ReviewProps {
 const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
   const toast = useToast();
   const { me } = useMe();
+  const navigate = useNavigate();
+  const { errorToast } = useErrorToast();
 
   const { data, error, isLoading } = useQuery<ReviewType>({
     queryKey: ['reviewDetail', reviewId],
@@ -27,21 +40,47 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
     initialData,
   });
 
-  console.log('Data:', data);
-  console.log('Error', error);
+  useEffect(() => {
+    if (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const statusCode = error.response.status;
+
+        switch (statusCode) {
+          case 400:
+            errorToast(잘못된요청);
+            break;
+          case 403:
+            logout();
+            navigate('/errorpage');
+            break;
+          case 404:
+            errorToast(에러404);
+            break;
+          case 500:
+            errorToast(서버오류);
+            break;
+          default:
+            toast({
+              title: '리뷰를 불러오는 중 오류가 발생했습니다.',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            });
+            break;
+        }
+      } else {
+        toast({
+          title: '알 수 없는 오류가 발생했습니다.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }
+  }, [error, toast, errorToast, navigate]);
 
   if (isLoading) {
     return <Box>Loading...</Box>;
-  }
-
-  if (error) {
-    toast({
-      title: 'Error fetching review details',
-      status: 'error',
-      duration: 3000,
-      isClosable: true,
-    });
-    return <Box>Error loading data...</Box>;
   }
 
   if (!data) {
@@ -105,10 +144,27 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
 
       <Box mt={4} ml={-4}>
         {data.image_urls && data.image_urls.length > 0 && (
-          <Flex overflowX="scroll" gap="4">
+          <Flex overflowX="scroll" gap="2">
             {data.image_urls.map((url: string, index: number) => (
               <Box key={index} minW="300px">
-                <ReviewImage src={url} />
+                <Box
+                  width="100%"
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  backgroundRepeat="no-repeat"
+                  height="350"
+                  mb="10px"
+                  boxShadow="2px 2px 4px rgba(0, 0, 0, 0.25)"
+                >
+                  <Image
+                    src={url}
+                    objectFit="contain"
+                    width="100%"
+                    height="100%"
+                    maxWidth="300px"
+                    maxHeight="300px"
+                  />
+                </Box>
               </Box>
             ))}
           </Flex>

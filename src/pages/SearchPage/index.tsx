@@ -26,16 +26,19 @@ import {
   Center,
   List,
   ListItem,
+  Radio,
+  Divider,
+  useToast,
 } from '@chakra-ui/react';
 import { SearchIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import Layout from '../../components/Common/Layout';
 import Header from '../../components/Common/Header';
-import { useLoaderData, Link } from 'react-router-dom';
+import { useLoaderData, Link, useNavigate } from 'react-router-dom';
 import { Star, Water } from '@mui/icons-material';
 import TapBar from '../../components/Common/TapBar';
-
 import { fetchValleysByFilter, fetchRegions } from '../../api/ValleyApi';
 import { ValleysType } from '../../types';
+import axios from 'axios';
 
 const predefinedTags = [
   '야영가능',
@@ -61,10 +64,13 @@ const SearchPage: React.FC = () => {
   const [offset, setOffset] = useState<number>(0);
   const [regionOpen, setRegionOpen] = useState<boolean>(false);
   const observer = useRef<IntersectionObserver | null>(null);
-
+  const [sortType, setSortType] = useState<string>('');
   const [tempRegion, setTempRegion] = useState<string>('');
   const [tempTags, setTempTags] = useState<string[]>([]);
+  const [tempSortType, setTempSortType] = useState<string>('');
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRegionData = async () => {
@@ -73,6 +79,12 @@ const SearchPage: React.FC = () => {
         setRegions(regions);
       } catch (error) {
         console.error('Failed to fetch regions', error);
+        toast({
+          title: '지역 정보를 불러오는 데 실패했습니다.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
       }
     };
 
@@ -82,29 +94,80 @@ const SearchPage: React.FC = () => {
   const handleSearch = async (keyword: string) => {
     setOffset(0);
     setHasMore(true);
-    const newFilters = { ...filters, region, keyword };
+    const newFilters = { ...filters, region, keyword, sort_type: sortType };
     try {
       const response = await fetchValleysByFilter(newFilters);
       setValleys(response);
     } catch (error) {
       console.error('Failed to fetch valleys', error);
+      toast({
+        title: '계곡 정보를 불러오는 데 실패했습니다.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
   const applyFilters = async () => {
     setOffset(0);
     setHasMore(true);
-    const newFilters = { region: tempRegion, tag_names: tempTags, keyword };
+    const newFilters = {
+      region: tempRegion,
+      tag_names: tempTags,
+      keyword,
+      sort_type: tempSortType,
+    };
     try {
       const response = await fetchValleysByFilter(newFilters);
       setValleys(response);
     } catch (error) {
-      console.error('Failed to fetch valleys', error);
+      if (axios.isAxiosError(error) && error.response) {
+        const statusCode = error.response.status;
+        switch (statusCode) {
+          case 400:
+            toast({
+              title: '잘못된 요청입니다.',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            });
+            break;
+          case 403:
+            toast({
+              title: '권한이 없습니다.',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            });
+            navigate('/errorpage');
+            break;
+          default:
+            toast({
+              title: '계곡 정보를 불러오는 데 실패했습니다.',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            });
+        }
+      } else {
+        toast({
+          title: '계곡 정보를 불러오는 데 실패했습니다.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     }
     setFilters(newFilters);
     setRegion(tempRegion);
     setTags(tempTags);
+    setSortType(tempSortType);
     onClose();
+  };
+
+  const handleSortChange = (value: string) => {
+    setTempSortType(value);
   };
 
   const handleRegionClick = (region: string) => {
@@ -125,7 +188,12 @@ const SearchPage: React.FC = () => {
       ? tags.filter((t) => t !== tag)
       : [...tags, tag];
     setTags(updatedTags);
-    const newFilters = { region, tag_names: updatedTags, keyword };
+    const newFilters = {
+      region,
+      tag_names: updatedTags,
+      keyword,
+      sort_type: sortType,
+    };
     setOffset(0);
     setHasMore(true);
     try {
@@ -133,6 +201,12 @@ const SearchPage: React.FC = () => {
       setValleys(response);
     } catch (error) {
       console.error('Failed to fetch valleys', error);
+      toast({
+        title: '계곡 정보를 불러오는 데 실패했습니다.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
     setFilters(newFilters);
   };
@@ -141,6 +215,7 @@ const SearchPage: React.FC = () => {
     setRegion('');
     setTags([]);
     setKeyword('');
+    setSortType('');
     setFilters({});
     setValleys(initialValleys);
     setOffset(0);
@@ -174,6 +249,7 @@ const SearchPage: React.FC = () => {
         region,
         keyword,
         offset,
+        sort_type: sortType,
       });
       if (response.length === 0) {
         setHasMore(false);
@@ -182,12 +258,19 @@ const SearchPage: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to fetch more valleys', error);
+      toast({
+        title: '추가 계곡 정보를 불러오는 데 실패했습니다.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
   const handleOpenModal = () => {
     setTempRegion(region);
     setTempTags(tags);
+    setTempSortType(sortType);
     onOpen();
   };
 
@@ -223,6 +306,7 @@ const SearchPage: React.FC = () => {
             bg="white"
           />
         </InputGroup>
+
         <Flex mt={4} overflowX="auto" whiteSpace="nowrap" alignItems="center">
           <Tag
             size="lg"
@@ -431,6 +515,88 @@ const SearchPage: React.FC = () => {
                   </SimpleGrid>
                 </Box>
               </Collapse>
+
+              <Divider width="350px" height="1px" background="#EFEFEF" />
+
+              <Box width="100%">
+                <Text
+                  color="#000"
+                  fontFamily="Gmarket Sans TTF"
+                  fontWeight="500"
+                  lineHeight="normal"
+                  mb="2"
+                >
+                  정렬
+                </Text>
+                <HStack spacing={4}>
+                  <Flex
+                    alignItems="center"
+                    onClick={() => handleSortChange('')}
+                    cursor="pointer"
+                  >
+                    <Radio
+                      value=""
+                      isChecked={tempSortType === ''}
+                      size="lg"
+                      colorScheme="green"
+                    />
+                    <Text
+                      color="#000"
+                      textAlign="center"
+                      fontFamily="Gmarket Sans TTF"
+                      fontWeight="500"
+                      ml="2"
+                    >
+                      기본순
+                    </Text>
+                  </Flex>
+                  <Flex
+                    alignItems="center"
+                    onClick={() => handleSortChange('post_count')}
+                    cursor="pointer"
+                  >
+                    <Radio
+                      value="post_count"
+                      isChecked={tempSortType === 'post_count'}
+                      size="lg"
+                      colorScheme="green"
+                    />
+                    <Text
+                      color="#000"
+                      textAlign="center"
+                      fontFamily="Gmarket Sans TTF"
+                      fontWeight="500"
+                      ml="2"
+                    >
+                      리뷰순
+                    </Text>
+                  </Flex>
+                  <Flex
+                    alignItems="center"
+                    onClick={() => handleSortChange('avg_rating')}
+                    cursor="pointer"
+                  >
+                    <Radio
+                      value="avg_rating"
+                      isChecked={tempSortType === 'avg_rating'}
+                      size="lg"
+                      colorScheme="green"
+                    />
+                    <Text
+                      color="#000"
+                      textAlign="center"
+                      fontFamily="Gmarket Sans TTF"
+                      fontWeight="500"
+                      ml="2"
+                    >
+                      평점순
+                    </Text>
+                  </Flex>
+                </HStack>
+              </Box>
+
+              <Divider width="350px" height="1px" background="#EFEFEF" />
+
               <Box>
                 <Text fontFamily="Gmarket Sans TTF" fontWeight="medium" mb={2}>
                   필터

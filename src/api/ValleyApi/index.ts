@@ -33,8 +33,16 @@ export const fetchValleys = async (): Promise<ValleysType[]> => {
 export const fetchValleysByFilter = async (
   filters: any = {},
 ): Promise<ValleysType[]> => {
-  const { position, radius, tag_names, rating, offset, region, keyword } =
-    filters;
+  const {
+    position,
+    radius,
+    tag_names,
+    rating,
+    offset,
+    region,
+    keyword,
+    sort_type,
+  } = filters;
 
   let queryParams = '';
   if (position) queryParams += `position=${position}&`;
@@ -44,6 +52,7 @@ export const fetchValleysByFilter = async (
   if (offset) queryParams += `offset=${offset}&`;
   if (region) queryParams += `region=${region}&`;
   if (keyword) queryParams += `keyword=${keyword}&`;
+  if (sort_type) queryParams += `sort_type=${sort_type}&`;
 
   try {
     const response = await basicClient.get(`/api/valley?${queryParams}`, {
