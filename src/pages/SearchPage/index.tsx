@@ -26,6 +26,9 @@ import {
   Center,
   List,
   ListItem,
+  RadioGroup,
+  Radio,
+  Divider,
 } from '@chakra-ui/react';
 import { SearchIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import Layout from '../../components/Common/Layout';
@@ -33,7 +36,6 @@ import Header from '../../components/Common/Header';
 import { useLoaderData, Link } from 'react-router-dom';
 import { Star, Water } from '@mui/icons-material';
 import TapBar from '../../components/Common/TapBar';
-
 import { fetchValleysByFilter, fetchRegions } from '../../api/ValleyApi';
 import { ValleysType } from '../../types';
 
@@ -61,9 +63,10 @@ const SearchPage: React.FC = () => {
   const [offset, setOffset] = useState<number>(0);
   const [regionOpen, setRegionOpen] = useState<boolean>(false);
   const observer = useRef<IntersectionObserver | null>(null);
-
+  const [sortType, setSortType] = useState<string>(''); // 추가된 부분
   const [tempRegion, setTempRegion] = useState<string>('');
   const [tempTags, setTempTags] = useState<string[]>([]);
+  const [tempSortType, setTempSortType] = useState<string>(''); // 임시 정렬 타입
   const [hasMore, setHasMore] = useState<boolean>(true);
 
   useEffect(() => {
@@ -75,14 +78,13 @@ const SearchPage: React.FC = () => {
         console.error('Failed to fetch regions', error);
       }
     };
-
     fetchRegionData();
   }, []);
 
   const handleSearch = async (keyword: string) => {
     setOffset(0);
     setHasMore(true);
-    const newFilters = { ...filters, region, keyword };
+    const newFilters = { ...filters, region, keyword, sort_type: sortType };
     try {
       const response = await fetchValleysByFilter(newFilters);
       setValleys(response);
@@ -94,7 +96,12 @@ const SearchPage: React.FC = () => {
   const applyFilters = async () => {
     setOffset(0);
     setHasMore(true);
-    const newFilters = { region: tempRegion, tag_names: tempTags, keyword };
+    const newFilters = {
+      region: tempRegion,
+      tag_names: tempTags,
+      keyword,
+      sort_type: tempSortType, // 수정된 부분
+    };
     try {
       const response = await fetchValleysByFilter(newFilters);
       setValleys(response);
@@ -104,7 +111,12 @@ const SearchPage: React.FC = () => {
     setFilters(newFilters);
     setRegion(tempRegion);
     setTags(tempTags);
+    setSortType(tempSortType); // 정렬 타입 저장
     onClose();
+  };
+
+  const handleSortChange = (value: string) => {
+    setTempSortType(value);
   };
 
   const handleRegionClick = (region: string) => {
@@ -125,7 +137,12 @@ const SearchPage: React.FC = () => {
       ? tags.filter((t) => t !== tag)
       : [...tags, tag];
     setTags(updatedTags);
-    const newFilters = { region, tag_names: updatedTags, keyword };
+    const newFilters = {
+      region,
+      tag_names: updatedTags,
+      keyword,
+      sort_type: sortType,
+    };
     setOffset(0);
     setHasMore(true);
     try {
@@ -141,6 +158,7 @@ const SearchPage: React.FC = () => {
     setRegion('');
     setTags([]);
     setKeyword('');
+    setSortType(''); // 추가된 부분
     setFilters({});
     setValleys(initialValleys);
     setOffset(0);
@@ -174,6 +192,7 @@ const SearchPage: React.FC = () => {
         region,
         keyword,
         offset,
+        sort_type: sortType, // 수정된 부분
       });
       if (response.length === 0) {
         setHasMore(false);
@@ -188,6 +207,7 @@ const SearchPage: React.FC = () => {
   const handleOpenModal = () => {
     setTempRegion(region);
     setTempTags(tags);
+    setTempSortType(sortType); // 현재 정렬 상태를 모달 열 때 임시 상태로 설정
     onOpen();
   };
 
@@ -223,6 +243,7 @@ const SearchPage: React.FC = () => {
             bg="white"
           />
         </InputGroup>
+
         <Flex mt={4} overflowX="auto" whiteSpace="nowrap" alignItems="center">
           <Tag
             size="lg"
@@ -351,6 +372,7 @@ const SearchPage: React.FC = () => {
           >
             필터
           </ModalHeader>
+
           <ModalCloseButton />
           <ModalBody>
             <VStack spacing={4}>
@@ -377,60 +399,85 @@ const SearchPage: React.FC = () => {
                   transform="translateY(-50%)"
                 />
               </InputGroup>
-              {filteredRegions.length > 0 && (
-                <List
-                  spacing={2}
-                  mt={0}
-                  maxHeight="150px"
-                  overflowY="auto"
-                  width="100%"
-                  bg="white"
-                  boxShadow="md"
-                  borderRadius="md"
+
+              <Divider width="350px" height="1px" background="#EFEFEF" />
+              <Box width="100%">
+                <Text
+                  color="#000"
+                  fontFamily="Gmarket Sans TTF"
+                  fontWeight="500"
+                  lineHeight="normal"
+                  mb="2"
                 >
-                  {filteredRegions.map((region, index) => (
-                    <ListItem
-                      key={index}
-                      cursor="pointer"
-                      p={2}
-                      borderRadius="md"
-                      bg="gray.100"
-                      onClick={() => handleRegionClick(region)}
+                  정렬
+                </Text>
+                <HStack spacing={4}>
+                  <Flex
+                    alignItems="center"
+                    onClick={() => handleSortChange('')}
+                    cursor="pointer"
+                  >
+                    <Radio
+                      value=""
+                      isChecked={tempSortType === ''}
+                      size="lg"
+                      colorScheme="green"
+                    />
+                    <Text
+                      color="#000"
+                      textAlign="center"
+                      fontFamily="Gmarket Sans TTF"
+                      fontWeight="500"
+                      ml="2"
                     >
-                      {region}
-                    </ListItem>
-                  ))}
-                </List>
-              )}
-              <Collapse in={regionOpen}>
-                <Box maxH="200px" overflowY="auto" w="100%">
-                  <SimpleGrid columns={4} spacing={4}>
-                    {regions.map((region, index) => (
-                      <Tag
-                        key={index}
-                        size="lg"
-                        cursor="pointer"
-                        onClick={() => handleRegionClick(region)}
-                        borderRadius="full"
-                        fontFamily="Gmarket Sans TTF"
-                        fontWeight="medium"
-                        border="1px solid #306839"
-                        boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
-                        backgroundColor={
-                          tempRegion === region
-                            ? 'rgba(0, 69, 11, 0.81)'
-                            : 'transparent'
-                        }
-                        color={tempRegion === region ? 'white' : 'black'}
-                      >
-                        <Center w="100%" h="100%">
-                          <TagLabel>{region}</TagLabel>
-                        </Center>
-                      </Tag>
-                    ))}
-                  </SimpleGrid>
-                </Box>
-              </Collapse>
+                      기본순
+                    </Text>
+                  </Flex>
+                  <Flex
+                    alignItems="center"
+                    onClick={() => handleSortChange('post_count')}
+                    cursor="pointer"
+                  >
+                    <Radio
+                      value="post_count"
+                      isChecked={tempSortType === 'post_count'}
+                      size="lg"
+                      colorScheme="green"
+                    />
+                    <Text
+                      color="#000"
+                      textAlign="center"
+                      fontFamily="Gmarket Sans TTF"
+                      fontWeight="500"
+                      ml="2"
+                    >
+                      리뷰순
+                    </Text>
+                  </Flex>
+                  <Flex
+                    alignItems="center"
+                    onClick={() => handleSortChange('avg_rating')}
+                    cursor="pointer"
+                  >
+                    <Radio
+                      value="avg_rating"
+                      isChecked={tempSortType === 'avg_rating'}
+                      size="lg"
+                      colorScheme="green"
+                    />
+                    <Text
+                      color="#000"
+                      textAlign="center"
+                      fontFamily="Gmarket Sans TTF"
+                      fontWeight="500"
+                      ml="2"
+                    >
+                      평점순
+                    </Text>
+                  </Flex>
+                </HStack>
+              </Box>
+              <Divider width="350px" height="1px" background="#EFEFEF" />
               <Box>
                 <Text fontFamily="Gmarket Sans TTF" fontWeight="medium" mb={2}>
                   필터
