@@ -47,7 +47,6 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
             whiteSpace="nowrap"
             p={4}
             borderRadius="md"
-            boxShadow="md"
             css={{
               '&::-webkit-scrollbar': {
                 display: 'none',
@@ -58,7 +57,7 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               zIndex: 10,
             }}
           >
-            <HStack spacing={6} justifyContent="center">
+            <HStack spacing={6} justifyContent="center" ml="20">
               {reviews.map((review) => (
                 <Link
                   key={review.review_id}
@@ -70,12 +69,12 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
                     size="md"
                     src={review.profile_image_url ?? ''}
                     borderWidth={
-                      selectedReviewId === review.review_id ? '4px' : '0'
+                      selectedReviewId === review.review_id ? '4px' : '0.5px'
                     }
                     borderColor={
                       selectedReviewId === review.review_id
                         ? 'green.500'
-                        : 'transparent'
+                        : 'gray.300'
                     }
                     cursor="pointer"
                     transition="border-color 0.3s ease, transform 0.3s ease"
@@ -83,7 +82,6 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
                       transform: 'scale(1.05)',
                       borderColor: 'green.500',
                     }}
-                    boxShadow="inset 0 0 10px rgba(0, 0, 0, 0.2)"
                   />
                 </Link>
               ))}
@@ -102,8 +100,8 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
             <Box
               key={review.review_id}
               p={4}
-              // borderWidth="1px"
-              // borderRadius="lg"
+              borderWidth="1px"
+              borderRadius="lg"
               mb={4}
               id={review.review_id}
               css={{
