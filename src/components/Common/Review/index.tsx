@@ -1,8 +1,15 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Flex, Text, useToast, Button, Icon } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Text,
+  useToast,
+  Button,
+  Icon,
+  Image,
+} from '@chakra-ui/react';
 import ProfileImage from '../Image/ProfileImage';
-import ReviewImage from '../Image/ReviewImage';
 import { ReviewType } from '../../../types/ReviewType';
 import { fetchReview } from '../../../api/Review/index';
 import { useMe } from '../../../stores/meStore';
@@ -105,10 +112,27 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
 
       <Box mt={4} ml={-4}>
         {data.image_urls && data.image_urls.length > 0 && (
-          <Flex overflowX="scroll" gap="4">
+          <Flex overflowX="scroll" gap="2">
             {data.image_urls.map((url: string, index: number) => (
               <Box key={index} minW="300px">
-                <ReviewImage src={url} />
+                <Box
+                  width="100%"
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  backgroundRepeat="no-repeat"
+                  height="350"
+                  mb="10px"
+                  boxShadow="2px 2px 4px rgba(0, 0, 0, 0.25)"
+                >
+                  <Image
+                    src={url}
+                    objectFit="contain"
+                    width="100%"
+                    height="100%"
+                    maxWidth="300px"
+                    maxHeight="300px"
+                  />
+                </Box>
               </Box>
             ))}
           </Flex>

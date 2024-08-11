@@ -206,7 +206,6 @@ const ReviewFixPage: React.FC = () => {
             backgroundImage="url('https://cdn.pixabay.com/photo/2020/07/03/10/28/waterfall-5365926_1280.jpg')"
             backgroundSize="cover"
             backgroundPosition="center"
-            filter="brightness(50%)"
             height="250px"
             width="100%"
             position="absolute"
@@ -215,6 +214,16 @@ const ReviewFixPage: React.FC = () => {
             right="0"
             bottom="0"
             zIndex="-1"
+          />
+          <Box
+            backgroundColor="rgba(0, 0, 0, 0.5)"
+            height="250px"
+            width="100vw"
+            position="absolute"
+            top="-20"
+            left="50%"
+            transform="translateX(-50%)"
+            zIndex="-0.5"
           />
           <FormControl isInvalid={!!titleError}>
             <CustomInput

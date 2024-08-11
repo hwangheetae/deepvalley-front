@@ -206,7 +206,6 @@ const ReviewWritingPage: React.FC = () => {
             backgroundImage={`url(${thumbnail})`}
             backgroundSize="cover"
             backgroundPosition="center"
-            filter="brightness(50%)"
             height="250px"
             width="100vw"
             position="absolute"
@@ -215,6 +214,17 @@ const ReviewWritingPage: React.FC = () => {
             transform="translateX(-50%)"
             zIndex="-1"
           />
+          <Box
+            backgroundColor="rgba(0, 0, 0, 0.5)"
+            height="250px"
+            width="100vw"
+            position="absolute"
+            top="-20"
+            left="50%"
+            transform="translateX(-50%)"
+            zIndex="-0.5"
+          />
+
           <FormControl isInvalid={!!titleError}>
             <CustomInput
               placeholder="리뷰 제목을 입력해 주세요"
