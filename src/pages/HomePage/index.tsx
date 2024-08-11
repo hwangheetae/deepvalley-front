@@ -1,101 +1,71 @@
 import Layout from '../../components/Common/Layout';
-import MainPageHeader from '../../components/Common/MainPageHeader';
 import TapBar from '../../components/Common/TapBar';
 import Carousel from '../../components/Common/Carousel';
 import Category from '../../components/Common/Category';
-import {
-  InputGroup,
-  InputLeftElement,
-  Input,
-  useToast,
-} from '@chakra-ui/react';
+import { InputGroup, InputLeftElement, Input } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { getUser } from '../../api/User';
 import { useMe } from '../../stores/meStore';
-import {
-  INVALID_REUEST_BODY_MESSAGE,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-} from '../../constant/constant';
+import { RecommendReview } from '../../components/Common';
+import { useQuery } from '@tanstack/react-query';
+import { logout } from '../../api/Auth/AuthService';
+import { useNavigate } from 'react-router-dom';
+import isEqual from 'lodash/isEqual';
+import { AxiosError } from 'axios';
+import { MainPageHeader } from '../../components/Common';
 const HomePage: FC = () => {
-  const [error, setError] = useState('');
-  const toast = useToast();
-  const { updateMe } = useMe();
-
-  const userResponse = async () => {
-    try {
-      const response = await getUser();
-      if (response.status === 200) {
-        const fetchData = {
-          created_date: response.data.created_date,
-          description: response.data.description,
-          login_email: response.data.login_email,
-          name: response.data.name,
-          profile_image_url: response.data.profile_image_url,
-        };
-        updateMe(fetchData);
-      }
-    } catch (err: any) {
-      if (err.response.status === 400) {
-        setError(INVALID_REUEST_BODY_MESSAGE);
-      }
-      if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
-      }
-      if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
-      }
-    }
-  };
+  const { me, updateMe } = useMe();
+  const navigate = useNavigate();
+  const { isError, data, error } = useQuery({
+    queryKey: ['RememberMe'],
+    queryFn: getUser,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
   useEffect(() => {
-    const rememberMe = localStorage.getItem('RememberMe');
-    if (rememberMe === null) {
-      userResponse();
+    if (data?.data && !isEqual(data.data, me)) {
+      updateMe(data?.data);
     }
-  }, []);
+  }, [data?.data, me, updateMe]);
 
-  useEffect(() => {
-    if (error) {
-      toast({
-        title: '에러!',
-        description: error,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
+  if (isError) {
+    const axiosError = error as AxiosError;
+    if (axiosError.response?.status === 403) {
+      logout();
+      navigate('/errorPage');
     }
-  }, [error, toast]);
+  }
 
   return (
-    <div>
-      <Layout hasHeader={true} hasTapBar={true}>
-        <MainPageHeader
-          title="깊은산 골짜기"
-          fontFamily="Cafe24Ssurround"
-          showMenuButton={true}
+    <Layout hasHeader={true} showMenuButton={true}>
+      <MainPageHeader
+        title="깊은산 골짜기"
+        fontFamily="Cafe24Ssurround"
+        showMenuButton={true}
+      />
+      <InputGroup
+        onClick={() => {
+          navigate('/search');
+        }}
+      >
+        <InputLeftElement
+          pointerEvents="none"
+          children={<SearchIcon color="black" />}
         />
-
-        <InputGroup>
-          <InputLeftElement
-            pointerEvents="none"
-            children={<SearchIcon color="black" />}
-          />
-          <Input
-            placeholder="지역을 입력하세요"
-            size="md"
-            borderRadius="full"
-            boxShadow="md"
-            bg="white"
-          />
-        </InputGroup>
-        <Category />
-        <Carousel />
-        <TapBar />
-      </Layout>
-    </div>
+        <Input
+          placeholder="지역을 입력하세요"
+          size="md"
+          borderRadius="full"
+          boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
+          bg="white"
+        />
+      </InputGroup>
+      <Category />
+      <Carousel />
+      <RecommendReview />
+      <TapBar />
+    </Layout>
   );
 };
-
-export default HomePage;
+export default React.memo(HomePage);

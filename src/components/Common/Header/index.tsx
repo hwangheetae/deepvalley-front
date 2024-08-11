@@ -1,25 +1,30 @@
-import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HamburgerIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import { HeaderProps } from '../../../types/ComponentType';
-
+import { Box, Flex, IconButton, Text, useDisclosure } from '@chakra-ui/react';
+import DrawerComponent from '../DrawerComponent';
 const Header: FC<HeaderProps> = ({
   title,
   showMenuButton = false,
   showBorderBottom = false,
+  bg = 'white',
+  MenuColor = 'black',
+  onMenuClick,
+  isReview,
 }) => {
   const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1);
   };
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box
       as="header"
       maxW="428px"
       w="full"
-      bg="white"
+      bg={bg}
       p={4}
       borderBottom={showBorderBottom ? '1px solid #e0e0e0' : 'none'}
       position="fixed"
@@ -32,6 +37,7 @@ const Header: FC<HeaderProps> = ({
           icon={<ChevronLeftIcon />}
           onClick={handleBackClick}
           variant="ghost"
+          color={MenuColor}
         />
         <Text fontSize="xl" fontWeight="bold">
           {title}
@@ -41,11 +47,13 @@ const Header: FC<HeaderProps> = ({
             aria-label="Open menu"
             icon={<HamburgerIcon />}
             variant="ghost"
+            onClick={isReview ? onMenuClick : onOpen}
           />
         ) : (
           <Box w="40px" />
         )}
       </Flex>
+      <DrawerComponent isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };

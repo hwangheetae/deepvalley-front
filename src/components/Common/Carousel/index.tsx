@@ -1,39 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import ItemsCarousel from 'react-items-carousel';
-import range from 'lodash/range';
+import { Flex, Image } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchBannerImage } from '../../../api/Review';
 import { wrapperStyle, slideItemStyle } from '../../../styles/carouselStyle';
-// import axios from 'axios';
+import ErrorComponent from '../ErrorComponent';
+import LoadingComponent from '../LoadingComponent';
+import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
+
 const noOfItems = 5;
 const noOfCards = 1;
 const autoPlayDelay = 5000;
-
-const carouselItems = range(noOfItems).map((index) => (
-  <div key={index} style={slideItemStyle}>
-    {index + 1}
-  </div>
-));
+const chevronWidth = 40;
 
 const CarouselComponent: React.FC = () => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
-  // const [carouselItems, setCarouselItems] = useState<React.ReactNode[]>([]);
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get('backend end point');
-  //     const data = response.data;
-  //     const items = data.map((item: any, index: number) => (
-  //       <div key={index} style={slideItemStyle}>
-  //         {item.name}
-  //       </div>
-  //     ));
-  //     setCarouselItems(items);
-  //   } catch (error) {
-  //     console.log('Error fetching data', error);
-  //   }
-  // };
-
+  //fetching
+  const { isPending, isError, data } = useQuery({
+    queryKey: ['Banner'],
+    queryFn: fetchBannerImage,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
+  // 자동 넘어가기
   useEffect(() => {
-    // fetchData();
     const interval = setInterval(() => {
       setActiveItemIndex(
         (prevIndex) => (prevIndex + 1) % (noOfItems - noOfCards + 1),
@@ -41,7 +31,25 @@ const CarouselComponent: React.FC = () => {
     }, autoPlayDelay);
     return () => clearInterval(interval);
   }, []);
+
   const onChange = (value: number) => setActiveItemIndex(value);
+
+  const imageArray = data?.data.image_urls;
+
+  const carouselItems = imageArray?.map((item: string, index: number) => (
+    <Flex align={'center'} justify={'center'} key={index}>
+      <Image style={slideItemStyle} src={item} alt={`banner-${index}`} />
+    </Flex>
+  ));
+
+  //에러처리
+  if (isError) {
+    return <ErrorComponent />;
+  }
+  //로딩처리
+  if (isPending) {
+    return <LoadingComponent />;
+  }
 
   return (
     <div style={wrapperStyle}>
@@ -54,14 +62,16 @@ const CarouselComponent: React.FC = () => {
         numberOfCards={1}
         slidesToScroll={1}
         outsideChevron={false}
-        showSlither={true}
-        firstAndLastGutter={true}
         activeItemIndex={activeItemIndex}
         requestToChangeActive={onChange}
-        children={carouselItems}
-      />
+        chevronWidth={chevronWidth}
+        rightChevron={<ChevronRightIcon />}
+        leftChevron={<ChevronLeftIcon />}
+      >
+        {carouselItems}
+      </ItemsCarousel>
     </div>
   );
 };
 
-export default CarouselComponent;
+export default React.memo(CarouselComponent);

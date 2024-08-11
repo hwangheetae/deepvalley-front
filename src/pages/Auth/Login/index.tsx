@@ -1,11 +1,11 @@
-import { FC, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import { FC } from 'react';
 import { Formik, Field } from 'formik';
-import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
-import Logo from '../../../assets/images/Logo.png';
+import CustomButton from '../../../components/Common/CustomButton';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
+import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
+import Logo from '../../../assets/images/Logo.png';
+import useLoginMutation from '../../../queries/useLoginMutation';
 import {
   Flex,
   FormControl,
@@ -15,78 +15,17 @@ import {
   Image,
   Link,
   Text,
-  useToast,
 } from '@chakra-ui/react';
-import { login } from '../../../api/Auth/AuthService';
-import SocialKakao from '../SocialLogin/KaKao/SocialKakaoButton';
-import {
-  INVALID_REUEST_BODY_SERVER_MESSAGE,
-  INVALID_REUEST_BODY_MESSAGE,
-  INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE,
-  INVALID_REQUEST_EMAIL_OR_PASSWORD,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-} from '../../../constant/constant';
 
 const Login: FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
-  const navigate = useNavigate();
-  const handleSubmit = async (values: {
-    login_email: string;
-    password: string;
-  }) => {
-    try {
-      const response = await login(values);
-      if (response.data.access_token) {
-        localStorage.setItem('token', response.data.access_token);
+  const mutation = useLoginMutation();
 
-        navigate('/');
-        toast({
-          title: '로그인 성공!',
-          description: `로그인에 성공하였습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
-      }
-    } catch (err: any) {
-      if (err.response.status === 400) {
-        if (err.response.data === INVALID_REUEST_BODY_SERVER_MESSAGE) {
-          setError(INVALID_REUEST_BODY_MESSAGE);
-        }
-        if (
-          err.response.status ===
-          INVALID_REQUEST_EMAIL_OR_PASSWORD_SERVER_MESSAGE
-        ) {
-          setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
-        }
-      }
-      if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
-      }
-      if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
-      }
-    }
+  const handleSubmit = (values: { login_email: string; password: string }) => {
+    mutation.mutate(values);
   };
 
-  useEffect(() => {
-    if (error !== null) {
-      toast({
-        title: '에러!',
-        description: error,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-    }
-  }, [error, toast]);
-
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex
         direction="column"
         bg="white"
@@ -115,7 +54,6 @@ const Login: FC = () => {
           initialValues={{
             login_email: '',
             password: '',
-            // rememberMe: false,
           }}
           onSubmit={handleSubmit}
         >
@@ -136,6 +74,7 @@ const Login: FC = () => {
                     variant="outline"
                     placeholder="이메일"
                     borderRadius="full"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     validate={(value: string) => {
                       let error;
                       if (!value) {
@@ -146,7 +85,6 @@ const Login: FC = () => {
                   />
                   <FormErrorMessage>{errors.login_email}</FormErrorMessage>
                 </FormControl>
-
                 <FormControl isInvalid={!!errors.password && touched.password}>
                   <Field
                     as={Input}
@@ -156,6 +94,7 @@ const Login: FC = () => {
                     variant="outline"
                     placeholder="비밀번호"
                     borderRadius="full"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     validate={(value: string) => {
                       let error;
                       if (!value) {
@@ -165,13 +104,7 @@ const Login: FC = () => {
                     }}
                   />
                   <FormErrorMessage>{errors.password}</FormErrorMessage>
-                  <Flex justify="flex-end" w="full">
-                    <Link href="#" color="teal.500" fontSize="sm" p={2}>
-                      비밀번호를 잊으셨나요?
-                    </Link>
-                  </Flex>
                 </FormControl>
-
                 <CustomButton
                   type="submit"
                   width="full"
@@ -180,12 +113,22 @@ const Login: FC = () => {
                 >
                   로그인
                 </CustomButton>
-
                 <SocialKakao />
-
-                <Flex w="full" justify="center">
-                  <Text fontSize="sm">계정이 없으신가요?</Text>
-                  <Link href="/register" color="teal.500" ml={1} fontSize="sm">
+                <Flex justify="center" align={'center'} w="full" p={4}>
+                  <Link href="/id_find" color="teal.500" fontSize="xs" p={1}>
+                    이메일 찾기
+                  </Link>
+                  <Text color={'gray.400'}>|</Text>
+                  <Link
+                    href="/password_find"
+                    color="teal.500"
+                    fontSize="xs"
+                    p={1}
+                  >
+                    비밀번호 찾기
+                  </Link>
+                  <Text color={'gray.400'}>|</Text>
+                  <Link href="/register" color="teal.500" fontSize="xs" p={1}>
                     회원가입
                   </Link>
                 </Flex>

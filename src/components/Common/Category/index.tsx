@@ -1,9 +1,9 @@
 import { Box, SimpleGrid } from '@chakra-ui/react';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import CategoryButton from '../CategoryButton';
 import waterfall from '../../../assets/icons/Category/waterfall.png';
 import family from '../../../assets/icons/Category/family.png';
-import happy from '../../../assets/icons/Category/happy.png';
+import dog from '../../../assets/icons/Category/dog.png';
 import mountain from '../../../assets/icons/Category/mountain.png';
 import parkinglot from '../../../assets/icons/Category/parkinglot.png';
 import sea from '../../../assets/icons/Category/sea.png';
@@ -15,7 +15,7 @@ const Category: FC = () => {
     <Box
       w="full"
       maxW="428px"
-      my={8}
+      my={4}
       p={4}
       bg="white"
       borderRadius="md"
@@ -23,48 +23,53 @@ const Category: FC = () => {
     >
       <SimpleGrid columns={4} spacing={0}>
         <CategoryButton
-          iconSrc={waterfall}
-          label="폭포"
-          alt={'Waterfall icons created by Freepik - Flaticon'}
+          iconSrc={tent}
+          label="야영가능"
+          alt={'        Outdoor icons created by Freepik - Flaticon'}
         />
         <CategoryButton
           iconSrc={swimmer}
-          label="수영가능"
+          label="물놀이가능"
           alt={'Swimming icons created by Freepik - Flaticon'}
-        />
+        ></CategoryButton>
+
         <CategoryButton
-          iconSrc={tent}
-          label="캠핑가능"
-          alt={'        Outdoor icons created by Freepik - Flaticon'}
+          iconSrc={parkinglot}
+          label="주차가능"
+          alt={'Park icons created by Freepik - Flaticon'}
         />
+
         <CategoryButton
           iconSrc={family}
           label="가족동반"
           alt={'Family icons created by Flat Icons - Flaticon'}
         />
+
         <CategoryButton
-          iconSrc={parkinglot}
-          label="주차장"
-          alt={'Park icons created by Freepik - Flaticon'}
+          iconSrc={mountain}
+          label="등산로"
+          alt={'Mountain icons created by Freepik - Flaticon'}
         />
         <CategoryButton
-          iconSrc={happy}
+          iconSrc={dog}
           label="애견동반"
           alt={'Dog icons created by AomAm - Flaticon'}
         />
+
         <CategoryButton
           iconSrc={sea}
           label="바다"
           alt={'Sea icons created by Yobany_MTOM - Flaticon'}
         />
+
         <CategoryButton
-          iconSrc={mountain}
-          label="산"
-          alt={'Mountain icons created by Freepik - Flaticon'}
+          iconSrc={waterfall}
+          label="폭포"
+          alt={'Waterfall icons created by Freepik - Flaticon'}
         />
       </SimpleGrid>
     </Box>
   );
 };
 
-export default Category;
+export default React.memo(Category);

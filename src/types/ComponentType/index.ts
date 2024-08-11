@@ -23,11 +23,16 @@ export interface HeaderProps {
   title?: string;
   showMenuButton?: boolean;
   showBorderBottom?: boolean;
+  bg?: string;
+  MenuColor?: string;
+  onMenuClick?: () => void;
+  isReview?: boolean;
 }
 export interface LayoutProps {
   children: ReactNode;
   hasHeader?: boolean;
   hasTapBar?: boolean;
+  showMenuButton?: boolean;
 }
 
 export interface MainPageHeaderProps {
@@ -44,8 +49,15 @@ export interface InstaImageProps {
 
 export interface ProfileImageProps {
   src?: string;
+  width?: string;
+  height?: string;
 }
 
 export interface ReviewImageProps {
   src: string;
+}
+
+export interface DrawerComponentProps {
+  isOpen: boolean;
+  onClose: () => void;
 }

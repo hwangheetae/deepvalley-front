@@ -1,82 +1,186 @@
-import { Map } from 'react-kakao-maps-sdk';
-import { useState, useMemo } from 'react';
+import { Map, MarkerClusterer } from 'react-kakao-maps-sdk';
+import { useState, useEffect, useRef } from 'react';
 import CustomMapMarker from '../CustomMapMarker';
 import Locations from '../Locations';
 import {
   IconButton,
   Box,
   Flex,
-  Center,
   Input,
   VStack,
   InputGroup,
   InputLeftElement,
   HStack,
   Button,
+  Icon,
 } from '@chakra-ui/react';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useTheme } from '@chakra-ui/react';
 import TapBar from '../../../components/Common/TapBar';
-import { WbSunny } from '@mui/icons-material';
+import { MyLocation, LocationOn, Loop } from '@mui/icons-material';
 import ListComponent from '../ListComponent';
-import ValleyMockData, { Valley } from '../../../api/ValleyApi/ValleyMockData';
+import { ValleysType } from '../../../types';
+import { fetchValleys } from '../../../api/Valley';
+import 산잉 from '../../../assets/images/산잉.png';
+import parking2 from '../../../assets/images/parking2.png';
+import aid from '../../../assets/images/aid.png';
+import { Link } from 'react-router-dom';
+import LoadingPage from '../../../components/Common/LoadingPage';
+import { MdLocalHospital } from 'react-icons/md';
+import { FaParking } from 'react-icons/fa';
 
 export const MapPage = () => {
   const location = Locations();
-  const [key, setKey] = useState(0);
+  const [positions, setPositions] = useState<ValleysType[]>([]);
+  const [level, setLevel] = useState<number>(5); // 기본 레벨 값을 5로 설정
+  const [selectedValley, setSelectedValley] = useState<ValleysType | null>(
+    null,
+  );
+  const [categoryMarkers, setCategoryMarkers] = useState<any[]>([]);
   const theme = useTheme();
+  const mapRef = useRef<any>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [height, setHeight] = useState('13%');
+  const [currentCategory, setCurrentCategory] = useState<null>(null);
+  const [clickedParking, setClickedParking] = useState(false);
+  const [clickedHospital, setClickedHospital] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
-  const handleRefresh = () => {
-    setKey((prevKey) => prevKey + 1);
+  height;
+
+  const calculateRadius = (level: number) => {
+    const baseRadius = 50; // 레벨 1일 때의 반경(m)
+    const radius = baseRadius * Math.pow(2, level - 1);
+    return radius;
   };
 
-  const xxLocation = useMemo(() => {
-    if (location) {
-      const xlatitudeOffset = 0.008;
-      const xlongitudeOffset = 0.008;
-      return {
-        latitude: location.latitude + xlatitudeOffset,
-        longitude: location.longitude + xlongitudeOffset,
-      };
+  const fetchAndSetValleys = async (
+    lat: number,
+    lng: number,
+    radius: number,
+  ) => {
+    try {
+      const data = await fetchValleys(lat, lng, radius);
+      setPositions(data);
+    } catch (error) {
+      console.error(error);
     }
-    return null;
-  }, [location]);
+  };
 
-  const yyLocation = useMemo(() => {
-    if (location) {
-      const ylatitudeOffset = 0.009;
-      const ylongitudeOffset = 0.009;
-      return {
-        latitude: location.latitude + ylatitudeOffset,
-        longitude: location.longitude + ylongitudeOffset,
-      };
+  const handleBoundsChanged = () => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      const newLevel = map.getLevel();
+      if (newLevel !== level) {
+        setLevel(newLevel);
+      }
+
+      // const bounds = map.getBounds(); // 현재 뷰포트의 경계를 가져옴
+      // const sw = bounds.getSouthWest(); // 남서쪽 좌표
+      // const ne = bounds.getNorthEast();
+      // const viewportInfo = {
+      //   level: newLevel,
+      //   minx: sw.getLng(),
+      //   miny: sw.getLat(),
+      //   maxx: ne.getLng(),
+      //   maxy: ne.getLat(),
+      // };
     }
-    return null;
+  };
+
+  const handleReFetch = async () => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+      const center = map.getCenter();
+      const level = map.getLevel();
+      const radius = calculateRadius(level);
+      await fetchAndSetValleys(center.getLat(), center.getLng(), radius);
+      await fetchAndSetValleys(center.getLat(), center.getLng(), radius);
+    }
+  };
+
+  const handleMarkerClick = (valley: ValleysType) => {
+    setSelectedValley(valley);
+    setIsOpen(true);
+    setHeight('80%');
+  };
+
+  const removeCategoryMarkers = () => {
+    setCategoryMarkers([]);
+  };
+
+  const handleCategorySearch = (category: any, src: string) => {
+    if (mapRef.current) {
+      const map = mapRef.current;
+
+      if (currentCategory === category) {
+        removeCategoryMarkers();
+        setCurrentCategory(null);
+        return;
+      }
+
+      setCurrentCategory(category);
+
+      const places = new kakao.maps.services.Places();
+      const bounds = map.getBounds();
+      const center = map.getCenter();
+
+      const callback = (result: any[], status: any) => {
+        if (status === kakao.maps.services.Status.OK) {
+          const markers = result.map((place) => (
+            <CustomMapMarker
+              key={place.id}
+              position={{ lat: place.y, lng: place.x }}
+              src={src}
+              label={place.place_name}
+              showLabel={true}
+              place={place}
+            />
+          ));
+
+          setCategoryMarkers(markers);
+        }
+      };
+
+      places.categorySearch(category, callback, {
+        location: center,
+        bounds: bounds,
+      });
+    }
+  };
+
+  const handleMoveToCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          if (mapRef.current) {
+            const map = mapRef.current;
+            const center = new kakao.maps.LatLng(latitude, longitude);
+            map.setCenter(center);
+            map.setLevel(5);
+            setCurrentLocation({ latitude, longitude });
+          }
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+        },
+      );
+    }
+  };
+  useEffect(() => {
+    if (location) {
+      const radius = calculateRadius(level);
+      fetchAndSetValleys(location.latitude, location.longitude, radius);
+    }
   }, [location]);
 
   if (!location) {
-    return <Center h="100vh">Loading...</Center>;
+    return <LoadingPage />;
   }
-
-  const valleys: Valley[] = ValleyMockData.map((valley) => {
-    if (valley.name === '구름계곡' && xxLocation) {
-      return {
-        ...valley,
-        latitude: xxLocation.latitude,
-        longitude: xxLocation.longitude,
-      };
-    }
-    if (valley.name === '굿굿계곡' && yyLocation) {
-      return {
-        ...valley,
-        latitude: yyLocation.latitude,
-        longitude: yyLocation.longitude,
-      };
-    }
-    return valley;
-  });
 
   return (
     <Flex
@@ -88,9 +192,11 @@ export const MapPage = () => {
     >
       <Box flex="1" position="relative">
         <Map
-          key={key}
           center={{ lat: location.latitude, lng: location.longitude }}
           style={{ width: '100%', height: '100%' }}
+          onBoundsChanged={handleBoundsChanged}
+          level={level}
+          ref={mapRef}
         >
           <VStack
             spacing={4}
@@ -101,7 +207,7 @@ export const MapPage = () => {
             zIndex="20"
             w="70%"
           >
-            <InputGroup>
+            <InputGroup as={Link} to="/search">
               <InputLeftElement
                 pointerEvents="none"
                 children={<SearchIcon color="black" />}
@@ -110,64 +216,95 @@ export const MapPage = () => {
                 placeholder="지역을 입력하세요"
                 size="md"
                 borderRadius="full"
-                boxShadow="md"
+                boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                 bg="white"
-              />
-              <IconButton
-                aria-label="날씨 확인"
-                icon={<WbSunny />}
-                isRound={true}
-                position="absolute"
-                right="-12"
-                bg="white"
-                border="2px"
-                borderColor="#306839"
-                shadow="inner"
-                zIndex="20"
               />
             </InputGroup>
             <HStack spacing={2} justify="center" w="100%">
-              <Button size="sm" colorScheme="green">
-                계곡
+              <Button
+                size="sm"
+                variant="outline"
+                borderRadius="full"
+                onClick={() => {
+                  handleCategorySearch('PK6', parking2);
+                  if (clickedHospital) {
+                    setClickedParking(!clickedParking);
+                    setClickedHospital(!clickedHospital);
+                  } else {
+                    setClickedParking(!clickedParking);
+                  }
+                }}
+                boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
+                backgroundColor={
+                  clickedParking ? 'rgba(0, 69, 11, 0.81)' : 'white'
+                }
+                color={clickedParking ? 'white' : 'black'}
+                leftIcon={<Icon as={FaParking} />}
+                borderColor="green.500"
+              >
+                주차장
               </Button>
-              <Button size="sm" colorScheme="gray">
-                편의시설
-              </Button>
-              <Button size="sm" colorScheme="teal">
-                안전시설
+              <Button
+                size="sm"
+                variant="outline"
+                borderRadius="full"
+                backgroundColor={
+                  clickedHospital ? 'rgba(0, 69, 11, 0.81)' : 'white'
+                }
+                color={clickedHospital ? 'white' : 'black'}
+                onClick={() => {
+                  handleCategorySearch('HP8', aid);
+                  if (clickedParking) {
+                    setClickedParking(!clickedParking);
+                    setClickedHospital(!clickedHospital);
+                  } else {
+                    setClickedHospital(!clickedHospital);
+                  }
+                }}
+                leftIcon={<Icon as={MdLocalHospital} />}
+                borderColor="green.500"
+                boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
+              >
+                병원
               </Button>
             </HStack>
           </VStack>
-          <CustomMapMarker
-            icon={
-              <LocationOnIcon
-                style={{
-                  color: theme.colors.secondary[500],
-                  fontSize: '34px',
-                }}
+          {currentLocation && (
+            <CustomMapMarker
+              position={{
+                lat: currentLocation.latitude,
+                lng: currentLocation.longitude,
+              }}
+              icon={
+                <LocationOn
+                  style={{
+                    color: theme.colors.secondary[500],
+                    fontSize: '34px',
+                  }}
+                />
+              }
+              label="현재위치"
+            />
+          )}
+
+          <MarkerClusterer averageCenter={true} minLevel={10}>
+            {positions.map((valley) => (
+              <CustomMapMarker
+                key={valley.valley_id}
+                src={산잉}
+                position={{ lat: valley.latitude, lng: valley.longitude }}
+                label={valley.name}
+                onClick={() => handleMarkerClick(valley)}
+                showLabel={false} // 계곡 마커에는 라벨 표시하지 않음
               />
-            }
-            position={{ lat: location.latitude, lng: location.longitude }}
-            label="현재위치"
-          />
-          {xxLocation && (
-            <CustomMapMarker
-              src="ValleyIcon.png"
-              position={{ lat: xxLocation.latitude, lng: xxLocation.longitude }}
-              label="굿굿계곡"
-            />
-          )}
-          {yyLocation && (
-            <CustomMapMarker
-              src="ValleyIcon.png"
-              position={{ lat: yyLocation.latitude, lng: yyLocation.longitude }}
-              label="구름계곡"
-            />
-          )}
+            ))}
+          </MarkerClusterer>
+          {categoryMarkers}
+
           <IconButton
             aria-label="현재 위치로 이동"
-            icon={<MyLocationIcon />}
-            onClick={handleRefresh}
+            icon={<MyLocation />}
+            onClick={handleMoveToCurrentLocation}
             isRound={true}
             position="absolute"
             bottom="36"
@@ -175,11 +312,31 @@ export const MapPage = () => {
             bg="white"
             border="2px"
             borderColor="#306839"
-            shadow="inner"
             zIndex="20"
+            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
+          />
+          <IconButton
+            aria-label="계곡 재검색"
+            icon={<Loop />}
+            onClick={handleReFetch}
+            isRound={true}
+            position="absolute"
+            top="690"
+            right="4"
+            bg="white"
+            border="2px"
+            borderColor="#306839"
+            zIndex="20"
+            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
           />
         </Map>
-        <ListComponent valleys={valleys} />
+        <ListComponent
+          visibleValleys={positions}
+          selectedValley={selectedValley}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          setHeight={setHeight}
+        />{' '}
       </Box>
       <Box position="absolute" bottom="0" left="0" width="100%" zIndex="25">
         <TapBar />

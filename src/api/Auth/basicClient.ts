@@ -9,7 +9,7 @@ const basicClient = axios.create({
 
 basicClient.interceptors.request.use(
   (request) => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       request.headers.Authorization = `Bearer ${token}`;
     }
@@ -19,18 +19,5 @@ basicClient.interceptors.request.use(
     return Promise.reject(error);
   },
 );
-
-// basicClient.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response.status === 403) {
-//       localStorage.removeItem('token');
-//       window.location.href = '/login';
-//     }
-//     return Promise.reject(error);
-//   },
-// );
 
 export default basicClient;

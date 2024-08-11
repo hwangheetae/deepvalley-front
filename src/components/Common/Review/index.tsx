@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Flex, Text, useToast } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Text,
+  useToast,
+  Button,
+  Icon,
+  Image,
+} from '@chakra-ui/react';
+import { useNavigate, Link } from 'react-router-dom';
 import ProfileImage from '../Image/ProfileImage';
-import ReviewImage from '../Image/ReviewImage';
-import CustomButton from '../CustomButton';
-import { ReviewType } from '../../../types/ReviewType/ReviewType';
-import { fetchReview } from '../../../api/ReviewApi/ReviewApi';
-import valley1 from '../../../../valley1.png';
+import { ReviewType } from '../../../types/ReviewType';
+import { fetchReview } from '../../../api/Review/index';
+import { useMe } from '../../../stores/meStore';
+import 산잉 from '../../../assets/images/산잉.png';
+import { MdLocationOn } from 'react-icons/md';
+import useErrorToast from '../../../hooks/useErrorToast';
+import axios from 'axios';
+import { 잘못된요청, 에러404, 서버오류 } from '../../../constant/constant';
+import { logout } from '../../../api/Auth/AuthService';
 
-// import { useUserStore } from '../../../stores/userStore'; // 추후 구현
-// 여기서 user이름이랑 프로필 사진 받아와야함
 import 'tailwindcss/tailwind.css';
 
 interface ReviewProps {
@@ -19,30 +30,57 @@ interface ReviewProps {
 
 const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
   const toast = useToast();
-  // const username = useUserStore((state) => state.username); // 추후 구현
+  const { me } = useMe();
+  const navigate = useNavigate();
+  const { errorToast } = useErrorToast();
 
   const { data, error, isLoading } = useQuery<ReviewType>({
     queryKey: ['reviewDetail', reviewId],
     queryFn: () => fetchReview(reviewId),
     initialData,
-    refetchOnWindowFocus: false,
   });
 
-  console.log('Data:', data);
-  console.log('Error', error);
+  useEffect(() => {
+    if (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const statusCode = error.response.status;
+
+        switch (statusCode) {
+          case 400:
+            errorToast(잘못된요청);
+            break;
+          case 403:
+            logout();
+            navigate('/errorpage');
+            break;
+          case 404:
+            errorToast(에러404);
+            break;
+          case 500:
+            errorToast(서버오류);
+            break;
+          default:
+            toast({
+              title: '리뷰를 불러오는 중 오류가 발생했습니다.',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            });
+            break;
+        }
+      } else {
+        toast({
+          title: '알 수 없는 오류가 발생했습니다.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }
+  }, [error, toast, errorToast, navigate]);
 
   if (isLoading) {
     return <Box>Loading...</Box>;
-  }
-
-  if (error) {
-    toast({
-      title: 'Error fetching review details',
-      status: 'error',
-      duration: 3000,
-      isClosable: true,
-    });
-    return <Box>Error loading data...</Box>;
   }
 
   if (!data) {
@@ -50,83 +88,117 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
   }
 
   return (
-    <Box p="4">
+    <Box>
       <Flex justifyContent="space-between">
         <Flex alignItems="center">
-          <Box mb={4}>
-            <ProfileImage src={valley1} />
+          <Box>
+            <ProfileImage
+              src={me.profile_image_url || 산잉}
+              width="50px"
+              height="50px"
+            />
           </Box>
-          <Box ml="4">
+          <Box mt={2}>
             <Text
-              fontSize="24px"
+              fontSize="20px"
               fontWeight="bold"
               fontFamily="Gmarket Sans TTF"
               color="black"
             >
-              김구름
+              {me.name}
             </Text>
             <Text
+              mt={-2}
+              ml={0.5}
               fontSize="10px"
               fontWeight="light"
               fontFamily="Gmarket Sans TTF"
               color="black"
-              mt="-2"
             >
               {data.visited_date}
             </Text>
           </Box>
         </Flex>
-        <Flex alignItems="center">
-          <CustomButton
-            ButtonStyle={{
+        <Flex alignItems="center" mt={2}>
+          <Button
+            as={Link}
+            to={`/valley/${data.place_id}/detail`}
+            style={{
               background: 'white',
               color: 'black',
               borderRadius: '28px',
-              border: '1px solid black',
+              border: '0.5px solid black',
               fontFamily: 'Gmarket Sans TTF',
               fontWeight: 'medium',
-              width: '100px',
-              height: '30px',
+              width: '80px',
+              height: '20px',
               fontSize: '10px',
             }}
-            onClick={() => {}}
             size="md"
           >
+            <Icon as={MdLocationOn} mr={0.5} color={'black'} />
             {data.valley_name}
-          </CustomButton>
+          </Button>
         </Flex>
       </Flex>
 
-      <Box mt={4}>
-        <Flex overflowX="scroll" gap="4">
-          {data.image_urls.map((url: string, index: number) => (
-            <Box key={index} minW="300px">
-              <ReviewImage src={url} />
-            </Box>
-          ))}
-        </Flex>
+      <Box mt={4} ml={-4}>
+        {data.image_urls && data.image_urls.length > 0 && (
+          <Flex overflowX="scroll" gap="2">
+            {data.image_urls.map((url: string, index: number) => (
+              <Box key={index} minW="300px">
+                <Box
+                  width="100%"
+                  backgroundSize="cover"
+                  backgroundPosition="center"
+                  backgroundRepeat="no-repeat"
+                  height="350"
+                  mb="10px"
+                  boxShadow="2px 2px 4px rgba(0, 0, 0, 0.25)"
+                >
+                  <Image
+                    src={url}
+                    objectFit="contain"
+                    width="100%"
+                    height="100%"
+                    maxWidth="300px"
+                    maxHeight="300px"
+                  />
+                </Box>
+              </Box>
+            ))}
+          </Flex>
+        )}
       </Box>
 
       <Box mt="4">
-        <Text fontSize="2xl" fontWeight="bold" fontFamily="Gmarket Sans TTF">
+        <Text fontSize="20px" fontWeight="bold" fontFamily="Gmarket Sans TTF">
           {data.title}
         </Text>
-        <Text mt="2" fontFamily="Gmarket Sans TTF" fontWeight="light">
+        <Text
+          mt="2"
+          fontSize="15px"
+          fontFamily="Gmarket Sans TTF"
+          fontWeight="light"
+        >
           {data.content}
         </Text>
-        <Flex mt="2">
-          {data.tag_names.map((tag: string, index: number) => (
-            <Text
-              key={index}
-              className="mr-2"
-              fontFamily="Gmarket Sans TTF"
-              fontWeight="light"
-              color="#1E4C28"
-            >
-              #{tag}
-            </Text>
-          ))}
-        </Flex>
+        {data.tag_names && data.tag_names.length > 0 && (
+          <Flex mt="2" wrap="wrap">
+            {data.tag_names.map((tag: string, index: number) => (
+              <Text
+                key={index}
+                className="mr-2"
+                fontFamily="Gmarket Sans TTF"
+                fontWeight="light"
+                fontSize="15px"
+                color="#00430F"
+              >
+                #{tag}
+              </Text>
+            ))}
+          </Flex>
+        )}
       </Box>
     </Box>
   );

@@ -1,10 +1,11 @@
-import { FC, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC } from 'react';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
 import Logo from '../../../assets/images/Logo.png';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
+import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
+import useRegisterMutation from '../../../queries/useRegisterMutation';
 import {
   Flex,
   FormControl,
@@ -15,77 +16,19 @@ import {
   Link,
   Text,
 } from '@chakra-ui/react';
-import { emailRegEx, passwordRegEx } from '../../../utils/Regex';
-import { useToast } from '@chakra-ui/react';
-import { register } from '../../../api/Auth/AuthService';
-import {
-  INVALID_REQUEST_EMAIL_OR_PASSWORD,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-  EMAIL_CONFLICT_SERVER_MESSAGE,
-  EMAIL_CONFLICT_MESSAGE,
-  NICKNAME_CONFLICT_SERVER_MESSAGE,
-  NICKNAME_CONFLICT_MESSAGE,
-} from '../../../constant/constant';
 
 const Register: FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
-  const navigate = useNavigate();
-  //db 명칭상 이유로 nickname => name
-  const handleSubmit = async (values: {
+  const mutation = useRegisterMutation();
+  const handleSubmit = (values: {
     login_email: string;
     name: string;
     password: string;
   }) => {
-    try {
-      const userData = await register(values);
-      if (userData) {
-        toast({
-          title: '회원가입 성공!',
-          description: '로그인 하고 서비스를 계속 사용하세요.',
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
-        navigate('/login');
-      }
-    } catch (err: any) {
-      if (err.response.status === 400) {
-        setError(INVALID_REQUEST_EMAIL_OR_PASSWORD);
-      }
-      if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
-      }
-
-      if (err.response.status === 409) {
-        if (err.response.data === EMAIL_CONFLICT_SERVER_MESSAGE) {
-          setError(EMAIL_CONFLICT_MESSAGE);
-        }
-        if (err.response.data === NICKNAME_CONFLICT_SERVER_MESSAGE) {
-          setError(NICKNAME_CONFLICT_MESSAGE);
-        }
-      }
-      if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
-      }
-    }
+    mutation.mutate(values);
   };
-  useEffect(() => {
-    if (error !== null)
-      toast({
-        title: '에러!',
-        description: `${error}`,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-  }, [error]);
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex
         direction="column"
         bg="white"
@@ -135,6 +78,7 @@ const Register: FC = () => {
                     type="email"
                     variant="outline"
                     placeholder="이메일"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error = '';
@@ -156,6 +100,7 @@ const Register: FC = () => {
                     type="name"
                     variant="outline"
                     placeholder="닉네임"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error = '';
@@ -175,6 +120,7 @@ const Register: FC = () => {
                     type="password"
                     variant="outline"
                     placeholder="비밀번호"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error = '';
@@ -199,13 +145,12 @@ const Register: FC = () => {
                     type="password"
                     variant="outline"
                     placeholder="비밀번호 확인"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error = '';
                       error;
-                      if (!value) {
-                        error = '비밀번호를 다시 입력해주세요';
-                      } else if (value !== values.password)
+                      if (value !== values.password)
                         return (error = '비밀번호가 같은지 확인하세요');
                     }}
                   />

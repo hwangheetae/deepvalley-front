@@ -1,13 +1,11 @@
-import { FC, useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC, useState, useRef } from 'react';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
-import { changeProfile } from '../../../api/User';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import { Header } from '../../../components/Common';
 import { useMe } from '../../../stores/meStore';
-import PasswordChangeLogo from '../../../assets/images/PasswordChangeLogo.png';
+import 산잉 from '../../../assets/images/산잉.png';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import {
   Flex,
@@ -17,79 +15,61 @@ import {
   Input,
   Image,
   Text,
-  useToast,
   Textarea,
   Box,
+  Button,
+  useDisclosure,
 } from '@chakra-ui/react';
-import {
-  INVALID_REUEST_BODY_MESSAGE,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-} from '../../../constant/constant';
+import WithdrawalModal from '../WithdrawalModal';
+import useChangeProfileMutation from '../../../queries/useChangeProfileMutation';
+import SocialLoginWithdrawalModal from '../SocialLoginWithdrawalModal';
 
 const ChangeProfile: FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
-  const navigate = useNavigate();
-  const { me, updateMe } = useMe();
+  const { me } = useMe();
   const [imgFile, setImgFile] = useState<string>(me.profile_image_url);
   const upload = useRef<HTMLInputElement | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = useRef(null);
+  const finalRef = useRef(null);
+  const mutation = useChangeProfileMutation();
 
   const imgUpload = () => {
     if (upload.current?.files) {
       const file = upload.current.files[0];
       setImgFile(URL.createObjectURL(file));
+      setFile(file);
     }
   };
 
   const handleSubmit = async (values: {
     name: string;
-    profile_image_url: string;
     description: string;
   }) => {
-    try {
-      const response = await changeProfile(values);
-      console.log(response);
-      if (response.status === 200) {
-        updateMe(values);
-        toast({
-          title: '프로필 변경 성공!',
-          description: `프로필을 변경하였습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
-        navigate('/');
-      }
-    } catch (err: any) {
-      console.log(err);
-      if (err.response.status === 400) {
-        setError(INVALID_REUEST_BODY_MESSAGE);
-      }
-      if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
-      }
+    const formData = new FormData();
+    formData.append(
+      'profileRequest',
+      new Blob(
+        [
+          JSON.stringify({
+            name: values.name,
+            description: values.description,
+          }),
+        ],
+        {
+          type: 'application/json',
+        },
+      ),
+    );
 
-      if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
-      }
+    if (file) {
+      formData.append('profileImage', file);
     }
+    mutation.mutate(formData);
   };
-  useEffect(() => {
-    if (error !== null) {
-      toast({
-        title: '에러!',
-        description: error,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-    }
-  }, [error, toast]);
+
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Header />
       <Flex
         direction="column"
@@ -106,7 +86,7 @@ const ChangeProfile: FC = () => {
           <Image
             borderRadius="full"
             boxSize="150px"
-            src={imgFile || PasswordChangeLogo}
+            src={imgFile || 산잉}
             alt="profile-image"
           />
           <input
@@ -202,6 +182,32 @@ const ChangeProfile: FC = () => {
             </form>
           )}
         </Formik>
+        <Button
+          variant="link"
+          colorScheme="gray"
+          fontWeight="light"
+          size="xs"
+          onClick={onOpen}
+          position="absolute"
+          bottom="100px"
+        >
+          회원탈퇴
+        </Button>
+        {me.oauth === 'KAKAO' ? (
+          <SocialLoginWithdrawalModal
+            isOpen={isOpen}
+            onClose={onClose}
+            initialRef={initialRef}
+            finalRef={finalRef}
+          />
+        ) : (
+          <WithdrawalModal
+            isOpen={isOpen}
+            onClose={onClose}
+            initialRef={initialRef}
+            finalRef={finalRef}
+          />
+        )}
       </Flex>
     </Layout>
   );

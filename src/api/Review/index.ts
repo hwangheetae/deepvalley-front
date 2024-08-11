@@ -1,10 +1,40 @@
-// 해당부분이 User 03-a 맞나요?? 03-a 기준 재작성해놓았는데 확인부탁드립니다.
-// import basicClient from '../Auth/basicClient';
-// memberId: string
-// export const fetchReviews = async (body: {}) => {
-//   return basicClient.get('api/member/${memberId}/review', body);
-// };
+import basicClient from '../Auth/basicClient';
 
-// export const fetchReview = async (body: {}) => {
-//   return basicClient.get('/api/review/${reviewId}/detail', body);
-// };
+export const fetchReviews = async (login_email: string) => {
+  const response = await basicClient.get(`api/member/${login_email}/review`);
+  return response.data;
+};
+
+export const fetchReview = async (reviewId: string) => {
+  const response = await basicClient.get(`/api/review/${reviewId}/detail`);
+  return response.data;
+};
+
+export const updateReview = async (reviewId: string, formData: FormData) => {
+  return basicClient.put(`api/review/${reviewId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const submitReview = async (formData: FormData) => {
+  return basicClient.post('api/review', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const deleteReview = async (reviewid: string) => {
+  return basicClient.delete(`api/review/${reviewid}`);
+};
+
+export const fetchRecommendReview = async () => {
+  return basicClient.get('/api/review/recommend');
+};
+
+export const fetchBannerImage = async () => {
+  return basicClient.get('/api/banner');
+};
+

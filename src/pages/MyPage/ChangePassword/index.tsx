@@ -1,10 +1,8 @@
-import { FC, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FC } from 'react';
 import { Formik, Field } from 'formik';
 import CustomButton from '../../../components/Common/CustomButton';
 import Layout from '../../../components/Common/Layout';
-import PasswordChangeLogo from '../../../assets/images/PasswordChangeLogo.png';
-import { changePassword } from '../../../api/User';
+import 산잉 from '../../../assets/images/산잉.png';
 import { buttonStyle } from '../../../styles/customChakraPropsStyle';
 import {
   Flex,
@@ -14,74 +12,23 @@ import {
   Input,
   Image,
   Text,
-  useToast,
 } from '@chakra-ui/react';
-import {
-  INVALID_REUEST_BODY_MESSAGE,
-  ERROR_MESSAGE_404,
-  INTERNAL_SERVER_ERROR_MESSAGE,
-  INVALID_CURRENT_PASSWORD,
-  SAME_OLD_AND_NEW_PASSWORD,
-} from '../../../constant/constant';
+
 import { passwordRegEx } from '../../../utils/Regex';
 import { Header } from '../../../components/Common';
+import useChangePasswordMutation from '../../../queries/useChangePasswordMutation';
 
 const ChangePassword: FC = () => {
-  const [error, setError] = useState<string | null>(null);
-  const toast = useToast();
-  const navigate = useNavigate();
-
+  const mutation = useChangePasswordMutation();
   const handleSubmit = async (values: {
     old_password: string;
     new_password: string;
   }) => {
-    try {
-      const response = await changePassword(values);
-      console.log(response);
-      if (response.status === 200) {
-        toast({
-          title: '비밀번호 변경 성공!',
-          description: `비밀번호를 변경하였습니다.`,
-          status: 'success',
-          position: 'top-right',
-          isClosable: true,
-          duration: 5000,
-        });
-        navigate('/');
-      }
-    } catch (err: any) {
-      console.log(err);
-      if (err.response.status === 400) {
-        setError(INVALID_REUEST_BODY_MESSAGE);
-      }
-      if (err.response.status === 401) {
-        setError(INVALID_CURRENT_PASSWORD);
-      }
-      if (err.response.status === 404) {
-        setError(ERROR_MESSAGE_404);
-      }
-      if (err.response.status === 422) {
-        setError(SAME_OLD_AND_NEW_PASSWORD);
-      }
-      if (err.response.status === 500) {
-        setError(INTERNAL_SERVER_ERROR_MESSAGE);
-      }
-    }
+    mutation.mutate(values);
   };
-  useEffect(() => {
-    if (error !== null) {
-      toast({
-        title: '에러!',
-        description: error,
-        status: 'error',
-        position: 'top-right',
-        isClosable: true,
-        duration: 5000,
-      });
-    }
-  }, [error, toast]);
+
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Header />
       <Flex
         direction="column"
@@ -97,8 +44,8 @@ const ChangePassword: FC = () => {
           <Image
             boxSize="100px"
             objectFit="contain"
-            src={PasswordChangeLogo}
-            alt="PasswordChangeLogo"
+            src={산잉}
+            alt="산잉"
             mb={4}
           />
           <Text fontSize="2xl" fontWeight="bold" fontFamily="Cafe24Ssurround">

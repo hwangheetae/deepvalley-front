@@ -1,4 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+interface LocationState {
+  latitude: number;
+  longitude: number;
+}
 
 const Locations = () => {
   const [location, setLocation] = useState<{
@@ -6,8 +12,16 @@ const Locations = () => {
     longitude: number;
   } | null>(null);
 
+  const locationState = useLocation().state as LocationState | null;
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (locationState && locationState.latitude && locationState.longitude) {
+      setLocation({
+        latitude: locationState.latitude,
+        longitude: locationState.longitude,
+      });
+    } else if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error);
     }
 
@@ -23,9 +37,8 @@ const Locations = () => {
         latitude: 37.483034,
         longitude: 126.902435,
       });
-      console.log('위치 받기 실패');
     }
-  }, []);
+  }, [locationState, navigate]);
 
   return location;
 };
