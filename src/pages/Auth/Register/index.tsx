@@ -28,7 +28,7 @@ const Register: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex
         direction="column"
         bg="white"
@@ -78,6 +78,7 @@ const Register: FC = () => {
                     type="email"
                     variant="outline"
                     placeholder="이메일"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error = '';
@@ -99,6 +100,7 @@ const Register: FC = () => {
                     type="name"
                     variant="outline"
                     placeholder="닉네임"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error = '';
@@ -118,6 +120,7 @@ const Register: FC = () => {
                     type="password"
                     variant="outline"
                     placeholder="비밀번호"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error = '';
@@ -142,6 +145,7 @@ const Register: FC = () => {
                     type="password"
                     variant="outline"
                     placeholder="비밀번호 확인"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     borderRadius="full"
                     validate={(value: string) => {
                       let error = '';

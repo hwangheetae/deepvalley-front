@@ -25,7 +25,7 @@ const Login: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex
         direction="column"
         bg="white"
@@ -74,6 +74,7 @@ const Login: FC = () => {
                     variant="outline"
                     placeholder="이메일"
                     borderRadius="full"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     validate={(value: string) => {
                       let error;
                       if (!value) {
@@ -93,6 +94,7 @@ const Login: FC = () => {
                     variant="outline"
                     placeholder="비밀번호"
                     borderRadius="full"
+                    boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
                     validate={(value: string) => {
                       let error;
                       if (!value) {
@@ -131,12 +133,6 @@ const Login: FC = () => {
                   </Link>
                 </Flex>
               </VStack>
-              {/* <Flex w="full" justify="center" align={'center'} p={8}>
-                <Text fontSize="sm">계정이 없으신가요?</Text>
-                <Link href="/register" color="teal.500" ml={1} fontSize="sm">
-                  회원가입
-                </Link>
-              </Flex> */}
             </form>
           )}
         </Formik>

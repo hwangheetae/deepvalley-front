@@ -10,3 +10,7 @@ export { default as TapBar } from './TapBar';
 export { default as Review } from './Review';
 export { default as ReviewMenuModal } from './ReviewMenuModal';
 export { default as RecommendReview } from './RecommendReview';
+export { default as DrawerComponent } from './DrawerComponent';
+export { default as ErrorComponent } from './ErrorComponent';
+export { default as LoadingComponent } from './LoadingComponent';
+export { default as ErrorBoundary } from './ErrorBoundary';

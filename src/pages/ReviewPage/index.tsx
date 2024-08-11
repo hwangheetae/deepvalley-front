@@ -25,7 +25,11 @@ interface LoaderData {
 
 const ReviewPage: React.FC = () => {
   const { reviewId, initialData } = useLoaderData() as LoaderData;
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isReviewOpen,
+    onOpen: onReviewOpen,
+    onClose: onReviewClose,
+  } = useDisclosure();
   const {
     isOpen: isConfirmOpen,
     onOpen: onConfirmOpen,
@@ -59,14 +63,15 @@ const ReviewPage: React.FC = () => {
         title="리뷰 상세"
         showMenuButton={true}
         showBorderBottom={true}
-        onMenuClick={onOpen}
+        onMenuClick={onReviewOpen}
+        isReview={true}
       />
       <Box p="4" pt="20">
         <Review reviewId={reviewId} initialData={initialData} />
       </Box>
       <ReviewMenuModal
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isReviewOpen}
+        onClose={onReviewClose}
         reviewId={reviewId}
         onDelete={onConfirmOpen}
       />

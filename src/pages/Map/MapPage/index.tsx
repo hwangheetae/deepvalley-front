@@ -27,6 +27,7 @@ import safety from '../../../assets/images/safety.png';
 import { Link } from 'react-router-dom';
 import LoadingPage from '../../../components/Common/LoadingPage';
 
+import { Layout } from '../../../components/Common';
 export const MapPage = () => {
   const location = Locations();
   const [positions, setPositions] = useState<ValleysType[]>([]);
@@ -118,6 +119,7 @@ export const MapPage = () => {
               src={src}
               label={place.place_name}
               showLabel={true}
+              place={place}
             />
           ));
 

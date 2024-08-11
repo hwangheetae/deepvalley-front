@@ -37,21 +37,13 @@ import SuggestPage from './pages/SuggestPage/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
-  {
-    path: '/',
-
-    element: (
-      <PrivateRoute>
-        <HomePage />
-      </PrivateRoute>
-    ),
-  },
   //EX: loader, errorElement 예시
   // 데이터 패칭 및 로더 가능
   // loader: rootLoader,
 
   //에러처리 페이지 ex)404
   // errorElement: <ErrorPage />
+  { path: '/register', element: <Register /> },
   {
     path: '/login',
     element: <Login />,
@@ -61,6 +53,21 @@ const router = createBrowserRouter([
   { path: '/logout', element: <Logout /> },
   { path: '/id_find', element: <IDFind /> },
   { path: '/password_find', element: <PasswordFind /> },
+  { path: '/logout', element: <Logout /> },
+  {
+    path: '/WithdrawalSuccessPage',
+    element: <WithdrawalSuccessPage />,
+  },
+
+  {
+    path: '/',
+
+    element: (
+      <PrivateRoute>
+        <HomePage />
+      </PrivateRoute>
+    ),
+  },
   {
     path: '/ChangePassword',
     element: (
@@ -77,18 +84,22 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+
   {
-    path: '/WithdrawalSuccessPage',
+    path: '/mappage',
     element: (
       <PrivateRoute>
-        <WithdrawalSuccessPage />
+        <MapPage />
       </PrivateRoute>
     ),
   },
-  { path: '/mappage', element: <MapPage /> },
   {
     path: 'review/:reviewId',
-    element: <ReviewPage />,
+    element: (
+      <PrivateRoute>
+        <ReviewPage />
+      </PrivateRoute>
+    ),
     loader: async ({ params }) => {
       const reviewId = params.reviewId as string;
       const data = await fetchReview(reviewId);
@@ -98,7 +109,11 @@ const router = createBrowserRouter([
   },
   {
     path: 'myPage',
-    element: <MyPage />,
+    element: (
+      <PrivateRoute>
+        <MyPage />
+      </PrivateRoute>
+    ),
     loader: async () => {
       const { me } = useMe.getState();
       const memberId = me.login_email;
@@ -107,7 +122,6 @@ const router = createBrowserRouter([
       return reviewsData;
     },
   },
-  { path: '/register', element: <Register /> },
   {
     path: 'reviewWriting',
     element: (
@@ -116,17 +130,14 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-  {
-    path: '/ChangePassword',
-    element: (
-      <PrivateRoute>
-        <ChangePassword />
-      </PrivateRoute>
-    ),
-  },
+
   {
     path: '/reviewUpdate/:reviewId',
-    element: <ReviewFixpage />,
+    element: (
+      <PrivateRoute>
+        <ReviewFixpage />
+      </PrivateRoute>
+    ),
     loader: async ({ params }) => {
       const { reviewId } = params;
       if (!reviewId) throw new Error('Review ID is required');
@@ -134,25 +145,7 @@ const router = createBrowserRouter([
       return { review, reviewId };
     },
   },
-  { path: '/logout', element: <Logout /> },
-  { path: '/ChangePassword', element: <ChangePassword /> },
-  { path: '/ChangeProfile', element: <ChangeProfile /> },
-  {
-    path: '/ChangeProfile',
-    element: (
-      <PrivateRoute>
-        <ChangeProfile />
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: '/WithdrawalSuccessPage',
-    element: (
-      <PrivateRoute>
-        <WithdrawalSuccessPage />
-      </PrivateRoute>
-    ),
-  },
+
   {
     path: '/suggest/:place_id/:name',
     element: (
@@ -164,7 +157,11 @@ const router = createBrowserRouter([
 
   {
     path: '/search/:tag?',
-    element: <SearchPage />,
+    element: (
+      <PrivateRoute>
+        <SearchPage />
+      </PrivateRoute>
+    ),
     loader: async ({ params }) => {
       const { tag } = params;
       const filters = tag ? { tag_names: [tag] } : {};
@@ -173,10 +170,13 @@ const router = createBrowserRouter([
     },
   },
 
-  { path: '/LoadingPage', element: <LoadingPage /> },
   {
     path: '/valley/:valleyId/detail',
-    element: <ValleyPage />,
+    element: (
+      <PrivateRoute>
+        <ValleyPage />
+      </PrivateRoute>
+    ),
     loader: async ({ params }) => {
       const valleyId = params.valleyId as string;
       const valleyData = await fetchValleyDetailInfo(valleyId);
