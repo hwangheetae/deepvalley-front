@@ -102,8 +102,8 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
             <Box
               key={review.review_id}
               p={4}
-              borderWidth="1px"
-              borderRadius="lg"
+              // borderWidth="1px"
+              // borderRadius="lg"
               mb={4}
               id={review.review_id}
               css={{

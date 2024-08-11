@@ -43,7 +43,9 @@ const ValleyPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleMapView = () => {
-    navigate('/mappage');
+    navigate('/mappage', {
+      state: { latitude: valley.latitude, longitude: valley.longitude },
+    });
   };
 
   return (
