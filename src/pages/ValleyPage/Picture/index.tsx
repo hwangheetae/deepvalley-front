@@ -61,7 +61,7 @@ const Picture: React.FC<PictureProps> = ({ images }) => {
           </Text>
         </Box>
       ) : (
-        <Box width="100%" ml={-4}>
+        <Box width="100%" ml={0}>
           <SimpleGrid columns={3} spacing={1}>
             {allImages.map((imageData, index) => (
               <Link key={index} onClick={() => handleClick(index)}>
