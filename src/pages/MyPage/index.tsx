@@ -1,5 +1,6 @@
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import {
   Box,
   Flex,
@@ -19,6 +20,10 @@ import ProfileImage from '../../components/Common/Image/ProfileImage';
 import TapBar from '../../components/Common/TapBar';
 import Header from '../../components/Common/Header';
 import 산잉 from '../../assets/images/산잉.png';
+import { 잘못된요청, 에러404, 서버오류 } from '../../constant/constant';
+import { logout } from '../../api/Auth/AuthService';
+import useErrorToast from '../../hooks/useErrorToast';
+import axios from 'axios';
 import { MdLocationOn } from 'react-icons/md';
 
 const DEFAULT_IMAGE_URL =
@@ -27,12 +32,13 @@ const DEFAULT_IMAGE_URL =
 const MyPage: React.FC = () => {
   const { me } = useMe();
   const reviewsData = useLoaderData() as { reviews: ReviewType[] };
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { errorToast } = useErrorToast();
 
   const login_email = me.login_email;
   const nickname = me.name;
   const profile_image_url = me.profile_image_url;
-
-  const toast = useToast();
 
   const { data, error, isLoading } = useQuery<{ reviews: ReviewType[] }>({
     queryKey: ['reviews', login_email],
@@ -40,21 +46,47 @@ const MyPage: React.FC = () => {
     initialData: reviewsData,
   });
 
-  console.log('data:', data);
-  console.log('error:', error);
+  useEffect(() => {
+    if (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const statusCode = error.response.status;
+
+        switch (statusCode) {
+          case 400:
+            errorToast(잘못된요청);
+            break;
+          case 403:
+            logout();
+            navigate('/errorpage');
+            break;
+          case 404:
+            errorToast(에러404);
+            break;
+          case 500:
+            errorToast(서버오류);
+            break;
+          default:
+            toast({
+              title: '리뷰를 불러오는 중 오류가 발생했습니다.',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            });
+            break;
+        }
+      } else {
+        toast({
+          title: '알 수 없는 오류가 발생했습니다.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }
+  }, [error, toast, errorToast, navigate]);
 
   if (isLoading) {
     return <Box>Loading...</Box>;
-  }
-
-  if (error) {
-    toast({
-      title: 'Error fetching reviews',
-      status: 'error',
-      duration: 3000,
-      isClosable: true,
-    });
-    return <Box>Error loading reviews...</Box>;
   }
 
   const reviews = data?.reviews || [];
@@ -136,27 +168,6 @@ const MyPage: React.FC = () => {
                       height="100%"
                       boxShadow="inset 0px 0px 10px 5px rgba(0, 0, 0, 0.25)"
                     />
-
-                    {/* <Box
-                    width="140.61px"
-                    height="140.61px"
-                    position="relative"
-                    boxShadow="inset 0px 0px 50px rgba(0, 0, 0, 0.25)"
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    overflow="hidden"
-                  >
-                    <Image
-                      src={
-                        review.image_urls.length > 0
-                          ? review.image_urls[0]
-                          : DEFAULT_IMAGE_URL
-                      }
-                      objectFit="contain"
-                      width="100%"
-                      height="100%"
-                    /> */}
                     <Box
                       position="absolute"
                       top="5px"

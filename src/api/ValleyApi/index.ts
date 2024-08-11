@@ -52,7 +52,7 @@ export const fetchValleysByFilter = async (
   if (offset) queryParams += `offset=${offset}&`;
   if (region) queryParams += `region=${region}&`;
   if (keyword) queryParams += `keyword=${keyword}&`;
-  if (sort_type) queryParams += `sort_type=${sort_type}&`; // 추가된 부분
+  if (sort_type) queryParams += `sort_type=${sort_type}&`;
 
   try {
     const response = await basicClient.get(`/api/valley?${queryParams}`, {

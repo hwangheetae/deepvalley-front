@@ -2,6 +2,7 @@ import React, { useState, forwardRef } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import useSuccessToast from '../../hooks/useSuccessToast';
 import useRatingErrorToast from '../../hooks/useRatingErrorToast';
+import useErrorToast from '../../hooks/useErrorToast';
 import {
   Box,
   Flex,
@@ -27,6 +28,9 @@ import { ReviewUpdateType } from '../../types/ReviewUpdateType';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
+import axios from 'axios';
+import { 에러404, 서버오류 } from '../../constant/constant';
+import { logout } from '../../api/Auth/AuthService';
 
 const CustomDatePickerInput = forwardRef(
   ({ value, onClick }: any, ref: any) => (
@@ -69,6 +73,7 @@ const ReviewFixPage: React.FC = () => {
   const navigate = useNavigate();
   const { successToast } = useSuccessToast();
   const { ratingErrorToast } = useRatingErrorToast();
+  const { errorToast } = useErrorToast();
 
   const predefinedTags = [
     '캠핑가능',
@@ -184,10 +189,40 @@ const ReviewFixPage: React.FC = () => {
 
       navigate('/mypage');
     } catch (error) {
-      ratingErrorToast({
-        title: '리뷰 수정 실패!',
-        description: '평점을 입력해 주세요.',
-      });
+      if (axios.isAxiosError(error) && error.response) {
+        const statusCode = error.response.status;
+
+        switch (statusCode) {
+          case 400:
+            ratingErrorToast({
+              title: '리뷰 수정 실패!',
+              description: '평점을 입력해 주세요.',
+            });
+            break;
+
+          case 403:
+            logout();
+            navigate('/errorpage');
+            break;
+          case 404:
+            errorToast(에러404);
+            break;
+          case 500:
+            errorToast(서버오류);
+            break;
+          default:
+            ratingErrorToast({
+              title: '리뷰 수정 실패!',
+              description: '알 수 없는 오류가 발생했습니다.',
+            });
+            break;
+        }
+      } else {
+        ratingErrorToast({
+          title: '리뷰 수정 실패!',
+          description: '알 수 없는 오류가 발생했습니다.',
+        });
+      }
     }
   };
 
