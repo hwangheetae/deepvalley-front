@@ -24,7 +24,7 @@ import { fetchValleys } from '../../../api/Valley';
 import 산잉 from '../../../assets/images/산잉.png';
 import parking2 from '../../../assets/images/parking2.png';
 import aid from '../../../assets/images/aid.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoadingPage from '../../../components/Common/LoadingPage';
 import { MdLocalHospital } from 'react-icons/md';
 import { FaParking } from 'react-icons/fa';
@@ -42,6 +42,7 @@ export const MapPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState('13%');
   const [currentCategory, setCurrentCategory] = useState<null>(null);
+  const navigate = useNavigate();
 
   height;
 
@@ -136,18 +137,23 @@ export const MapPage = () => {
   };
 
   const handleMoveToCurrentLocation = () => {
-    if (mapRef.current && location) {
-      const map = mapRef.current;
-      const center = new kakao.maps.LatLng(
-        location.latitude,
-        location.longitude,
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          navigate('.', {
+            state: {
+              latitude,
+              longitude,
+            },
+          });
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+        },
       );
-
-      map.setCenter(center);
-      map.setLevel(5);
     }
   };
-
   useEffect(() => {
     if (location) {
       const radius = calculateRadius(level);

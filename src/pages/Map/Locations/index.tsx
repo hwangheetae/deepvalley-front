@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface LocationState {
   latitude: number;
@@ -13,6 +13,7 @@ const Locations = () => {
   } | null>(null);
 
   const locationState = useLocation().state as LocationState | null;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (locationState && locationState.latitude && locationState.longitude) {
@@ -37,7 +38,7 @@ const Locations = () => {
         longitude: 126.902435,
       });
     }
-  }, [locationState]);
+  }, [locationState, navigate]);
 
   return location;
 };
