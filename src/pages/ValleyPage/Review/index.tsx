@@ -57,7 +57,7 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               zIndex: 10,
             }}
           >
-            <HStack spacing={6} justifyContent="center" ml="20">
+            <HStack spacing={6} justifyContent="flex-start">
               {reviews.map((review) => (
                 <Link
                   key={review.review_id}
