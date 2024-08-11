@@ -37,3 +37,4 @@ export const fetchRecommendReview = async () => {
 export const fetchBannerImage = async () => {
   return basicClient.get('/api/banner');
 };
+
