@@ -26,6 +26,7 @@ export interface HeaderProps {
   bg?: string;
   MenuColor?: string;
   onMenuClick?: () => void;
+  isReview?: boolean;
 }
 export interface LayoutProps {
   children: ReactNode;
@@ -54,4 +55,9 @@ export interface ProfileImageProps {
 
 export interface ReviewImageProps {
   src: string;
+}
+
+export interface DrawerComponentProps {
+  isOpen: boolean;
+  onClose: () => void;
 }

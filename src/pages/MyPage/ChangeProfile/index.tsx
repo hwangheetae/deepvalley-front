@@ -69,7 +69,7 @@ const ChangeProfile: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Header />
       <Flex
         direction="column"

@@ -3,6 +3,8 @@ import {
   MapMarkerProps,
   CustomOverlayMap,
 } from 'react-kakao-maps-sdk';
+import { Icon } from '@chakra-ui/icons';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { useState, ReactNode } from 'react';
 
 const fixedMarkerSize = {
@@ -24,6 +26,7 @@ interface CustomMapMarkerProps {
   src?: string;
   onClick?: () => void;
   showLabel?: boolean;
+  place?: { place_name: string; y: string; x: string };
 }
 
 const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
@@ -32,6 +35,7 @@ const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
   src,
   onClick,
   showLabel = false,
+  place,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -72,7 +76,16 @@ const CustomMapMarker: React.FC<CustomMapMarkerProps> = ({
               cursor: 'pointer',
             }}
           >
-            {label}
+            {label}{' '}
+            <button
+              onClick={() =>
+                window.open(
+                  `https://map.kakao.com/link/to/${place?.place_name},${place?.y},${place?.x}`,
+                )
+              }
+            >
+              <Icon as={ExternalLinkIcon} />{' '}
+            </button>
           </div>
         </CustomOverlayMap>
       )}

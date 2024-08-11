@@ -28,7 +28,7 @@ const ChangePassword: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Header />
       <Flex
         direction="column"
