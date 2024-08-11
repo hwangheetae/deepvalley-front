@@ -24,7 +24,7 @@ import { fetchValleys } from '../../../api/Valley';
 import 산잉 from '../../../assets/images/산잉.png';
 import parking2 from '../../../assets/images/parking2.png';
 import aid from '../../../assets/images/aid.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LoadingPage from '../../../components/Common/LoadingPage';
 import { MdLocalHospital } from 'react-icons/md';
 import { FaParking } from 'react-icons/fa';
@@ -44,7 +44,10 @@ export const MapPage = () => {
   const [currentCategory, setCurrentCategory] = useState<null>(null);
   const [clickedParking, setClickedParking] = useState(false);
   const [clickedHospital, setClickedHospital] = useState(false);
-  const navigate = useNavigate();
+  const [currentLocation, setCurrentLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
 
   height;
 
@@ -74,6 +77,17 @@ export const MapPage = () => {
       if (newLevel !== level) {
         setLevel(newLevel);
       }
+
+      // const bounds = map.getBounds(); // 현재 뷰포트의 경계를 가져옴
+      // const sw = bounds.getSouthWest(); // 남서쪽 좌표
+      // const ne = bounds.getNorthEast();
+      // const viewportInfo = {
+      //   level: newLevel,
+      //   minx: sw.getLng(),
+      //   miny: sw.getLat(),
+      //   maxx: ne.getLng(),
+      //   maxy: ne.getLat(),
+      // };
     }
   };
 
@@ -143,12 +157,13 @@ export const MapPage = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          navigate('.', {
-            state: {
-              latitude,
-              longitude,
-            },
-          });
+          if (mapRef.current) {
+            const map = mapRef.current;
+            const center = new kakao.maps.LatLng(latitude, longitude);
+            map.setCenter(center);
+            map.setLevel(5);
+            setCurrentLocation({ latitude, longitude });
+          }
         },
         (error) => {
           console.error('Error getting location:', error);
@@ -254,18 +269,24 @@ export const MapPage = () => {
               </Button>
             </HStack>
           </VStack>
-          <CustomMapMarker
-            icon={
-              <LocationOn
-                style={{
-                  color: theme.colors.secondary[500],
-                  fontSize: '34px',
-                }}
-              />
-            }
-            position={{ lat: location.latitude, lng: location.longitude }}
-            label="현재위치"
-          />
+          {currentLocation && (
+            <CustomMapMarker
+              position={{
+                lat: currentLocation.latitude,
+                lng: currentLocation.longitude,
+              }}
+              icon={
+                <LocationOn
+                  style={{
+                    color: theme.colors.secondary[500],
+                    fontSize: '34px',
+                  }}
+                />
+              }
+              label="현재위치"
+            />
+          )}
+
           <MarkerClusterer averageCenter={true} minLevel={10}>
             {positions.map((valley) => (
               <CustomMapMarker
