@@ -46,6 +46,16 @@ const ValleyPage: React.FC = () => {
     navigate('/mappage', {
       state: { latitude: valley.latitude, longitude: valley.longitude },
     });
+
+    setTimeout(() => {
+      const slightOffset = 0.00001; // 표시가 안날 정도로 살짝 이동
+      const newLatitude = valley.latitude + slightOffset;
+      const newLongitude = valley.longitude + slightOffset;
+
+      navigate('/mappage', {
+        state: { latitude: newLatitude, longitude: newLongitude },
+      });
+    }, 100);
   };
 
   return (
