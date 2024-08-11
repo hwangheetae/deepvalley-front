@@ -109,7 +109,7 @@ const MyPage: React.FC = () => {
               height="80px"
             />
           </Box>
-          <Box mt={2}>
+          <Box mt={2} pl={2}>
             <Text
               fontSize="24px"
               fontWeight="medium"
