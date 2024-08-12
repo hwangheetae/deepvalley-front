@@ -301,34 +301,37 @@ export const MapPage = () => {
           </MarkerClusterer>
           {categoryMarkers}
 
-          <IconButton
-            aria-label="현재 위치로 이동"
-            icon={<MyLocation />}
-            onClick={handleMoveToCurrentLocation}
-            isRound={true}
+          <Flex
+            direction="column"
+            alignItems="center"
+            justifyContent="flex-end"
             position="absolute"
-            bottom="36"
+            bottom="130"
             right="4"
-            bg="white"
-            border="2px"
-            borderColor="#306839"
             zIndex="20"
-            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
-          />
-          <IconButton
-            aria-label="계곡 재검색"
-            icon={<Loop />}
-            onClick={handleReFetch}
-            isRound={true}
-            position="absolute"
-            top="690"
-            right="4"
-            bg="white"
-            border="2px"
-            borderColor="#306839"
-            zIndex="20"
-            boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
-          />
+          >
+            <IconButton
+              aria-label="계곡 재검색"
+              icon={<Loop />}
+              onClick={handleReFetch}
+              isRound={true}
+              mb="5"
+              bg="white"
+              border="2px"
+              borderColor="#306839"
+              boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
+            />
+            <IconButton
+              aria-label="현재 위치로 이동"
+              icon={<MyLocation />}
+              onClick={handleMoveToCurrentLocation}
+              isRound={true}
+              bg="white"
+              border="2px"
+              borderColor="#306839"
+              boxShadow="inset 0px 0px 4px 0.5px rgba(0, 0, 0, 0.25)"
+            />
+          </Flex>
         </Map>
         <ListComponent
           visibleValleys={positions}

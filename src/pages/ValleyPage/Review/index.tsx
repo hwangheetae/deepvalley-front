@@ -8,7 +8,6 @@ import {
   Avatar,
   HStack,
   VStack,
-  Link,
 } from '@chakra-ui/react';
 import { ValleyDetailReviewType } from '../../../types';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +24,14 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
 
   const handleWriteReview = () => {
     navigate('/reviewWriting', { state: { valley_id, thumbnail } });
+  };
+
+  const handleAvatarClick = (reviewId: string) => {
+    setSelectedReviewId(reviewId);
+    const element = document.getElementById(reviewId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
@@ -59,11 +66,10 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
           >
             <HStack spacing={6} justifyContent="flex-start">
               {reviews.map((review) => (
-                <Link
+                <Box
                   key={review.review_id}
-                  href={`#${review.review_id}`}
-                  onClick={() => setSelectedReviewId(review.review_id)}
-                  _hover={{ textDecoration: 'none' }}
+                  onClick={() => handleAvatarClick(review.review_id)}
+                  cursor="pointer"
                 >
                   <Avatar
                     size="md"
@@ -76,14 +82,13 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
                         ? 'green.500'
                         : 'gray.300'
                     }
-                    cursor="pointer"
                     transition="border-color 0.3s ease, transform 0.3s ease"
                     _hover={{
                       transform: 'scale(1.05)',
                       borderColor: 'green.500',
                     }}
                   />
-                </Link>
+                </Box>
               ))}
             </HStack>
           </Box>
@@ -111,7 +116,7 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               <HStack spacing={4} mb={4}>
                 <Avatar size="md" src={review.profile_image_url ?? ''} />
                 <Text fontSize="lg" fontWeight="bold">
-                  {review.member_id}
+                  {review.member_name}
                 </Text>
               </HStack>
 

@@ -59,6 +59,7 @@ export interface ValleyDetailReviewType {
   image_urls: string[];
   tag_names: string[];
   profile_image_url: string | null;
+  member_name: string;
 }
 
 export interface ValleyDetailReviewResponseType {
@@ -71,4 +72,6 @@ export interface ValleyDetailImageType {
   content: string;
   image_urls: string[];
   profile_image_url: string;
+  member_name: string;
+  member_id: string;
 }

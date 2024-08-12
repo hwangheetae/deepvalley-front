@@ -241,7 +241,7 @@ const ReviewWritingPage: React.FC = () => {
             backgroundSize="cover"
             backgroundPosition="center"
             height="250px"
-            width="100vw"
+            width="100%"
             position="absolute"
             top="-20"
             left="50%"
@@ -251,7 +251,7 @@ const ReviewWritingPage: React.FC = () => {
           <Box
             backgroundColor="rgba(0, 0, 0, 0.5)"
             height="250px"
-            width="100vw"
+            width="100%"
             position="absolute"
             top="-20"
             left="50%"
