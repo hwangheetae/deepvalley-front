@@ -24,7 +24,7 @@ const Picture: React.FC<PictureProps> = ({ images }) => {
     imageData.image_urls.map((src) => ({
       src,
       profileImage: imageData.profile_image_url,
-      nickname: imageData.review_id,
+      nickname: imageData.member_name,
       title: imageData.title,
       content: imageData.content,
     })),

@@ -71,4 +71,6 @@ export interface ValleyDetailImageType {
   content: string;
   image_urls: string[];
   profile_image_url: string;
+  member_name: string;
+  member_id: string;
 }
