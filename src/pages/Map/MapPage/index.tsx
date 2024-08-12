@@ -315,7 +315,7 @@ export const MapPage = () => {
               icon={<Loop />}
               onClick={handleReFetch}
               isRound={true}
-              mb="2" // 버튼 간 간격 조정
+              mb="5"
               bg="white"
               border="2px"
               borderColor="#306839"

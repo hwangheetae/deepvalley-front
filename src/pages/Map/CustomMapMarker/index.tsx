@@ -15,7 +15,7 @@ const fixedMarkerSize = {
 const fixedMarkerOptions = {
   offset: {
     x: 28,
-    y: 56,
+    y: 28,
   },
 };
 

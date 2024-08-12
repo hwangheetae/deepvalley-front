@@ -285,6 +285,7 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
           color="blue.500"
           onClick={handleChangeInfo}
           textDecoration="underline"
+          cursor="pointer"
         >
           정보변경 제안
         </Text>

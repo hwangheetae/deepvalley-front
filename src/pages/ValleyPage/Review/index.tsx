@@ -116,7 +116,7 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               <HStack spacing={4} mb={4}>
                 <Avatar size="md" src={review.profile_image_url ?? ''} />
                 <Text fontSize="lg" fontWeight="bold">
-                  {review.member_id}
+                  {review.member_name}
                 </Text>
               </HStack>
 
