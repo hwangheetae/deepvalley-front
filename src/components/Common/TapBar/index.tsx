@@ -1,6 +1,6 @@
 import { Box, Flex, IconButton, Image } from '@chakra-ui/react';
 import { FC } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import homeIcon from '../../../assets/icons/Category/home.png';
 import homeIconActive from '../../../assets/icons/Category/homeActive.png';
 import mapIcon from '../../../assets/icons/Category/map.png';
@@ -13,6 +13,7 @@ import myPageIconActive from '../../../assets/icons/Category/myPageActive.png';
 const TapBar: FC = () => {
   const location = useLocation();
   const currentPath = location.pathname;
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -43,8 +44,6 @@ const TapBar: FC = () => {
         />
 
         <IconButton
-          as={Link}
-          to="/mappage"
           aria-label="Go To Map"
           icon={
             <Image
@@ -54,6 +53,7 @@ const TapBar: FC = () => {
           }
           variant="ghost"
           size="lg"
+          onClick={() => navigate('/mappage')}
         />
 
         <IconButton
