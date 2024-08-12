@@ -11,7 +11,7 @@ const ErrorPage = () => {
   };
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex direction="column" align="center" justify="center" height="100vh">
         <Image src={산잉_슬픈} alt="슬픈 이미지" boxSize="100px" />
         <Box textAlign="center" py={6} px={2}>
