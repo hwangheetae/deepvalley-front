@@ -243,7 +243,6 @@ const SearchPage: React.FC = () => {
 
   const loadMoreValleys = async () => {
     try {
-      console.log(offset);
       const response = await fetchValleysByFilter({
         ...filters,
         region,
@@ -257,7 +256,6 @@ const SearchPage: React.FC = () => {
         setValleys((prevValleys) => [...prevValleys, ...response]);
       }
     } catch (error) {
-      console.error('Failed to fetch more valleys', error);
       toast({
         title: '추가 계곡 정보를 불러오는 데 실패했습니다.',
         status: 'error',
