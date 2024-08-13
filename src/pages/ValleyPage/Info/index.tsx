@@ -11,13 +11,13 @@ import {
   Divider,
   Button,
 } from '@chakra-ui/react';
-// import { PhoneIcon } from '@chakra-ui/icons';
 import {
   FaSwimmer,
   FaCheckCircle,
   FaParking,
   FaCampground,
   FaQuestionCircle,
+  FaTimesCircle,
 } from 'react-icons/fa';
 import { ValleyDetailInfoType } from '../../../types';
 import { useNavigate } from 'react-router-dom';
@@ -166,13 +166,17 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
                 as={
                   valley.tag_names.includes('물놀이가능')
                     ? FaCheckCircle
-                    : FaQuestionCircle
+                    : valley.tag_names.includes('물놀이불가')
+                      ? FaTimesCircle
+                      : FaQuestionCircle
                 }
                 boxSize={6}
                 color={
                   valley.tag_names.includes('물놀이가능')
                     ? 'green.500'
-                    : 'blue.500'
+                    : valley.tag_names.includes('물놀이불가')
+                      ? 'red.500'
+                      : 'blue.500'
                 }
                 position="absolute"
                 bottom="0"
@@ -189,13 +193,17 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
                 as={
                   valley.tag_names.includes('야영가능')
                     ? FaCheckCircle
-                    : FaQuestionCircle
+                    : valley.tag_names.includes('야영불가')
+                      ? FaTimesCircle
+                      : FaQuestionCircle
                 }
                 boxSize={6}
                 color={
                   valley.tag_names.includes('야영가능')
                     ? 'green.500'
-                    : 'blue.500'
+                    : valley.tag_names.includes('야영불가')
+                      ? 'red.500'
+                      : 'blue.500'
                 }
                 position="absolute"
                 bottom="0"
@@ -214,13 +222,17 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
                 as={
                   valley.tag_names.includes('주차가능')
                     ? FaCheckCircle
-                    : FaQuestionCircle
+                    : valley.tag_names.includes('주차불가')
+                      ? FaTimesCircle
+                      : FaQuestionCircle
                 }
                 boxSize={6}
                 color={
                   valley.tag_names.includes('주차가능')
                     ? 'green.500'
-                    : 'blue.500'
+                    : valley.tag_names.includes('주차불가')
+                      ? 'red.500'
+                      : 'blue.500'
                 }
                 position="absolute"
                 bottom="0"
@@ -228,7 +240,7 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
               />
             </Box>
             <Text mt={2} fontSize="lg">
-              주차장
+              주차
             </Text>
           </Flex>
         </HStack>
