@@ -76,7 +76,7 @@ const PictureDetail: React.FC<PictureDetailProps> = ({
             {nickname}
           </Text>
         </HStack>
-        <Text color="white" fontWeight="bold">
+        <Text color="white" fontWeight="bold" mt={3}>
           {title}
         </Text>
         <Text color="white" noOfLines={2}>
