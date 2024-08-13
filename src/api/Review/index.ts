@@ -1,13 +1,27 @@
+import { logout } from '../Auth/AuthService';
 import basicClient from '../Auth/basicClient';
-
 export const fetchReviews = async (login_email: string) => {
-  const response = await basicClient.get(`api/member/${login_email}/review`);
-  return response.data;
+  try {
+    const response = await basicClient.get(`api/member/${login_email}/review`);
+    return response.data;
+  } catch (error) {
+    logout();
+    window.location.href = '/errorpage';
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    throw new Error('Failed to fetch valleys by filter');
+  }
 };
 
 export const fetchReview = async (reviewId: string) => {
-  const response = await basicClient.get(`/api/review/${reviewId}/detail`);
-  return response.data;
+  try {
+    const response = await basicClient.get(`/api/review/${reviewId}/detail`);
+    return response.data;
+  } catch (error) {
+    logout();
+    window.location.href = '/errorpage';
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    throw new Error('Failed to fetch valleys by filter');
+  }
 };
 
 export const updateReview = async (reviewId: string, formData: FormData) => {
@@ -37,4 +51,3 @@ export const fetchRecommendReview = async () => {
 export const fetchBannerImage = async () => {
   return basicClient.get('/api/banner');
 };
-

@@ -1,5 +1,6 @@
 import basicClient from '../../api/Auth/basicClient';
 import { ValleysType } from '../../types';
+import { logout } from '../Auth/AuthService';
 
 export const fetchfacilities = async (latitude: number, longitude: number) => {
   try {
@@ -13,6 +14,9 @@ export const fetchfacilities = async (latitude: number, longitude: number) => {
     );
     return response.data;
   } catch (error) {
+    logout();
+    window.location.href = '/errorpage';
+    await new Promise((resolve) => setTimeout(resolve, 100));
     throw new Error('Failed to fetch facility');
   }
 };
@@ -26,6 +30,9 @@ export const fetchValleys = async (): Promise<ValleysType[]> => {
     });
     return response.data;
   } catch (error) {
+    logout();
+    window.location.href = '/errorpage';
+    await new Promise((resolve) => setTimeout(resolve, 100));
     throw new Error('Failed to fetch valleys');
   }
 };
@@ -62,6 +69,9 @@ export const fetchValleysByFilter = async (
     });
     return response.data;
   } catch (error) {
+    logout();
+    window.location.href = '/errorpage';
+    await new Promise((resolve) => setTimeout(resolve, 100));
     throw new Error('Failed to fetch valleys by filter');
   }
 };
@@ -75,6 +85,9 @@ export const fetchRegions = async (): Promise<string[]> => {
     });
     return response.data.regions;
   } catch (error) {
+    logout();
+    window.location.href = '/errorpage';
+    await new Promise((resolve) => setTimeout(resolve, 100));
     throw new Error('Failed to fetch regions');
   }
 };
