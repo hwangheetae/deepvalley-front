@@ -31,7 +31,7 @@ import {
   fetchValleyDetailReview,
   fetchValleyDetailImage,
 } from './api/Valley/index.ts';
-import ErrorBoundary from './components/Common/ErrorBoundary/index.tsx';
+// import ErrorBoundary from './components/Common/ErrorBoundary/index.tsx';
 import { IDFind, PasswordFind } from './pages/Auth/index.tsx';
 import SuggestPage from './pages/SuggestPage/index.tsx';
 
