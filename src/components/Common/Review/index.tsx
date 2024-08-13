@@ -162,7 +162,7 @@ const Review: React.FC<ReviewProps> = ({ initialData, reviewId }) => {
                     width="100%"
                     height="100%"
                     maxWidth="300px"
-                    maxHeight="300px"
+                    maxHeight="350px"
                   />
                 </Box>
               </Box>
