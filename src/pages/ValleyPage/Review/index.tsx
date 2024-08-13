@@ -134,10 +134,10 @@ const Review: React.FC<ReviewProps> = ({ reviews, valley_id, thumbnail }) => {
               </Flex>
 
               <VStack align="start" mb={4}>
-                <Text fontSize="md" fontWeight="bold">
+                <Text fontSize="md" fontWeight="bold" textAlign="left">
                   {review.title}
                 </Text>
-                <Text>{review.content}</Text>
+                <Text textAlign="left">{review.content}</Text>
               </VStack>
             </Box>
           ))}
