@@ -11,13 +11,13 @@ import {
   Divider,
   Button,
 } from '@chakra-ui/react';
-// import { PhoneIcon } from '@chakra-ui/icons';
 import {
   FaSwimmer,
   FaCheckCircle,
   FaParking,
   FaCampground,
   FaQuestionCircle,
+  FaTimesCircle,
 } from 'react-icons/fa';
 import { ValleyDetailInfoType } from '../../../types';
 import { useNavigate } from 'react-router-dom';
@@ -77,13 +77,16 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
     }
   };
 
-  const sanitizedExtraInfo = valley.extra_info.replace(/\n/g, '\\n');
+  const sanitizedExtraInfo = valley.extra_info
+    .replace(/\\n/g, ' ')
+    .replace(/\\t/g, ' ')
+    .replace(/\n/g, ' ')
+    .replace(/\t/g, ' ');
   const extraInfoObject = JSON.parse(sanitizedExtraInfo);
   const extraInfoString: string = Object.entries(extraInfoObject)
     .map(([key, value]) => {
       const sanitizedValue = (value as string)
         .replace(/<br\s*\/?>/gi, '')
-        .replace(/\\n/g, '\n')
         .trim();
       return `${key}: ${sanitizedValue}`;
     })
@@ -163,13 +166,17 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
                 as={
                   valley.tag_names.includes('물놀이가능')
                     ? FaCheckCircle
-                    : FaQuestionCircle
+                    : valley.tag_names.includes('물놀이불가')
+                      ? FaTimesCircle
+                      : FaQuestionCircle
                 }
                 boxSize={6}
                 color={
                   valley.tag_names.includes('물놀이가능')
                     ? 'green.500'
-                    : 'blue.500'
+                    : valley.tag_names.includes('물놀이불가')
+                      ? 'red.500'
+                      : 'blue.500'
                 }
                 position="absolute"
                 bottom="0"
@@ -186,13 +193,17 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
                 as={
                   valley.tag_names.includes('야영가능')
                     ? FaCheckCircle
-                    : FaQuestionCircle
+                    : valley.tag_names.includes('야영불가')
+                      ? FaTimesCircle
+                      : FaQuestionCircle
                 }
                 boxSize={6}
                 color={
                   valley.tag_names.includes('야영가능')
                     ? 'green.500'
-                    : 'blue.500'
+                    : valley.tag_names.includes('야영불가')
+                      ? 'red.500'
+                      : 'blue.500'
                 }
                 position="absolute"
                 bottom="0"
@@ -211,13 +222,17 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
                 as={
                   valley.tag_names.includes('주차가능')
                     ? FaCheckCircle
-                    : FaQuestionCircle
+                    : valley.tag_names.includes('주차불가')
+                      ? FaTimesCircle
+                      : FaQuestionCircle
                 }
                 boxSize={6}
                 color={
                   valley.tag_names.includes('주차가능')
                     ? 'green.500'
-                    : 'blue.500'
+                    : valley.tag_names.includes('주차불가')
+                      ? 'red.500'
+                      : 'blue.500'
                 }
                 position="absolute"
                 bottom="0"
@@ -225,19 +240,19 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
               />
             </Box>
             <Text mt={2} fontSize="lg">
-              주차장
+              주차
             </Text>
           </Flex>
         </HStack>
       </Box>
       <VStack align="start" spacing={2}>
-        <Text>
+        <Text whiteSpace="pre-wrap" align="start">
           주소:{' '}
           <Box as="span" color="green.500">
             {valley.address}
           </Box>
         </Text>
-        <Text>
+        <Text whiteSpace="pre-wrap" align="start">
           영업시간:{' '}
           <Box as="span" color="green.500">
             {valley.opening_hours}
@@ -251,7 +266,7 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
             </Box>
           </Text>
         </HStack>
-        <Text>
+        <Text whiteSpace="pre-wrap" align="start">
           수심: 평균{' '}
           <Box as="span" color="green.500">
             {valley.avg_depth}M
@@ -278,7 +293,12 @@ const Info: React.FC<InfoProps> = ({ valley }) => {
           )}
         </Text>
 
-        <Text color="blue.500" onClick={handleChangeInfo}>
+        <Text
+          color="blue.500"
+          onClick={handleChangeInfo}
+          textDecoration="underline"
+          cursor="pointer"
+        >
           정보변경 제안
         </Text>
         <Button onClick={toggleInfo} mb={2}>

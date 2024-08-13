@@ -72,11 +72,11 @@ const PictureDetail: React.FC<PictureDetailProps> = ({
       >
         <HStack>
           <Avatar src={profileImage ?? ''} />
-          <Text color="white" fontWeight="bold" align="start">
+          <Text color="green.300" fontWeight="bold" align="start">
             {nickname}
           </Text>
         </HStack>
-        <Text color="white" fontWeight="bold">
+        <Text color="white" fontWeight="bold" mt={3}>
           {title}
         </Text>
         <Text color="white" noOfLines={2}>
