@@ -203,9 +203,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-        <ErrorBoundary>
-          <RouterProvider router={router} fallbackElement={<LoadingPage />} />
-        </ErrorBoundary>
+        {/* <ErrorBoundary> */}
+        <RouterProvider router={router} fallbackElement={<LoadingPage />} />
+        {/* </ErrorBoundary> */}
       </QueryClientProvider>
     </ChakraProvider>
     ,

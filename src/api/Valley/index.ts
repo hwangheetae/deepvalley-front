@@ -1,5 +1,6 @@
 import basicClient from '../Auth/basicClient';
 import { ValleyDetailReviewResponseType, ValleysType } from '../../types';
+import { logout } from '../Auth/AuthService';
 
 export const fetchValleys = async (
   latitude: number,
@@ -17,6 +18,8 @@ export const fetchValleys = async (
     );
     return response.data;
   } catch (error) {
+    logout();
+    window.location.href = '/errorpage';
     throw new Error('Failed to fetch valleys');
   }
 };
@@ -30,6 +33,8 @@ export const fetchValleyDetailInfo = async (valleyId: string) => {
     });
     return response.data;
   } catch (error) {
+    logout();
+    window.location.href = '/errorpage';
     throw new Error('Failed to fetch ValleyDetailinfo');
   }
 };
