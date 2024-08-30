@@ -18,37 +18,37 @@ export default defineConfig({
         theme_color: '#00450B',
         icons: [
           {
-            src: '/assets/pwa_icons/maskable_icon_x48.png',
+            src: 'https://djw9hdrinhwdq.cloudfront.net/assets/pwa_icons/maskable_icon_x48.png',
             sizes: '48x48',
             type: 'image/png',
           },
           {
-            src: '/assets/pwa_icons/maskable_icon_x72.png',
+            src: 'https://djw9hdrinhwdq.cloudfront.net/assets/pwa_icons/maskable_icon_x72.png',
             sizes: '72x72',
             type: 'image/png',
           },
           {
-            src: '/assets/pwa_icons/maskable_icon_x192.png',
+            src: 'https://djw9hdrinhwdq.cloudfront.net/assets/pwa_icons/maskable_icon_x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'maskable',
           },
           {
-            src: '/assets/pwa_icons/maskable_icon_x512.png',
+            src: 'https://djw9hdrinhwdq.cloudfront.net/assets/pwa_icons/maskable_icon_x512.png',
             sizes: '512x512',
             type: 'image/png',
           },
         ],
         screenshots: [
           {
-            src: '/assets/pwa_icons/screenshot.png',
+            src: 'https://djw9hdrinhwdq.cloudfront.net/assets/pwa_icons/screenshot.png',
             sizes: '1009x562',
             type: 'image/png',
             form_factor: 'wide',
             label: 'Application',
           },
           {
-            src: '/assets/pwa_icons/screenshot_mobile.png',
+            src: 'https://djw9hdrinhwdq.cloudfront.net/assets/pwa_icons/screenshot_mobile.png',
             sizes: '430x931',
             type: 'image/png',
             form_factor: 'narrow',
