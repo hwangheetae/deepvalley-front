@@ -23,7 +23,6 @@ import {
 import WithdrawalModal from '../WithdrawalModal';
 import useChangeProfileMutation from '../../../queries/useChangeProfileMutation';
 import SocialLoginWithdrawalModal from '../SocialLoginWithdrawalModal';
-
 const ChangeProfile: FC = () => {
   const { me } = useMe();
   const [imgFile, setImgFile] = useState<string>(me.profile_image_url);
@@ -34,11 +33,59 @@ const ChangeProfile: FC = () => {
   const finalRef = useRef(null);
   const mutation = useChangeProfileMutation();
 
-  const imgUpload = () => {
+  const resizeImage = (
+    file: File,
+    maxWidth: number,
+    maxHeight: number,
+  ): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const image = new window.Image();
+        image.src = event.target?.result as string;
+        image.onload = () => {
+          const canvas = document.createElement('canvas');
+          let { width, height } = image;
+          if (width > maxWidth) {
+            height = (maxWidth / width) * height;
+            width = maxWidth;
+          }
+          if (height > maxHeight) {
+            width = (maxHeight / height) * width;
+            height = maxHeight;
+          }
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d')?.drawImage(image, 0, 0, width, height);
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const optimizedFile = new File([blob], file.name, {
+                  type: blob.type,
+                });
+                resolve(optimizedFile);
+              }
+            },
+            'image/webp',
+            0.8,
+          );
+        };
+        image.onerror = () => reject(new Error('Failed to load image'));
+      };
+    });
+  };
+
+  const imgUpload = async () => {
     if (upload.current?.files) {
       const file = upload.current.files[0];
-      setImgFile(URL.createObjectURL(file));
-      setFile(file);
+      try {
+        const optimizedFile = await resizeImage(file, 200, 200);
+        setImgFile(URL.createObjectURL(optimizedFile));
+        setFile(optimizedFile);
+      } catch (error) {
+        console.error('Error optimizing image:', error);
+      }
     }
   };
 
