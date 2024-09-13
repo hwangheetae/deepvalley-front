@@ -119,7 +119,7 @@ const Login: FC = () => {
                     이메일 찾기
                   </Link>
                   <Text color={'gray.400'}>|</Text>
-                  <Link
+                  {/* <Link
                     href="/password_find"
                     color="teal.500"
                     fontSize="xs"
@@ -127,7 +127,7 @@ const Login: FC = () => {
                   >
                     비밀번호 찾기
                   </Link>
-                  <Text color={'gray.400'}>|</Text>
+                  <Text color={'gray.400'}>|</Text> */}
                   <Link href="/register" color="teal.500" fontSize="xs" p={1}>
                     회원가입
                   </Link>
