@@ -4,4 +4,4 @@ export { default as SocialKakaoButton } from './SocialLogin/KaKao/SocialKakaoBut
 export { default as SocialKakaoRedirectPage } from './SocialLogin/KaKao/SocialKakaoRedirectPage';
 export { default as Logout } from './Logout';
 export { default as IDFind } from './IDFind';
-export { default as PasswordFind } from './PasswordFind';
+// export { default as PasswordFind } from './PasswordFind';

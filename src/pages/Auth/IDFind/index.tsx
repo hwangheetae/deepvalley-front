@@ -105,7 +105,7 @@ const IDFind = () => {
                   <Link href="/login" color="teal.500" fontSize="xs" p={1}>
                     로그인하기
                   </Link>
-                  <Text color={'gray.400'}>|</Text>
+                  {/* <Text color={'gray.400'}>|</Text>
                   <Link
                     href="/password_find"
                     color="teal.500"
@@ -113,7 +113,7 @@ const IDFind = () => {
                     p={1}
                   >
                     비밀번호 찾기
-                  </Link>
+                  </Link> */}
                 </Flex>
               </VStack>
             </form>
