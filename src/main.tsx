@@ -34,6 +34,7 @@ import {
 // import ErrorBoundary from './components/Common/ErrorBoundary/index.tsx';
 import { IDFind } from './pages/Auth/index.tsx';
 import SuggestPage from './pages/SuggestPage/index.tsx';
+import { IntroPage } from './pages/index.tsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
 
   //에러처리 페이지 ex)404
   // errorElement: <ErrorPage />
+  { path: '/intro', element: <IntroPage /> },
   { path: '/register', element: <Register /> },
   {
     path: '/login',
