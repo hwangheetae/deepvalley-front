@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Button } from '@chakra-ui/react';
-import Intro_Background_Web from '../../../assets/images/Intro_Background_Web.png';
-import Intro_Background_Mobile from '../../../assets/images/Intro_Background_Mobile.png';
+import Intro_Background_Web from '../../../assets/images/Intro_Background_Web.webp';
+import Intro_Background_Mobile from '../../../assets/images/Intro_Background_Mobile.webp';
 import { FaGlobe, FaGooglePlay } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 

@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Heading, Image } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
-import Detail_Example from '../../../assets/images/Detail_Example.png';
+import Detail_Example from '../../../assets/images/Detail_Example.webp';
 
 const IntroPageFour = () => {
   const [isVisible, setIsVisible] = useState(false);

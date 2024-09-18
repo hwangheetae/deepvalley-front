@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Heading, Image } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
-import Map_Example from '../../../assets/images/Map_Example.png';
+import Map_Example from '../../../assets/images/Map_Example.webp';
 
 const IntroPageThree = () => {
   const [isVisible, setIsVisible] = useState(false);
