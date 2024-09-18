@@ -29,7 +29,7 @@ const IntroPageTwo = () => {
           }
         });
       },
-      { threshold: 0.3 },
+      { threshold: 0.8 },
     );
     if (sectionRef.current) {
       observer.observe(sectionRef.current);
@@ -58,7 +58,7 @@ const IntroPageTwo = () => {
           fontSize={{ base: 'xl', md: '4xl' }}
           as={motion.p}
           initial="hidden"
-          animate={isVisible ? 'visible' : 'hidden'} // Animate when in view
+          animate={isVisible ? 'visible' : 'hidden'}
           variants={textVariants}
         >
           계곡에 가고싶을 때, 어떤 계곡에 갈지 고민하신적 없으신가요?

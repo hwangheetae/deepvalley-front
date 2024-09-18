@@ -1,15 +1,16 @@
 import { Box, Flex, Heading, Button } from '@chakra-ui/react';
-import Intro_Background from '../../../assets/images/Intro_Background.png';
+import Intro_Background_Web from '../../../assets/images/Intro_Background_Web.png';
+import Intro_Background_Mobile from '../../../assets/images/Intro_Background_Mobile.png';
 import { FaGlobe, FaGooglePlay } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const textVariants = {
-  hidden: { opacity: 0, y: 50 }, // Start hidden and shifted down
+  hidden: { opacity: 0, y: 50 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 1,
+      delay: i * 0.5,
       duration: 1,
       ease: 'easeInOut',
     },
@@ -21,7 +22,10 @@ const IntroPageOne = () => {
     <Box
       as="section"
       h="100vh"
-      bgImage={`url(${Intro_Background})`}
+      bgImage={{
+        md: `url(${Intro_Background_Web})`,
+        base: `url(${Intro_Background_Mobile})`,
+      }}
       bgSize="cover"
       bgPosition="center"
     >
@@ -44,7 +48,7 @@ const IntroPageOne = () => {
           custom={0}
         >
           계곡 갈 땐?
-        </Heading>{' '}
+        </Heading>
         <Heading
           as={motion.h1}
           fontSize={{ base: '3xl', md: '6xl' }}
@@ -88,7 +92,9 @@ const IntroPageOne = () => {
             _hover={{ bg: 'gray.500' }}
             color="white"
             height={'46px'}
-            onClick={() => {}}
+            onClick={() => {
+              alert('아직 준비중이에요!');
+            }}
           >
             Google Play
           </Button>

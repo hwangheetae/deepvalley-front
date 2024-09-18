@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Heading, Image } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
-import Detail_Example from '../../../assets/images/Detail_Example.png';
+import Review_Example from '../../../assets/images/Review_Example.png';
 
 const IntroPageFour = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -77,7 +77,7 @@ const IntroPageFour = () => {
             animate={isVisible ? 'visible' : 'hidden'}
             variants={textVariants}
           >
-            계곡 상세페이지
+            계곡 리뷰페이지
           </Heading>
           <Text
             fontSize={{ base: 'xm', md: 'xl' }}
@@ -89,15 +89,15 @@ const IntroPageFour = () => {
             wordBreak="break-word" // Ensures long words break correctly
             whiteSpace="normal" // Allows wrapping of lines
           >
-            계곡의 상세한 정보를 확인하세요.
-            <br /> 물놀이나 야영이 가능한지, 계곡의 역사는 어떻게 되는지,
-            일주일간의 날씨도 확인할 수 있어요!{' '}
+            계곡의 리뷰를 작성해보세요.
+            <br /> 소중한 사람들과 함께 한 추억을 사진, 태그, 글로 남겨보아요.
+            다른 사람들과 공유해보아요!
           </Text>
         </Flex>
         <Image
           as={motion.img}
-          src={Detail_Example}
-          alt="Detail_Example"
+          src={Review_Example}
+          alt="Review_Example"
           height={{ md: '500px', base: '300px' }}
           initial="hidden"
           animate={isVisible ? 'visible' : 'hidden'}
