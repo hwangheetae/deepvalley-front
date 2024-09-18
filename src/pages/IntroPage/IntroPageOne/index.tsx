@@ -35,7 +35,7 @@ const IntroPageOne = () => {
       >
         <Heading
           as={motion.h1}
-          size="4xl"
+          fontSize={{ base: '3xl', md: '6xl' }}
           mb={8}
           letterSpacing="wider"
           variants={textVariants}
@@ -47,7 +47,7 @@ const IntroPageOne = () => {
         </Heading>{' '}
         <Heading
           as={motion.h1}
-          size="4xl"
+          fontSize={{ base: '3xl', md: '6xl' }}
           mb={8}
           letterSpacing="wider"
           variants={textVariants}

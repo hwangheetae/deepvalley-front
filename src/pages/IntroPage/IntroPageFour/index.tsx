@@ -1,6 +1,5 @@
-import { Box, Flex, Heading, Button } from '@chakra-ui/react';
+import { Box, Flex, Heading, Image } from '@chakra-ui/react';
 import Intro_Background3 from '../../../assets/images/Intro_Background3.png';
-import { FaGlobe, FaGooglePlay } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Github_QR from '../../../assets/images/Github_QR.png';
 import Notion_QR from '../../../assets/images/Notion_QR.png';
@@ -25,70 +24,31 @@ const IntroPageFour = () => {
       as="section"
       h="100vh"
       bgImage={`url(${Intro_Background3})`}
-      bgSize="cover"
-      bgPosition="center"
+      position="relative" // Ensure the container is relative
     >
+      {/* QR codes positioned at the bottom-left */}
       <Flex
-        direction="column"
-        justify="center"
-        align="center"
-        minH="100vh"
-        textAlign="center"
-        px={{ base: 4, md: 8 }}
+        position="absolute" // Use absolute positioning to move it
+        bottom={{ base: 2, md: 4 }} // Adjust position for small and large screens
+        left={{ base: 2, md: 4 }} // Adjust position for small and large screens
+        direction="row" // Stack QR codes vertically
+        gap={4} // Add space between QR codes
       >
-        <Heading
-          as={motion.h1}
-          size="4xl"
-          mb={8}
-          letterSpacing="wider"
-          custom={1}
-        >
-          깊은산 골짜기
-        </Heading>
-        <Flex
-          as={motion.div}
-          direction={{ base: 'column', md: 'row' }}
-          variants={textVariants}
-          justify="center"
-          align="center"
-          initial="hidden"
-          animate="visible"
-          custom={2}
-        >
-          <Button
-            leftIcon={<FaGlobe />}
-            colorScheme="blackAlpha"
-            mx={{ base: 0, md: 2 }}
-            mb={{ base: 4, md: 0 }}
-            bgImage={Github_QR}
-            _hover={{ bg: 'gray.500' }}
-            color="white"
-            height={'46px'}
-            onClick={() => (window.location.href = './login')}
-          ></Button>
-          <Button
-            leftIcon={<FaGlobe />}
-            colorScheme="blackAlpha"
-            mx={{ base: 0, md: 2 }}
-            mb={{ base: 4, md: 0 }}
-            bgImage={Notion_QR}
-            _hover={{ bg: 'gray.500' }}
-            color="white"
-            height={'46px'}
-            onClick={() => (window.location.href = './login')}
-          ></Button>
-          <Button
-            leftIcon={<FaGlobe />}
-            colorScheme="blackAlpha"
-            mx={{ base: 0, md: 2 }}
-            mb={{ base: 4, md: 0 }}
-            bgImage={Site_QR}
-            _hover={{ bg: 'gray.500' }}
-            color="white"
-            height={'46px'}
-            onClick={() => (window.location.href = './login')}
-          ></Button>
-        </Flex>
+        <Image
+          src={Notion_QR}
+          alt="Notion QR"
+          boxSize={{ base: '100px', md: '200px' }} // Smaller size on small screens
+        />
+        <Image
+          src={Github_QR}
+          alt="Github QR"
+          boxSize={{ base: '100px', md: '200px' }} // Smaller size on small screens
+        />
+        <Image
+          src={Site_QR}
+          alt="Site QR"
+          boxSize={{ base: '100px', md: '200px' }} // Smaller size on small screens
+        />
       </Flex>
     </Box>
   );

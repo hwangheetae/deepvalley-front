@@ -55,7 +55,7 @@ const IntroPageTwo = () => {
         px={{ base: 4, md: 8 }}
       >
         <Text
-          fontSize={'4xl'}
+          fontSize={{ base: 'xl', md: '4xl' }}
           as={motion.p}
           initial="hidden"
           animate={isVisible ? 'visible' : 'hidden'} // Animate when in view
