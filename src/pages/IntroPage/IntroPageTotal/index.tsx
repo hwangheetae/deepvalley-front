@@ -8,7 +8,7 @@ const IntroPageTotal = () => {
   return (
     <>
       <Helmet>
-        <title>깊은산 골짜기 | 계곡 가고 싶을 땐? 깊은산 골짜기!</title>
+        <title>깊은산골짜기 | 계곡 가고 싶을 땐? 깊은산골짜기!</title>
         <link
           rel="canonical"
           href="https://djw9hdrinhwdq.cloudfront.net/intro"
@@ -19,11 +19,11 @@ const IntroPageTotal = () => {
         />
         <meta
           name="keywords"
-          content="깊은산 골짜기, 계곡, 여행, 자연, 리뷰, deep valley, 커뮤니티, korea, Valley, 캠핑, 글램핑, 차박"
+          content="깊은산골짜기, 계곡, 여행, 자연, 리뷰, deep valley, 커뮤니티, korea, Valley, 캠핑, 글램핑, 차박, deepvalley"
         />
         <meta
           property="og:title"
-          content="깊은산 골짜기 | 계곡 가고 싶을 땐? 깊은산 골짜기!"
+          content="깊은산골짜기 | 계곡 가고 싶을 땐? 깊은산골짜기!"
         />
         <meta
           property="og:description"

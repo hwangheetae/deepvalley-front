@@ -59,7 +59,7 @@ const IntroPageOne = () => {
           animate="visible"
           custom={1}
         >
-          깊은산 골짜기
+          깊은산골짜기
         </Heading>
         <Flex
           as={motion.div}
