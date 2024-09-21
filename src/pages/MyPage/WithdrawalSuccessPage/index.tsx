@@ -9,7 +9,7 @@ const WithdrawalSuccessPage: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Layout>
+    <Layout hasTapBar={true}>
       <Flex
         direction="column"
         align="center"

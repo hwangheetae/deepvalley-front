@@ -8,7 +8,11 @@ const IntroPageTotal = () => {
   return (
     <>
       <Helmet>
-        <title>깊은산 골짜기 | 내 주변 계곡을 찾아보세요</title>
+        <title>깊은산 골짜기 | 계곡 가고 싶을 땐? 깊은산 골짜기!</title>
+        <link
+          rel="canonical"
+          href="https://djw9hdrinhwdq.cloudfront.net/intro"
+        />
         <meta
           name="description"
           content="내 주변 계곡의 위치를 찾고, 정보를 얻고, 추억을 공유하세요"
@@ -19,7 +23,7 @@ const IntroPageTotal = () => {
         />
         <meta
           property="og:title"
-          content="깊은산 골짜기 | 내 주변 계곡을 찾아보세요"
+          content="깊은산 골짜기 | 계곡 가고 싶을 땐? 깊은산 골짜기!"
         />
         <meta
           property="og:description"
