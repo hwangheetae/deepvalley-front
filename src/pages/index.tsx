@@ -10,3 +10,4 @@ export { default as SocialLoginWithdrawalModal } from './MyPage/SocialLoginWithd
 export { default as ReviewFixPage } from './ReviewFixPage';
 export { default as ReviewWritingPage } from './ReviewWritingPage';
 export { default as ErrorPage } from './ErrorPage';
+export { default as IntroPage } from './IntroPage/IntroPageTotal';
