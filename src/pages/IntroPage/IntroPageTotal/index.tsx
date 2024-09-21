@@ -34,6 +34,10 @@ const IntroPageTotal = () => {
           content="https://djw9hdrinhwdq.cloudfront.net/preview-image.jpg"
         />
         <meta property="og:type" content="website" />
+        <meta
+          name="google-site-verification"
+          content="oznRSXGSvmGJnSJtsS_h_fp1vCkcIU8AqlSFkglYFy8"
+        />
       </Helmet>
       <IntroPageOne />
       <IntroPageTwo />
