@@ -54,7 +54,7 @@ const router = createBrowserRouter([
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
   { path: '/logout', element: <Logout /> },
   { path: '/id_find', element: <IDFind /> },
-  { path: '/sitemap.xml', element: <></> },
+  // { path: '/sitemap.xml', element: <></> },
   { path: '/manifest.webmanifest', element: <></> },
 
   {
