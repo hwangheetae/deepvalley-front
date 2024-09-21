@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "net.cloudfront.djw9hdrinhwdq.twa",
+      "sha256_cert_fingerprints": [
+        "92:74:CC:0B:D3:C4:7B:7B:71:CC:C7:68:B0:19:4E:7D:E5:D0:B8:86:64:10:DD:A9:4C:5A:56:EB:B7:16:50:1A"
+      ]
+    }
+  }
+]

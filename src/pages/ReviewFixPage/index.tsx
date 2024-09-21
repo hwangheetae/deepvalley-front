@@ -31,7 +31,7 @@ import { CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 import { 에러404, 서버오류 } from '../../constant/constant';
 import { logout } from '../../api/Auth/AuthService';
-
+import { resizeImage } from '../../hooks/resizeImage';
 const CustomDatePickerInput = forwardRef(
   ({ value, onClick }: any, ref: any) => (
     <Button
@@ -135,12 +135,27 @@ const ReviewFixPage: React.FC = () => {
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
-      setImageFiles((prevImages) => prevImages.concat(filesArray));
-      const urlsArray = filesArray.map((file) => URL.createObjectURL(file));
-      setImageUrls((prevUrls) => prevUrls.concat(urlsArray));
+
+      try {
+        // 파일들을 각각 리사이징 처리
+        const resizedFiles = await Promise.all(
+          filesArray.map(async (file) => {
+            const optimizedFile = await resizeImage(file, 200, 200);
+            return optimizedFile;
+          }),
+        );
+
+        // 리사이즈된 파일의 Blob URL 생성 및 상태 업데이트
+        const urlsArray = resizedFiles.map((file) => URL.createObjectURL(file));
+
+        setImageFiles((prevImages) => prevImages.concat(resizedFiles));
+        setImageUrls((prevUrls) => prevUrls.concat(urlsArray));
+      } catch (error) {
+        console.error('Error optimizing image:', error);
+      }
     }
   };
 
