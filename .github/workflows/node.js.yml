@@ -46,11 +46,13 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Upload  Verification File to S3 Root
-        run: |
-          aws s3 cp google07be6b3274e0710b.html s3://${{ secrets.AWS_S3_BUCKET }}/
-          aws s3 cp naver46b517a8499b33c8f134b7aba38b57c3.html s3://${{ secrets.AWS_S3_BUCKET }}/
+      - name: Sync .well-known files to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --follow-symlinks --delete
         env:
+          SOURCE_DIR: './.well-known'
+          DEST_DIR: '.well-known/'
           AWS_REGION: 'ap-northeast-2'
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
