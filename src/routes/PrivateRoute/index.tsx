@@ -25,8 +25,18 @@ const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   //     });
   //   }
   // }, [accessToken, isLoggedOut]);
+  const isPWAInstalled = () => {
+    return (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.userAgent.includes('TWA') ||
+      window.navigator.userAgent.includes('com.android.chrome')
+    );
+  };
 
   if (!accessToken) {
+    if (isPWAInstalled()) {
+      return <Navigate to="/login" />;
+    }
     return <Navigate to="/intro" />;
   }
 
