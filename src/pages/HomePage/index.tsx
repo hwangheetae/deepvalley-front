@@ -42,18 +42,18 @@ const HomePage: FC = () => {
   return (
     <>
       <Helmet>
-        <title>깊은산 골짜기 | 내 주변 계곡을 찾아보세요</title>
+        <title>깊은산골짜기 | 내 주변 계곡을 찾아보세요</title>
         <meta
           name="description"
           content="내 주변 계곡의 위치를 찾고, 정보를 얻고, 추억을 공유하세요"
         />
         <meta
           name="keywords"
-          content="깊은산 골짜기, 계곡, 여행, 자연, 리뷰, deep valley, 커뮤니티, korea, Valley, 캠핑, 글램핑, 차박"
+          content="깊은산골짜기, 계곡, 여행, 자연, 리뷰, deep valley, 커뮤니티, korea, Valley, 캠핑, 글램핑, 차박"
         />
         <meta
           property="og:title"
-          content="깊은산 골짜기 | 내 주변 계곡을 찾아보세요"
+          content="깊은산골짜기 | 내 주변 계곡을 찾아보세요"
         />
         <meta
           property="og:description"
@@ -68,10 +68,14 @@ const HomePage: FC = () => {
           content="https://djw9hdrinhwdq.cloudfront.net/preview-image.jpg"
         />
         <meta property="og:type" content="website" />
+        <meta
+          name="google-site-verification"
+          content="oznRSXGSvmGJnSJtsS_h_fp1vCkcIU8AqlSFkglYFy8"
+        />
       </Helmet>
       <Layout hasHeader={true} showMenuButton={true}>
         <MainPageHeader
-          title="깊은산 골짜기"
+          title="깊은산골짜기"
           fontFamily="Cafe24Ssurround"
           showMenuButton={true}
         />

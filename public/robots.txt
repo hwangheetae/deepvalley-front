@@ -1,12 +1,4 @@
 User-agent: *
-Disallow: /private/
-Allow: /public/
+Allow: /intro
 
-User-agent: Googlebot
-Disallow: /no-google/
-Allow: /
-
-User-agent: Yeti
-Disallow: /no-naver/
-Allow: /
-
+Sitemap: https://djw9hdrinhwdq.cloudfront.net/sitemap.xml

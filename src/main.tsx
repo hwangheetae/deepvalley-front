@@ -52,10 +52,11 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   { path: '/auth', element: <SocialKakaoRedirectPage /> },
-  { path: '/register', element: <Register /> },
   { path: '/logout', element: <Logout /> },
   { path: '/id_find', element: <IDFind /> },
-  { path: '/logout', element: <Logout /> },
+  // { path: '/sitemap.xml', element: <></> },
+  { path: '/manifest.webmanifest', element: <></> },
+
   {
     path: '/WithdrawalSuccessPage',
     element: <WithdrawalSuccessPage />,

@@ -22,7 +22,7 @@ const Logout = () => {
       title: '로그아웃 성공!',
       description: `성공적으로 로그아웃 하였습니다.`,
     });
-    navigate('/');
+    navigate('/login');
   }, []);
 
   return <div></div>;
