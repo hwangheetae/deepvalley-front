@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 // import { useToast } from '@chakra-ui/react';
 import { FC, ReactNode } from 'react';
 // import { useAuthStore } from '../../stores/authStore';
-
+import { isPWAInstalled } from '../../utils/isPWAInstalled';
 interface PrivateRouteProps {
   children: ReactNode;
 }
@@ -25,13 +25,6 @@ const PrivateRoute: FC<PrivateRouteProps> = ({ children }) => {
   //     });
   //   }
   // }, [accessToken, isLoggedOut]);
-  const isPWAInstalled = () => {
-    return (
-      window.matchMedia('(display-mode: standalone)').matches ||
-      window.navigator.userAgent.includes('TWA') ||
-      window.navigator.userAgent.includes('com.android.chrome')
-    );
-  };
 
   if (!accessToken) {
     if (isPWAInstalled()) {
