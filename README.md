@@ -59,7 +59,7 @@
 ### 2. 시스템 설계
 
 - **시스템 아키텍처**: 아키텍처 이미지 링크
-- **데이터베이스 설계**: ![ERD](https://github.com/user-attachments/assets/7c0d82a4-e55d-4ba9-a096-df80ccbe688d)
+- **데이터베이스 설계**: ![ERD](https://github.com/user-attachments/assets/148fb59e-998d-4a90-9fc0-f063af15f8b9)
 - **API 설계**: [API 명세서 링크](https://sharp-mare-97e.notion.site/4f852172b00d413281e3c9074d118d6d?p=83cb7560fc2d475da4e8edc44860bc7a&pm=s)
 
 ### 3. 개발 환경 구축
@@ -77,7 +77,7 @@
 
 - **커뮤니케이션 도구**: GitHub Projects, Notion, Discord, Figma를 사용해 팀원 간의 협업을 진행하고, 진행 상황을 투명하게 공유.
 - **버전 관리 전략**: Git flow로 main, develop, feature 브랜치를 분리하고, main에서 배포 진행.
-- **Git 컨벤션**: ![Git 컨벤션 이미지](https://github.com/user-attachments/assets/148fb59e-998d-4a90-9fc0-f063af15f8b9)
+- **Git 컨벤션**: ![Git 컨벤션 이미지](https://github.com/user-attachments/assets/7c0d82a4-e55d-4ba9-a096-df80ccbe688d)
 - **코딩 컨벤션**: ESLint와 Prettier를 사용해 코드 스타일을 통일하고, Airbnb 스타일 가이드를 따름.
 
 ---
