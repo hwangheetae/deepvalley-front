@@ -78,10 +78,10 @@
 - **커뮤니케이션 도구**: GitHub Projects, Notion, Discord, Figma를 사용해 팀원 간의 협업을 진행하고, 진행 상황을 투명하게 공유.
 - **버전 관리 전략**: Git flow로 main, develop, feature 브랜치를 분리하고, main에서 배포 진행.
 - **Git 컨벤션**:
-- <p>
+<p align="center">
   <img width="300px" alt="깊은산 골짜기 로고" src="https://github.com/user-attachments/assets/7c0d82a4-e55d-4ba9-a096-df80ccbe688d">
 </p>
- ![Git 컨벤션 이미지]()
+
 - **코딩 컨벤션**: ESLint와 Prettier를 사용해 코드 스타일을 통일하고, Airbnb 스타일 가이드를 따름.
 
 ---
