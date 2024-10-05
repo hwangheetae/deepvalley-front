@@ -25,25 +25,25 @@
 ## 🛠️ 기술 스택
 
 ### 기술 스택
-![TypeScript](https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-%23000000.svg?style=for-the-badge&logo=zustand&logoColor=white)
-![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Tanstack Query](https://img.shields.io/badge/Tanstack_Query-%235A29E4.svg?style=for-the-badge&logo=tanstackquery&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Chakra UI](https://img.shields.io/badge/Chakra_UI-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
-![AWS S3](https://img.shields.io/badge/AWS_S3-%23FF9900.svg?style=for-the-badge&logo=amazonaws&logoColor=white)
-![CloudFront](https://img.shields.io/badge/CloudFront-%23232F3E.svg?style=for-the-badge&logo=amazonaws&logoColor=white)
-![ESLint](https://img.shields.io/badge/ESLint-%234B32C3.svg?style=for-the-badge&logo=eslint&logoColor=white)
-![Prettier](https://img.shields.io/badge/Prettier-%23F7B93E.svg?style=for-the-badge&logo=prettier&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
-![Vitest](https://img.shields.io/badge/Vitest-%23646CFF.svg?style=for-the-badge&logo=vitest&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) 
+![Zustand](https://img.shields.io/badge/Zustand-%23000000.svg?style=for-the-badge&logo=zustand&logoColor=white) 
+![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) 
+![Tanstack Query](https://img.shields.io/badge/Tanstack_Query-%235A29E4.svg?style=for-the-badge&logo=tanstackquery&logoColor=white) 
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) 
+![Chakra UI](https://img.shields.io/badge/Chakra_UI-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white) 
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white) 
+![AWS S3](https://img.shields.io/badge/AWS_S3-%23FF9900.svg?style=for-the-badge&logo=amazonaws&logoColor=white) 
+![CloudFront](https://img.shields.io/badge/CloudFront-%23232F3E.svg?style=for-the-badge&logo=amazonaws&logoColor=white) 
+![ESLint](https://img.shields.io/badge/ESLint-%234B32C3.svg?style=for-the-badge&logo=eslint&logoColor=white) 
+![Prettier](https://img.shields.io/badge/Prettier-%23F7B93E.svg?style=for-the-badge&logo=prettier&logoColor=white) 
+![Vite](https://img.shields.io/badge/Vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white) 
+![Vitest](https://img.shields.io/badge/Vitest-%23646CFF.svg?style=for-the-badge&logo=vitest&logoColor=white) 
 ![Framer](https://img.shields.io/badge/Framer-%23000000.svg?style=for-the-badge&logo=framer&logoColor=white)
 
 ### 커뮤니케이션
-![GitHub Projects](https://img.shields.io/badge/GitHub_Projects-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
-![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)
-![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?style=for-the-badge&logo=discord&logoColor=white)
+![GitHub Projects](https://img.shields.io/badge/GitHub_Projects-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) 
+![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white) 
+![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?style=for-the-badge&logo=discord&logoColor=white) 
 ![Figma](https://img.shields.io/badge/Figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 
 ## 🛠️ 개발 과정
@@ -59,7 +59,7 @@
 ### 2. 시스템 설계
 
 - **시스템 아키텍처**: 아키텍처 이미지 링크
-- **데이터베이스 설계**: ![ERD](https://github.com/user-attachments/assets/148fb59e-998d-4a90-9fc0-f063af15f8b9)
+- **데이터베이스 설계**: ERD 설계 이미지 링크
 - **API 설계**: [API 명세서 링크](https://sharp-mare-97e.notion.site/4f852172b00d413281e3c9074d118d6d?p=83cb7560fc2d475da4e8edc44860bc7a&pm=s)
 
 ### 3. 개발 환경 구축
