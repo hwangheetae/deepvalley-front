@@ -1,3 +1,5 @@
+<p align="center"><img width="300px" alt="깊은산 골짜기 로고" src="./src/assets/images/Logo.png"></p>
+
 # 🌲 깊은산골짜기
 
 - **📅 프로젝트 기간**: 2024.07 - 2024.10 (약 4개월)
@@ -17,70 +19,63 @@
 - 🔒 인증/인가 페이지
 - 🏠 메인 페이지
 - 📝 프로필 수정 페이지
+- 🚀 랜딩 페이지
 - ✍️ 리뷰 수정 페이지 (다른 팀원이 작성한 페이지 수정)
 
 ## 🛠️ 기술 스택
 
-![TypeScript](https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-%23000000.svg?style=for-the-badge&logo=zustand&logoColor=white)
-![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Tanstack Query](https://img.shields.io/badge/Tanstack_Query-%235A29E4.svg?style=for-the-badge&logo=tanstackquery&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Chakra UI](https://img.shields.io/badge/Chakra_UI-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
-![AWS S3](https://img.shields.io/badge/AWS_S3-%23FF9900.svg?style=for-the-badge&logo=amazonaws&logoColor=white)
-![CloudFront](https://img.shields.io/badge/CloudFront-%23232F3E.svg?style=for-the-badge&logo=amazonaws&logoColor=white)
-![ESLint](https://img.shields.io/badge/ESLint-%234B32C3.svg?style=for-the-badge&logo=eslint&logoColor=white)
-![Prettier](https://img.shields.io/badge/Prettier-%23F7B93E.svg?style=for-the-badge&logo=prettier&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
-![Vitest](https://img.shields.io/badge/Vitest-%23646CFF.svg?style=for-the-badge&logo=vitest&logoColor=white)
-![Framer](https://img.shields.io/badge/Framer-%23000000.svg?style=for-the-badge&logo=framer&logoColor=white)
-![GitHub Projects](https://img.shields.io/badge/GitHub_Projects-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
-![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white)
-![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?style=for-the-badge&logo=discord&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) 
+![Zustand](https://img.shields.io/badge/Zustand-%23000000.svg?style=for-the-badge&logo=zustand&logoColor=white) 
+![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) 
+![Tanstack Query](https://img.shields.io/badge/Tanstack_Query-%235A29E4.svg?style=for-the-badge&logo=tanstackquery&logoColor=white) 
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) 
+![Chakra UI](https://img.shields.io/badge/Chakra_UI-%234ED1C5.svg?style=for-the-badge&logo=chakraui&logoColor=white) 
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white) 
+![AWS S3](https://img.shields.io/badge/AWS_S3-%23FF9900.svg?style=for-the-badge&logo=amazonaws&logoColor=white) 
+![CloudFront](https://img.shields.io/badge/CloudFront-%23232F3E.svg?style=for-the-badge&logo=amazonaws&logoColor=white) 
+![ESLint](https://img.shields.io/badge/ESLint-%234B32C3.svg?style=for-the-badge&logo=eslint&logoColor=white) 
+![Prettier](https://img.shields.io/badge/Prettier-%23F7B93E.svg?style=for-the-badge&logo=prettier&logoColor=white) 
+![Vite](https://img.shields.io/badge/Vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white) 
+![Vitest](https://img.shields.io/badge/Vitest-%23646CFF.svg?style=for-the-badge&logo=vitest&logoColor=white) 
+![Framer](https://img.shields.io/badge/Framer-%23000000.svg?style=for-the-badge&logo=framer&logoColor=white) 
 
-## ✨ 기여 내용
+### 커뮤니케이션
+![GitHub Projects](https://img.shields.io/badge/GitHub_Projects-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) 
+![Notion](https://img.shields.io/badge/Notion-%23000000.svg?style=for-the-badge&logo=notion&logoColor=white) 
+![Discord](https://img.shields.io/badge/Discord-%237289DA.svg?style=for-the-badge&logo=discord&logoColor=white) 
+![Figma](https://img.shields.io/badge/Figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 
-- **🖼️ 이미지 업로드 최적화**
-  - 모바일 환경에서 고화질 이미지 업로드 문제 해결
-  - 사용자가 업로드한 파일을 **WebP**로 변환하고, 필요한 크기로 리사이즈하여 **S3**에 저장
+## 🛠️ 개발 과정
 
-- **🚀 불필요한 서버 요청 및 렌더링 개선**
-  - **서버 요청 최적화**
-    - **Zustand**와 **Tanstack Query**를 사용하여 불필요한 서버 요청 감소
-    - 메인 페이지의 사용자 데이터를 **Zustand**의 **persist 미들웨어**로 전역 관리하여 반복 요청 방지
-    - **Tanstack Query**의 **캐시 무효화** 기능을 활용하여 변경된 정보의 즉각적 반영
-  - **렌더링 최적화**
-    - `memo`를 적용하여 메인 페이지의 렌더링 횟수를 **8회에서 2회로 감소**
-    - 불필요한 컴포넌트 재렌더링 방지로 성능 향상
-  - **사용자 경험 개선**
-    - 에러 핸들링과 **Tanstack Query**의 `isLoading` 상태를 활용하여 UX 개선
+### 1. 기획 및 요구사항 분석
 
-- **🔧 CI/CD 구축 및 배포**
-  - **AWS S3**와 **CloudFront**를 이용한 프론트엔드 배포
-  - **GitHub Actions**를 통해 메인 브랜치에 푸시될 때 자동으로 빌드, 배포 및 캐시 무효화 설정하여 배포 자동화 구현
-  - 테스트 자동화 추가 (Vitest 사용)
-  - **PWA** 적용, 사용자 환경에 따라 라우팅 분리
-  - **TWA** 전환 후 안드로이드 **PlayStore**에 앱 등록 진행 중 (비공개 테스트 진행 중)
+- **목표 정의**: '깊은산골짜기'는 사용자가 주변 계곡을 탐색하고 리뷰를 남길 수 있는 서비스를 목표로 함. 계곡과 관련된 정보 및 사용자 경험을 개선하여 유용한 정보를 제공.
+- **요구사항 분석**: 
+  - 요구사항 분석 링크
+  - 사용자의 요구사항을 반영하여 계곡 탐색, 리뷰 작성, 편의시설 검색 등의 기능을 도입. 
+  - 모바일 사용자가 편리하게 이용할 수 있도록 **아이폰 14 Pro Max를 기준**으로 화면 구성.
 
-- **🔍 검색 엔진 SEO 최적화 및 Lighthouse 지표 개선**
-  - `robots.txt`, `react-helmet`을 이용한 메타태그 작성으로 **SEO 성능을 83점에서 100점으로 개선**
-  - **Lighthouse** 점수 개선
+### 2. 시스템 설계
 
-- **🌟 랜딩 페이지 작성**
-  - **Intersection Observer**와 **Framer**를 사용하여 동적인 랜딩 페이지 제작
+- **시스템 아키텍처**: 아키텍처 이미지 링크
+- **데이터베이스 설계**: 이미지 링크
+- **API 설계**: API 명세서 링크
 
-- **📝 코드 가독성 및 재사용성 개선**
-  - 코드 가독성 향상으로 새로운 기능 추가 시 소요 시간 단축
-  - **Tanstack Query**를 사용하여 선언형 코드 작성으로 재사용성 높임
+### 3. 개발 환경 구축
 
-- **🤝 개발 환경 및 협업 설정**
-  - **TypeScript**, **ESLint**, **Prettier**를 사용하여 통일성 있는 개발 환경 구축
-  - **GitHub Projects**, **Notion**, **Discord**를 활용한 이슈 관리 및 협업
-  - 기여한 부분에 테스트 코드 도입 시도 (Vitest 사용)
+- **기술 스택 선택**: React, TypeScript, Zustand, Tailwind CSS, Chakra UI를 사용하여 프론트엔드를 구현. AWS S3와 CloudFront를 사용해 정적 배포, GitHub Actions로 CI/CD 설정.
+- **개발 도구**: 코드 품질 유지를 위해 ESLint와 Prettier, TypeScript를 설정하고, Vite를 사용해 빠른 빌드 환경 구축.
+- **프로젝트 구조**: 파일 구조 이미지
 
-- **🛡️ 인증/인가**
-  - **JWT Access Token**을 사용한 인증 구현 (**Session Storage** 관리)
-  - Access Token 만료 에러를 **Error Boundary**로 처리
-  - **Private Route**를 구현하여 인증된 사용자만 서비스 접근 가능
-  - **OAuth 2.0** 기반의 **카카오 로그인 API**를 사용하여 소셜 로그인 구현
+### 4. 테스트 및 배포
+
+- **테스트 전략**: Vitest를 사용해 주요 기능에 대한 유닛 테스트 작성. CI 파이프라인에 테스트를 포함하여 코드 변경 시 자동으로 테스트가 실행되도록 설정.
+- **CI/CD 설정**: GitHub Actions를 사용해 메인 브랜치에 커밋될 때 자동으로 빌드 및 배포가 이루어지도록 설정. AWS S3와 CloudFront를 통해 정적 파일을 배포하고, CDN 캐시 무효화를 통해 최신 버전을 사용자에게 제공.
+
+### 5. 협업 과정
+
+- **커뮤니케이션 도구**: GitHub Projects, Notion, Discord, Figma를 사용해 팀원 간의 협업을 진행하고, 진행 상황을 투명하게 공유.
+- **버전 관리 전략**: Git 브랜치를 기능별로 관리하여 팀원 간 충돌을 최소화하고, pull request를 통해 코드 리뷰를 진행.
+- **코딩 컨벤션**: ESLint와 Prettier를 사용해 코드 스타일을 통일하고, Airbnb 스타일 가이드를 따름.
+
+## Blog
