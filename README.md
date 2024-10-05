@@ -1,4 +1,6 @@
 <p align="center"><img width="300px" alt="깊은산 골짜기 로고" src="./src/assets/images/Logo.png"></p>
+# 깊은산골짜기
+
 🌲 깊은산골짜기
 
 📅 프로젝트 기간: 2024.07 - 2024.10 (약 4개월)
