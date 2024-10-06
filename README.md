@@ -87,3 +87,4 @@
 ---
 
 ## Blog
+[깊은산골짜기 프로젝트 회고](https://velog.io/@tejaia/%EA%B9%8A%EC%9D%80%EC%82%B0%EA%B3%A8%EC%A7%9C%EA%B8%B0-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
