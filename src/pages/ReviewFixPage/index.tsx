@@ -211,7 +211,7 @@ const ReviewFixPage: React.FC = () => {
         description: '리뷰가 성공적으로 수정되었습니다.',
       });
 
-      // navigate('/mypage');
+      navigate('/mypage');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         const statusCode = error.response.status;
@@ -249,7 +249,6 @@ const ReviewFixPage: React.FC = () => {
       }
     }
   };
-  console.log(deletedImageUrls);
 
   return (
     <Layout>
