@@ -92,9 +92,10 @@ const IntroPageOne = () => {
             _hover={{ bg: 'gray.500' }}
             color="white"
             height={'46px'}
-            onClick={() => {
-              alert('아직 준비중이에요!');
-            }}
+            onClick={() =>
+              (window.location.href =
+                'https://play.google.com/store/apps/details?id=net.cloudfront.djw9hdrinhwdq.twa')
+            }
           >
             Google Play
           </Button>
