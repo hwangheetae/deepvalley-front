@@ -69,6 +69,7 @@ const ReviewFixPage: React.FC = () => {
   const [newTag, setNewTag] = useState('');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>(review.image_urls);
+  const [deletedImageUrls, setDeletedImageUrls] = useState<string[]>([]);
 
   const navigate = useNavigate();
   const { successToast } = useSuccessToast();
@@ -160,6 +161,10 @@ const ReviewFixPage: React.FC = () => {
   };
 
   const handleImageRemove = (index: number) => {
+    // 삭제된 이미지 URL을 저장
+    setDeletedImageUrls((prev) => [...prev, imageUrls[index]]);
+
+    // 이미지 파일과 URL 상태에서 삭제
     setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
     setImageUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
   };
@@ -172,7 +177,6 @@ const ReviewFixPage: React.FC = () => {
     };
     setPrivacy(privacyMap[option]);
   };
-
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
@@ -195,7 +199,12 @@ const ReviewFixPage: React.FC = () => {
       formData.append('reviewPostRequest', reviewDataBlob);
 
       imageFiles.forEach((file) => formData.append('imageUrls', file));
+      let deleteImage = '';
 
+      deletedImageUrls.forEach((url) => {
+        deleteImage += url + ',';
+      });
+      formData.append('deletedImages', deleteImage);
       await updateReview(reviewId, formData);
       successToast({
         title: '리뷰 수정 성공!',
